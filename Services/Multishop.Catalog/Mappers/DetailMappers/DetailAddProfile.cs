@@ -9,7 +9,7 @@ namespace Multishop.Catalog.Mappers.DetailMappers
         public DetailAddProfile() 
         {
             CreateMap<DetailAddDto, Detail>().ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description));
-            CreateMap<DetailAddDto, Detail>().ForMember(dest => dest.Info, opt => opt.MapFrom(src => src.Info));
+            CreateMap<DetailAddDto, Detail>().ForMember(dest => dest.Features, opt => opt.MapFrom(src => src.Features));
             CreateMap<DetailAddDto, Detail>().ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId));
         }
     }

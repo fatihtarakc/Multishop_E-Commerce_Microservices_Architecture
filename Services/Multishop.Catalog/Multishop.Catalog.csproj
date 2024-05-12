@@ -8,13 +8,14 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="MongoDB.Bson" Version="2.24.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.24.0" />
     <PackageReference Include="MongoDB.Driver.Core" Version="2.24.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Data\Configurations\" />
     <Folder Include="Data\Context\" />
     <Folder Include="Data\Enums\" />
