@@ -10,7 +10,7 @@ namespace Multishop.Discount.ValidationRules.CouponValidationRules
             RuleFor(coupon => coupon.Code)
                 .NotEmpty().WithMessage("Please enter code !")
                 .MinimumLength(1).WithMessage("Minimum one character is entered this code field !")
-                .MaximumLength(10).WithMessage("Maximum ten characters is entered this code field !");
+                .MaximumLength(50).WithMessage("Maximum fifty characters is entered this code field !");
 
             RuleFor(coupon => coupon.Rate)
                 .GreaterThan(0).WithMessage("Discount rate must be greater than zero !")

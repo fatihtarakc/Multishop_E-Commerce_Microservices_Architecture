@@ -30,12 +30,13 @@ namespace Multishop.Discount.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 5, 29, 1, 2, 39, 715, DateTimeKind.Local).AddTicks(1081));
+                        .HasDefaultValue(new DateTime(2024, 6, 2, 0, 52, 18, 384, DateTimeKind.Local).AddTicks(4742));
 
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");
@@ -55,6 +56,8 @@ namespace Multishop.Discount.Migrations
                             t.HasCheckConstraint("CouponExpirationDateConstraint", "ExpirationDate > GetDate()");
 
                             t.HasCheckConstraint("CouponMaxRateConstraint", "Rate <= 100");
+
+                            t.HasCheckConstraint("CouponMinCodeLengthConstraint", "Len(Code) > 0");
 
                             t.HasCheckConstraint("CouponMinRateConstraint", "Rate > 0");
                         });
