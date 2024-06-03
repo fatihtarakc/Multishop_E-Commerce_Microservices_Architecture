@@ -1,9 +1,10 @@
-﻿using Order.Domain.Entities.Abstract;
+﻿using MediatR;
 
-namespace Order.Domain.Entities.Concrete
+namespace Order.Application.Cqrs.Commands.DetailCommands
 {
-    public class Detail : BaseEntity
+    public class DetailUpdateCommandRequest : IRequest<bool>
     {
+        public Guid Id { get; set; }
         // Product entity has been located MongoDb database.
         public string ProductId { get; set; }
         public string ProductName { get; set; }
@@ -13,6 +14,5 @@ namespace Order.Domain.Entities.Concrete
 
         // Relations
         public Guid OrderId { get; set; }
-        public Order Order { get; set; }
     }
 }

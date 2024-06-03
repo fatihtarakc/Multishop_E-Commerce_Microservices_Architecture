@@ -1,8 +1,8 @@
-﻿using Order.Domain.Entities.Abstract;
+﻿using MediatR;
 
-namespace Order.Domain.Entities.Concrete
+namespace Order.Application.Cqrs.Commands.AddressCommands
 {
-    public class Address : BaseEntity
+    public class AddressAddCommandRequest : IRequest<bool>
     {
         public Guid UserId { get; set; }
         public string City { get; set; }
