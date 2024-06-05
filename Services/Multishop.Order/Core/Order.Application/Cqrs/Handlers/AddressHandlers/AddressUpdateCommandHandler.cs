@@ -2,7 +2,6 @@
 using MediatR;
 using Order.Application.Cqrs.Commands.AddressCommands;
 using Order.Application.Repositories.Abstract;
-using Order.Domain.Entities.Concrete;
 
 namespace Order.Application.Cqrs.Handlers.AddressHandlers
 {
@@ -15,6 +14,11 @@ namespace Order.Application.Cqrs.Handlers.AddressHandlers
         }
 
         public async Task<bool> Handle(AddressUpdateCommandRequest addressUpdateCommandRequest, CancellationToken cancellationToken)
-            => await addressRepository.UpdateAsync(addressUpdateCommandRequest.Adapt<Address>());
+        {
+            var address = await addressRepository.GetFirstOrDefaultAsync(address => address.Id == addressUpdateCommandRequest.Id);
+            if (address is null) return false;
+
+            return await addressRepository.UpdateAsync(addressUpdateCommandRequest.Adapt(address));
+        }
     }
 }

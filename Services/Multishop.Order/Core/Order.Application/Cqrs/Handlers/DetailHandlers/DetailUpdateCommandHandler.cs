@@ -2,7 +2,6 @@
 using MediatR;
 using Order.Application.Cqrs.Commands.DetailCommands;
 using Order.Application.Repositories.Abstract;
-using Order.Domain.Entities.Concrete;
 
 namespace Order.Application.Cqrs.Handlers.DetailHandlers
 {
@@ -15,6 +14,11 @@ namespace Order.Application.Cqrs.Handlers.DetailHandlers
         }
 
         public async Task<bool> Handle(DetailUpdateCommandRequest detailUpdateCommandRequest, CancellationToken cancellationToken)
-            => await detailRepository.UpdateAsync(detailUpdateCommandRequest.Adapt<Detail>());
+        {
+            var detail = await detailRepository.GetFirstOrDefaultAsync(detail => detail.Id == detailUpdateCommandRequest.Id);
+            if (detail is null) return false;
+
+            return await detailRepository.UpdateAsync(detailUpdateCommandRequest.Adapt(detail));
+        }
     }
 }

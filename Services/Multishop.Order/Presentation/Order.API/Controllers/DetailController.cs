@@ -51,7 +51,7 @@ namespace Order.API.Controllers
             return Ok("This detail info was deleted successfully !");
         }
 
-        [HttpPost("Update")]
+        [HttpPut("Update")]
         public async Task<IActionResult> Update(DetailUpdateCommandRequest detailUpdateCommandRequest)
         {
             bool response = await mediator.Send(detailUpdateCommandRequest);

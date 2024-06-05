@@ -7,7 +7,7 @@ namespace Order.Domain.Entities.Concrete
         // Product entity has been located MongoDb database.
         public string ProductId { get; set; }
         public string ProductName { get; set; }
-        public string ProductPrice { get; set; }
+        public decimal ProductPrice { get; set; }
         public int ProductAmount { get; set; }
         public decimal ProductTotalPrice { get; set; }
 

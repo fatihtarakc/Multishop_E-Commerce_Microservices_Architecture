@@ -9,16 +9,15 @@ namespace Order.Persistance.Extensions
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddPersistanceService(this IServiceCollection services, IConfiguration configuration) 
+        public static void AddPersistanceService(this IServiceCollection services, IConfiguration configuration) 
         {
-            var connectionString = configuration.GetConnectionString(OrderMicroserviceContext.ConnectionName);
+            var connectionString = configuration.GetConnectionString("conn");
             services.AddDbContext<OrderMicroserviceContext>(options => options.UseSqlServer(connectionString));
 
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IAddressRepository, AddressRepository>();
             services.AddTransient<IDetailRepository, DetailRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
-            return services;
         }
     }
 }
