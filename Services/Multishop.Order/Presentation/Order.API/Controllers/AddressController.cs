@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Order.Application.Cqrs.Commands.AddressCommands;
 using Order.Application.Cqrs.Queries.AddressQueries;
@@ -7,6 +8,7 @@ namespace Order.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AddressController : ControllerBase
     {
         private readonly IMediator mediator;

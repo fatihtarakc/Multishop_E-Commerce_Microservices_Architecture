@@ -1,3 +1,4 @@
+using Order.API.Extensions;
 using Order.Application.Extensions;
 using Order.Persistance.Extensions;
 
@@ -10,6 +11,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddApplicationService();
 builder.Services.AddPersistanceService(builder.Configuration);
+builder.Services.AddApiService(builder.Configuration);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -25,7 +27,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

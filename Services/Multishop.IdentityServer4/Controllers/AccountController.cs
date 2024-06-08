@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Multishop.IdentityServer4.Dtos;
 using Multishop.IdentityServer4.Models;
 using System.Threading.Tasks;
+using static IdentityServer4.IdentityServerConstants;
 
 namespace Multishop.IdentityServer4.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(LocalApi.PolicyName)]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> userManager;

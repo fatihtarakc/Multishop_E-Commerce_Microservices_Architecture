@@ -30,6 +30,8 @@ namespace Multishop.IdentityServer4
         {
             services.AddControllersWithViews();
 
+            services.AddLocalApiAuthentication();
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("conn")));
 
@@ -81,6 +83,7 @@ namespace Multishop.IdentityServer4
 
             app.UseRouting();
             app.UseIdentityServer();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
