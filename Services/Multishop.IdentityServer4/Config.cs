@@ -15,6 +15,7 @@ namespace Multishop.IdentityServer4
             new ApiResource("Resource-Catalog") {Scopes = { "CatalogFullPermission", "CatalogReadPermission"} },
             new ApiResource("Resource-Discount") {Scopes = { "DiscountFullPermission" } },
             new ApiResource("Resource-Order") {Scopes = { "OrderFullPermission" } },
+            new ApiResource("Resource-Cargo") {Scopes = { "CargoFullPermission", "CargoReadPermission" } },
             new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
         };
 
@@ -24,6 +25,8 @@ namespace Multishop.IdentityServer4
             new ApiScope("CatalogReadPermission", "Reading authority for catalog microservices processes"),
             new ApiScope("DiscountFullPermission", "Full authority for discount microservices processes"),
             new ApiScope("OrderFullPermission", "Full authority for order microservices processes"),
+            new ApiScope("CargoFullPermission", "Full authority for cargo microservices processes"),
+            new ApiScope("CargoReadPermission", "Reading authority for cargo microservices processes"),
             new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
         };
 
@@ -40,7 +43,7 @@ namespace Multishop.IdentityServer4
             new Client
             {
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
-                AllowedScopes = { "DiscountFullPermission" },
+                AllowedScopes = { "DiscountFullPermission", "CargoReadPermission" },
                 ClientId = "Multishop.VisitorId",
                 ClientName = "Multishop.VisitorName",
                 ClientSecrets = {new Secret("multishop.visitor".Sha256())}
@@ -50,7 +53,7 @@ namespace Multishop.IdentityServer4
             new Client
             {
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
-                AllowedScopes = { "CatalogFullPermission" },
+                AllowedScopes = { "CatalogFullPermission", "CargoFullPermission" },
                 ClientId = "Multishop.ManagerId",
                 ClientName = "Multishop.ManagerName",
                 ClientSecrets = {new Secret("multishop.manager".Sha256())}
