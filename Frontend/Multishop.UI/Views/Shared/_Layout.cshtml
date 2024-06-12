@@ -6,6 +6,10 @@
 <!-- Head End -->
 
 <body>
+    <!--preloader-->
+    @await Html.PartialAsync("/Views/Shared/_PreloaderPartial.cshtml")
+    <!--/preloader-->
+
     <!-- Topbar Start -->
     @await Html.PartialAsync("/Views/Shared/_TopbarPartial.cshtml")
     <!-- Topbar End -->
