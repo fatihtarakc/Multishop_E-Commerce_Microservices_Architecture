@@ -16,6 +16,7 @@ namespace Multishop.IdentityServer4
             new ApiResource("Resource-Discount") {Scopes = { "DiscountFullPermission" } },
             new ApiResource("Resource-Order") {Scopes = { "OrderFullPermission" } },
             new ApiResource("Resource-Cargo") {Scopes = { "CargoFullPermission", "CargoReadPermission" } },
+            new ApiResource("Resource-Basket") {Scopes = { "BasketFullPermission" } },
             new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
         };
 
@@ -27,6 +28,7 @@ namespace Multishop.IdentityServer4
             new ApiScope("OrderFullPermission", "Full authority for order microservices processes"),
             new ApiScope("CargoFullPermission", "Full authority for cargo microservices processes"),
             new ApiScope("CargoReadPermission", "Reading authority for cargo microservices processes"),
+            new ApiScope("BasketFullPermission", "Full authority for basket microservices processes"),
             new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
         };
 
@@ -52,7 +54,7 @@ namespace Multishop.IdentityServer4
             // manager
             new Client
             {
-                AllowedGrantTypes = GrantTypes.ClientCredentials,
+                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                 AllowedScopes = { "CatalogFullPermission" },
                 ClientId = "Multishop.ManagerId",
                 ClientName = "Multishop.ManagerName",
@@ -63,8 +65,8 @@ namespace Multishop.IdentityServer4
             new Client
             {
                 AccessTokenLifetime = 600, // 600 seconds => 10 minutes
-                AllowedGrantTypes = GrantTypes.ClientCredentials,
-                AllowedScopes = { "CatalogFullPermission", "DiscountFullPermission", "OrderFullPermission", "CargoFullPermission", IdentityServerConstants.LocalApi.ScopeName, IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile },
+                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                AllowedScopes = { "CatalogFullPermission", "DiscountFullPermission", "OrderFullPermission", "CargoFullPermission", "BasketFullPermission", IdentityServerConstants.LocalApi.ScopeName, IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile },
                 ClientId = "Multishop.AdminId",
                 ClientName = "Multishop.AdminName",
                 ClientSecrets = {new Secret("multishop.admin".Sha256())}
