@@ -1,0 +1,33 @@
+﻿<!-- Carousel Start -->
+<div class="container-fluid mb-3">
+    <div class="row px-xl-5">
+        <!-- Carousel Partial Start -->
+        @await Html.PartialAsync("/Views/Home/_CarouselPartial.cshtml")
+        <!-- Carousel Partial End -->
+
+        <!-- SpecialOffer Partial Start -->
+        @await Html.PartialAsync("/Views/Home/_SpecialOfferPartial.cshtml")
+        <!-- SpecialOffer Partial End -->
+    </div>
+</div>
+<!-- Carousel End -->
+
+<!-- Featured Start -->
+@await Html.PartialAsync("/Views/Home/_FeaturedPartial.cshtml")
+<!-- Featured End -->
+
+<!-- Categories Start -->
+@await Html.PartialAsync("/Views/Home/_CategoriesPartial.cshtml")
+<!-- Categories End -->
+
+<!-- Products Start -->
+@await Html.PartialAsync("/Views/Home/_FeaturedProductsPartial.cshtml")
+<!-- Products End -->
+
+<!-- Offer Start -->
+@await Html.PartialAsync("/Views/Home/_OfferPartial.cshtml")
+<!-- Offer End -->
+
+<!-- Vendor Start -->
+@await Html.PartialAsync("/Views/Home/_VendorsPartial.cshtml")
+<!-- Vendor End -->

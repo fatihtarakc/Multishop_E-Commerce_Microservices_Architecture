@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head Start -->
+@await Html.PartialAsync("/Views/Shared/_HeadPartial.cshtml")
+<!-- Head End -->
+
+<body>
+    <!-- Topbar Start -->
+    @await Html.PartialAsync("/Views/Shared/_TopbarPartial.cshtml")
+    <!-- Topbar End -->
+
+    <!-- Navbar Start -->
+    @await Html.PartialAsync("/Views/Shared/_NavbarPartial.cshtml")
+    <!-- Navbar End -->
+
+    <!-- Render Body Start -->
+    @RenderBody()
+    <!-- Render Body End -->
+
+    <!-- Footer Start -->
+    @await Html.PartialAsync("/Views/Shared/_FooterPartial.cshtml")
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <!-- Scripts Partial Start -->
+    @await Html.PartialAsync("/Views/Shared/_ScriptsPartial.cshtml")
+    @await RenderSectionAsync("Scripts", required: false)
+    <!-- Scripts Partial End -->
+</body>
+
+</html>
