@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head Start -->
+@await Html.PartialAsync("/Areas/Admin/Views/Shared/_AdminHeadPartial.cshtml")
+<!-- Head End -->
+
+<body class="sidebar-mini">
+    <div class="wrapper">
+
+        <!-- Header Start -->
+        @await Html.PartialAsync("/Areas/Admin/Views/Shared/_AdminHeaderPartial.cshtml")
+        <!-- Header End -->
+        <!-- Left sidebar Start -->
+        @await Html.PartialAsync("/Areas/Admin/Views/Shared/_AdminSidebarPartial.cshtml")
+        <!-- Left sidebar End -->
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+
+            <!-- Main content -->
+            <section class="content container-fluid">
+                @RenderBody()
+            </section>
+            <!-- content -->
+        </div>
+        <!-- content-wrapper -->
+        <!-- Footer Start -->
+        @await Html.PartialAsync("/Areas/Admin/Views/Shared/_AdminFooterPartial.cshtml")
+        <!-- Footer End -->
+
+    </div>
+    <!-- wrapper -->
+    <!-- Scripts Start -->
+    @await Html.PartialAsync("/Areas/Admin/Views/Shared/_AdminScriptsPartial.cshtml")
+    <!-- Scripts End -->
+
+</body>
+</html>

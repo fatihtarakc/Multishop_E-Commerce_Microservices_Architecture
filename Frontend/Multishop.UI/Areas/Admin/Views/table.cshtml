@@ -1,0 +1,104 @@
+﻿@{
+    ViewData["Title"] = "Categories";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@* @model IEnumerable<CategoryListVM> *@
+<div class="row">
+    <div class="col-md-12">
+        <br />
+        <div class="chart-box">
+            <br />
+            <h2 class="text-center" style="font-family:'Comic Sans MS'; color:skyblue">Categories</h2>
+            <br /><hr />
+            <div id="example_filter" class="dataTables_filter pull-right">
+                <input class="form-control" id="placeholderInput" placeholder="Search" type="email">
+            </div>
+            <table class="table table-bordered table-responsive text-center table-hover">
+                <thead>
+                    <tr>
+                        <th class="sortable text-center">#</th>
+                        <th class="sortable text-center">Category Name</th>
+                        <th class="sortable text-center">Creation Date</th>
+                        <th class="sortable text-center">Status</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td class="text-truncate">1</td>
+                    <td class="text-truncate"><a href="#">Computers</a></td>
+                    <td class="text-truncate">@DateTime.Now</td>
+                    <td class="text-truncate"><span class="lable-tag tag-success">Active</span></td>
+                </tr>
+                <tr>
+                    <td class="text-truncate">2</td>
+                    <td class="text-truncate"><a href="#">Smart TV</a></td>
+                    <td class="text-truncate">@DateTime.Now</td>
+                    <td class="text-truncate"><span class="lable-tag tag-unpaid">Deleted</span></td>
+                </tr>
+                <tr>
+                    <td class="text-truncate">3</td>
+                    <td class="text-truncate"><a href="#">Adapter</a></td>
+                    <td class="text-truncate">@DateTime.Now</td>
+                    <td class="text-truncate"><span class="lable-tag tag-unpaid">Deleted</span></td>
+                </tr>
+                <tr>
+                    <td class="text-truncate">4</td>
+                    <td class="text-truncate"><a href="#">Vantilator</a></td>
+                    <td class="text-truncate">@DateTime.Now</td>
+                    <td class="text-truncate"><span class="lable-tag tag-success">Active</span></td>
+                </tr>
+                <tr>
+                    <td class="text-truncate">5</td>
+                    <td class="text-truncate"><a href="#">Charging Cable</a></td>
+                    <td class="text-truncate">@DateTime.Now</td>
+                    <td class="text-truncate"><span class="lable-tag tag-warning">Passive</span></td>
+                </tr>
+                <tr>
+                    <td class="text-truncate">6</td>
+                    <td class="text-truncate"><a href="#">Keyboard</a></td>
+                    <td class="text-truncate">@DateTime.Now</td>
+                    <td class="text-truncate"><span class="lable-tag tag-unpaid">Deleted</span></td>
+                </tr>
+                <tr>
+                    <td class="text-truncate">7</td>
+                    <td class="text-truncate"><a href="#">Mouse</a></td>
+                    <td class="text-truncate">@DateTime.Now</td>
+                    <td class="text-truncate"><span class="lable-tag tag-unpaid">Deleted</span></td>
+                </tr>
+                <tr>
+                    <td class="text-truncate">8</td>
+                    <td class="text-truncate"><a href="#">Gaming Notebook</a></td>
+                    <td class="text-truncate">@DateTime.Now</td>
+                    <td class="text-truncate"><span class="lable-tag tag-success">Active</span></td>
+                </tr>
+                <tr>
+                    <td class="text-truncate">9</td>
+                    <td class="text-truncate"><a href="#">Phone</a></td>
+                    <td class="text-truncate">DateTime.Now</td>
+                    <td class="text-truncate"><span class="lable-tag tag-success">Active</span></td>
+                </tr>
+                <tr>
+                    <td class="text-truncate">10</td>
+                    <td class="text-truncate"><a href="#">TV</a></td>
+                    <td class="text-truncate">@DateTime.Now</td>
+                    <td class="text-truncate"><span class="lable-tag tag-warning">Passive</span></td>
+                </tr>
+                <tr>
+                    <td class="text-truncate">11</td>
+                    <td class="text-truncate"><a href="#">Refrigerator</a></td>
+                    <td class="text-truncate">@DateTime.Now</td>
+                    <td class="text-truncate"><span class="lable-tag tag-success">Active</span></td>
+                </tr>
+            </table>
+            <ul class="pagination m-bot-0">
+                <li> <a href="#" aria-label="Previous"> <span aria-hidden="true">«</span> </a> </li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li> <a href="#" aria-label="Next"> <span aria-hidden="true">»</span> </a> </li>
+            </ul>
+        </div>
+    </div>
+</div>

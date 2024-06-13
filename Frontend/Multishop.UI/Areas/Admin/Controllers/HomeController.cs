@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Multishop.UI.Controllers
+namespace Multishop.UI.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class HomeController : Controller
     {
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult NotFound()
         {
             return View();
         }
