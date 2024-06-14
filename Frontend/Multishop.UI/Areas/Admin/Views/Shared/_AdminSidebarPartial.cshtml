@@ -9,7 +9,23 @@
         </div>
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" data-widget="tree">
-            <li> <a href="widgets.html"> <i class="fa fa-th"></i> <span>Categories</span></a> </li>
+
+            <li class="treeview">
+                <a href="#"><i class="fa fa-th"></i> <span>Category</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+                <ul class="treeview-menu">
+                    <li><a asp-action="Index" asp-controller="Category" asp-area="Admin"><i class="fa fa-angle-right"></i> Categories</a></li>
+                    <li><a asp-action="Add" asp-controller="Category" asp-area="Admin"><i class="fa fa-angle-right"></i> Add Category</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview">
+                <a href="#"><i class="fa fa-th"></i> <span>Product</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+                <ul class="treeview-menu">
+                    <li><a asp-action="Index" asp-controller="Product" asp-area="Admin"><i class="fa fa-angle-right"></i> Products</a></li>
+                    <li><a asp-action="Add" asp-controller="Product" asp-area="Admin"><i class="fa fa-angle-right"></i> Add Product</a></li>
+                </ul>
+            </li>
+
             <li class="treeview active">
                 <a href="#"><i class="fa fa-dashboard"></i> <span>Dashboard</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
                 <ul class="treeview-menu ">

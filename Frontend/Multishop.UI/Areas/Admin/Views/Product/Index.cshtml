@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Products";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model IEnumerable<ProductListVM>
+<div class="row">
+    <div class="col-md-12">
+        <br />
+        <div class="chart-box" style="font-family:'Comic Sans MS'">
+            <br />
+            <h2 class="text-center" style="font-family:'Comic Sans MS'; color:skyblue">Products</h2>
+            <br /><hr />
+            <div id="example_filter" class="dataTables_filter pull-right">
+                <input class="form-control" id="placeholderInput" placeholder="Search" type="text">
+            </div>
+            <table class="table table-bordered table-responsive text-center table-hover">
+                <thead>
+                    <tr>
+                        <th class="sortable text-center">#</th>
+                        <th class="sortable text-center">Name</th>
+                        <th class="sortable text-center">Price</th>
+                        <th class="sortable text-center">Status</th>
+                        <th class="sortable text-center"></th>
+                    </tr>
+                </thead>
+                @{
+                    var count = 1;
+                    foreach (var productListVM in Model)
+                    {
+                        <tr>
+                            <td class="text-truncate">@count</td>
+                            <td class="text-truncate"><a href="~/Admin/Category/GetBy/@productListVM.Id" title="@productListVM.Name informations">@productListVM.Name</a></td>
+                            <td class="text-truncate">@productListVM.Price</td>
+                            <td class="text-truncate"><span class="lable-tag tag-success btn btn-rounded">Active</span></td>
+                            <td>
+                                <p class="text-truncate row justify-content-center">
+                                    <a href="~/Admin/Product/Update/@productListVM.Id" class="lable-tag tag-warning btn btn-rounded col-lg-6 col-xl-6 col-xxl-6" title="@productListVM.Name informations update">Update</a>
+                                    <a href="~/Admin/Product/Delete/@productListVM.Id" class="lable-tag tag-unpaid btn btn-rounded col-lg-6 col-xl-6 col-xxl-6" title="Delete">Delete</a>
+                                </p>
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                }
+            </table>
+            <ul class="pagination m-bot-0 text-center">
+                <li> <a href="#" aria-label="Previous"> <span aria-hidden="true">«</span> </a> </li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li> <a href="#" aria-label="Next"> <span aria-hidden="true">»</span> </a> </li>
+            </ul>
+            <br />
+            <hr />
+            <p class="text-truncate text-center"><a asp-action="Add" class="lable-tag tag-success btn btn-rounded form-control" title="Add new category">Product Add</a></p>
+        </div>
+    </div>
+</div>
