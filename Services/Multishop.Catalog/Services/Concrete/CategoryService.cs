@@ -34,16 +34,16 @@ namespace Multishop.Catalog.Services.Concrete
             await categoryRepository.UpdateAsync(category);
         }
 
-        public async Task<CategoryDetailDto> GetFirstOrDefaultAsync(Expression<Func<Category, bool>> expression)
+        public async Task<CategoryDto> GetFirstOrDefaultAsync(Expression<Func<Category, bool>> expression)
         {
             var category = await categoryRepository.GetFirstOrDefaultAsync(expression);
-            return mapper.Map<CategoryDetailDto>(category);
+            return mapper.Map<CategoryDto>(category);
         }
 
-        public async Task<IEnumerable<CategoryListDto>> GetAllAsync()
+        public async Task<IEnumerable<CategoryDto>> GetAllAsync()
         {
             var categories = await categoryRepository.GetAllAsync();
-            return mapper.Map<IEnumerable<CategoryListDto>>(categories);
+            return mapper.Map<IEnumerable<CategoryDto>>(categories);
         }
     }
 }

@@ -36,6 +36,11 @@ namespace Multishop.Catalog.Repositories.Concrete
             return await productCollection.Find(expression).FirstOrDefaultAsync();
         }
 
+        public async Task<IEnumerable<Product>> GetAllWhereAsync(Expression<Func<Product, bool>> expression)
+        {
+            return await productCollection.Find(expression).ToListAsync();
+        }
+
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
             return await productCollection.Find(product => true).ToListAsync();

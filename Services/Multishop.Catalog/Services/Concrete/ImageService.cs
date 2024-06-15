@@ -34,16 +34,16 @@ namespace Multishop.Catalog.Services.Concrete
             await imageRepository.UpdateAsync(image);
         }
 
-        public async Task<ImageDetailDto> GetFirstOrDefaultAsync(Expression<Func<Image, bool>> expression)
+        public async Task<ImageDto> GetFirstOrDefaultAsync(Expression<Func<Image, bool>> expression)
         {
             var image = await imageRepository.GetFirstOrDefaultAsync(expression);
-            return mapper.Map<ImageDetailDto>(image);
+            return mapper.Map<ImageDto>(image);
         }
 
-        public async Task<IEnumerable<ImageListDto>> GetAllAsync()
+        public async Task<IEnumerable<ImageDto>> GetAllAsync()
         {
             var images = await imageRepository.GetAllAsync();
-            return mapper.Map<IEnumerable<ImageListDto>>(images);
+            return mapper.Map<IEnumerable<ImageDto>>(images);
         }
     }
 }

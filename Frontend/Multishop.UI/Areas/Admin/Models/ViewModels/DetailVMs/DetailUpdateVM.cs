@@ -1,6 +1,6 @@
-﻿namespace Multishop.Catalog.Dtos.DetailDtos
+﻿namespace Multishop.UI.Areas.Admin.Models.ViewModels.DetailVMs
 {
-    public class DetailDetailDto
+    public class DetailUpdateVM
     {
         public string Id { get; set; }
         public string Description { get; set; }

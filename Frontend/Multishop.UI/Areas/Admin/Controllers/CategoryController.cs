@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Multishop.UI.Areas.Admin.Models.ViewModels.CategoryVMs;
+using Multishop.UI.Areas.Admin.Models.ViewModels.ProductVMs;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -21,8 +22,30 @@ namespace Multishop.UI.Areas.Admin.Controllers
             if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var categoryListVMs = JsonConvert.DeserializeObject<IEnumerable<CategoryListVM>>(jsonData);
-            return View(categoryListVMs);
+            var categoryVMs = JsonConvert.DeserializeObject<IEnumerable<CategoryVM>>(jsonData);
+            return View(categoryVMs);
+        }
+
+        [HttpGet("Admin/Category/Detail/{categoryId}")]
+        public async Task<IActionResult> Detail(string categoryId)
+        {
+            var client = httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync($"https://localhost:7001/api/Category/GetBy/{categoryId}");
+            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+
+            var jsonData = await responseMessage.Content.ReadAsStringAsync();
+            var categoryVM = JsonConvert.DeserializeObject<CategoryVM>(jsonData);
+
+            responseMessage = await client.GetAsync($"https://localhost:7001/api/Product/ProductsGetBy/{categoryId}");
+            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+
+            jsonData = await responseMessage.Content.ReadAsStringAsync();
+            var productVMs = JsonConvert.DeserializeObject<IEnumerable<ProductVM>>(jsonData);
+
+            var categoryProductsVM = new CategoryProductsVM();
+            categoryProductsVM.CategoryVM = categoryVM;
+            categoryProductsVM.ProductVMs = productVMs;
+            return View(categoryProductsVM);
         }
 
         public IActionResult Add()

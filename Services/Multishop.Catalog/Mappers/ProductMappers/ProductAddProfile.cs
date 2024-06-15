@@ -11,6 +11,7 @@ namespace Multishop.Catalog.Mappers.ProductMappers
             CreateMap<ProductAddDto, Product>().ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
             CreateMap<ProductAddDto, Product>().ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price));
             CreateMap<ProductAddDto, Product>().ForMember(dest => dest.CategoryId, opt => opt.MapFrom(src => src.CategoryId));
+            CreateMap<ProductAddDto, Product>().ForMember(dest => dest.DetailId, opt => opt.MapFrom(src => src.DetailId));
         }
     }
 }

@@ -17,19 +17,19 @@ namespace Multishop.Catalog.Controllers
         [HttpGet("Details")]
         public async Task<IActionResult> Details()
         {
-            var detailsListDto = await detailService.GetAllAsync();
-            if (detailsListDto is null) return NotFound("In system, detail has not been yet !");
+            var detailDtos = await detailService.GetAllAsync();
+            if (detailDtos is null) return NotFound("In system, detail has not been yet !");
 
-            return Ok(detailsListDto);
+            return Ok(detailDtos);
         }
 
         [HttpGet("GetBy/{detailId}")]
         public async Task<IActionResult> GetBy(string detailId)
         {
-            var detailDetailDto = await detailService.GetFirstOrDefaultAsync(detail => detail.Id == detailId);
-            if (detailDetailDto is null) return NotFound();
+            var detailDto = await detailService.GetFirstOrDefaultAsync(detail => detail.Id == detailId);
+            if (detailDto is null) return NotFound();
 
-            return Ok(detailDetailDto);
+            return Ok(detailDto);
         }
 
         [HttpPost("Add")]

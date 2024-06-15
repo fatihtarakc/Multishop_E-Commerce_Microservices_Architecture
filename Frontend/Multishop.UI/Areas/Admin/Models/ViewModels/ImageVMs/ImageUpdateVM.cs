@@ -1,6 +1,6 @@
-﻿namespace Multishop.Catalog.Dtos.ImageDtos
+﻿namespace Multishop.UI.Areas.Admin.Models.ViewModels.ImageVMs
 {
-    public class ImageDetailDto
+    public class ImageUpdateVM
     {
         public string Id { get; set; }
         public string Url { get; set; }

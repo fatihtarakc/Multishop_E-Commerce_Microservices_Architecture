@@ -17,19 +17,19 @@ namespace Multishop.Catalog.Controllers
         [HttpGet("Images")]
         public async Task<IActionResult> Images()
         {
-            var imagesListDto = await imageService.GetAllAsync();
-            if (imagesListDto is null) return NotFound("In system, image has not been yet !");
+            var imageDtos = await imageService.GetAllAsync();
+            if (imageDtos is null) return NotFound("In system, image has not been yet !");
 
-            return Ok(imagesListDto);
+            return Ok(imageDtos);
         }
 
         [HttpGet("GetBy/{imageId}")]
         public async Task<IActionResult> GetBy(string imageId)
         {
-            var imageDetailDto = await imageService.GetFirstOrDefaultAsync(image => image.Id == imageId);
-            if (imageDetailDto is null) return NotFound();
+            var imageDto = await imageService.GetFirstOrDefaultAsync(image => image.Id == imageId);
+            if (imageDto is null) return NotFound();
 
-            return Ok(imageDetailDto);
+            return Ok(imageDto);
         }
 
         [HttpPost("Add")]

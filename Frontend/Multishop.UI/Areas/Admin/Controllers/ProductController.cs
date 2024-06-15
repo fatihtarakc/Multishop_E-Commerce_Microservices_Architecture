@@ -23,8 +23,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
             if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var productListVMs = JsonConvert.DeserializeObject<IEnumerable<ProductListVM>>(jsonData);
-            return View(productListVMs);
+            var productVMs = JsonConvert.DeserializeObject<IEnumerable<ProductVM>>(jsonData);
+            return View(productVMs);
         }
 
         public async Task<IActionResult> Add()
@@ -34,8 +34,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
             if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var categoryListVMs = JsonConvert.DeserializeObject<IEnumerable<CategoryListVM>>(jsonData);
-            IEnumerable<SelectListItem> categories = (from category in categoryListVMs
+            var categoryVMs = JsonConvert.DeserializeObject<IEnumerable<CategoryVM>>(jsonData);
+            IEnumerable<SelectListItem> categories = (from category in categoryVMs
                                                       select new SelectListItem
                                                       {
                                                           Value = category.Id,
@@ -78,8 +78,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
             if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var categoryListVMs = JsonConvert.DeserializeObject<IEnumerable<CategoryListVM>>(jsonData);
-            IEnumerable<SelectListItem> categories = (from category in categoryListVMs
+            var categoryVMs = JsonConvert.DeserializeObject<IEnumerable<CategoryVM>>(jsonData);
+            IEnumerable<SelectListItem> categories = (from category in categoryVMs
                                                       select new SelectListItem
                                                       {
                                                           Value = category.Id,

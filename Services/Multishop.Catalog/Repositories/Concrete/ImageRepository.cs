@@ -36,6 +36,11 @@ namespace Multishop.Catalog.Repositories.Concrete
             return await imageCollection.Find(expression).FirstOrDefaultAsync();
         }
 
+        public async Task<IEnumerable<Image>> GetAllWhereAsync(string productId)
+        {
+            return await imageCollection.Find(image => image.ProductId == productId).ToListAsync();
+        }
+
         public async Task<IEnumerable<Image>> GetAllAsync()
         {
             return await imageCollection.Find(image => true).ToListAsync();

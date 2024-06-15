@@ -20,19 +20,28 @@ namespace Multishop.Catalog.Controllers
         [HttpGet("Products")]
         public async Task<IActionResult> Products()
         {
-            var productsListDto = await productService.GetAllAsync();
-            if (productsListDto is null) return NotFound("In system, product has not been yet !");
+            var productDtos = await productService.GetAllAsync();
+            if (productDtos is null) return NotFound("In system, product has not been yet !");
 
-            return Ok(productsListDto);
+            return Ok(productDtos);
+        }
+
+        [HttpGet("ProductsGetBy/{categoryId}")]
+        public async Task<IActionResult> ProductsGetBy(string categoryId)
+        {
+            var productDtosGetByCategoryId = await productService.GetAllWhereAsync(product => product.CategoryId == categoryId);
+            if (productDtosGetByCategoryId is null) return NotFound("In system, product by categoryId has not been yet !");
+
+            return Ok(productDtosGetByCategoryId);
         }
 
         [HttpGet("GetBy/{productId}")]
         public async Task<IActionResult> GetBy(string productId)
         {
-            var productDetailDto = await productService.GetFirstOrDefaultAsync(product => product.Id == productId);
-            if (productDetailDto is null) return NotFound();
+            var productDto = await productService.GetFirstOrDefaultAsync(product => product.Id == productId);
+            if (productDto is null) return NotFound();
 
-            return Ok(productDetailDto);
+            return Ok(productDto);
         }
 
         [HttpPost("Add")]

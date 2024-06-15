@@ -3,7 +3,7 @@ using Multishop.Catalog.Dtos.DetailDtos;
 
 namespace Multishop.Catalog.Services.Abstract
 {
-    public interface IDetailService : IGenericService<Detail, DetailAddDto, DetailUpdateDto, DetailDetailDto, DetailListDto>
+    public interface IDetailService : IGenericService<Detail, DetailDto, DetailAddDto, DetailUpdateDto>
     {
     }
 }

@@ -3,7 +3,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-@model IEnumerable<CategoryListVM>
+@model IEnumerable<CategoryVM>
 <div class="row">
     <div class="col-md-12">
         <br />
@@ -29,7 +29,7 @@
                     {
                         <tr>
                             <td class="text-truncate">@count</td>
-                            <td class="text-truncate"><a href="~/Admin/Category/GetBy/@categoryListVM.Id" title="@categoryListVM.Name informations">@categoryListVM.Name</a></td>
+                            <td class="text-truncate tag-info"><a href="~/Admin/Category/Detail/@categoryListVM.Id" title="@categoryListVM.Name informations">@categoryListVM.Name</a></td>
                             <td class="text-truncate"><span class="lable-tag tag-success btn btn-rounded">Active</span></td>
                             <td>
                                 <p class="text-truncate row justify-content-center">

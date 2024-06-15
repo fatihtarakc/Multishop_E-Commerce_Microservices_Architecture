@@ -20,19 +20,19 @@ namespace Multishop.Catalog.Controllers
         [HttpGet("Categories")]
         public async Task<IActionResult> Categories()
         {
-            var categoriesListDto = await categoryService.GetAllAsync();
-            if (categoriesListDto is null) return NotFound("In system, category has not been yet !");
+            var categoryDtos = await categoryService.GetAllAsync();
+            if (categoryDtos is null) return NotFound("In system, category has not been yet !");
 
-            return Ok(categoriesListDto);
+            return Ok(categoryDtos);
         }
 
         [HttpGet("GetBy/{categoryId}")]
         public async Task<IActionResult> GetBy(string categoryId)
         {
-            var categoryDetailDto = await categoryService.GetFirstOrDefaultAsync(category => category.Id == categoryId);
-            if (categoryDetailDto is null) return NotFound();
+            var categoryDto = await categoryService.GetFirstOrDefaultAsync(category => category.Id == categoryId);
+            if (categoryDto is null) return NotFound();
 
-            return Ok(categoryDetailDto);
+            return Ok(categoryDto);
         }
 
         [HttpPost("Add")]

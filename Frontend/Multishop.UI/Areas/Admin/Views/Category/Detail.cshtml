@@ -1,15 +1,15 @@
 ﻿@{
-    ViewData["Title"] = "Products";
+    ViewData["Title"] = "Category Products";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-@model IEnumerable<ProductVM>
+@model CategoryProductsVM
 <div class="row">
     <div class="col-md-12">
         <br />
         <div class="chart-box" style="font-family:'Comic Sans MS'">
             <br />
-            <h2 class="text-center" style="font-family:'Comic Sans MS'; color:skyblue">Products</h2>
+            <h2 class="text-center" style="font-family:'Comic Sans MS'; color:skyblue">@Model.CategoryVM.Name Categories Products</h2>
             <br /><hr />
             <div id="example_filter" class="dataTables_filter pull-right">
                 <input class="form-control" id="placeholderInput" placeholder="Search" type="text">
@@ -18,25 +18,25 @@
                 <thead>
                     <tr>
                         <th class="sortable text-center">#</th>
-                        <th class="sortable text-center">Name</th>
-                        <th class="sortable text-center">Price</th>
+                        <th class="sortable text-center">Product Name</th>
+                        <th class="sortable text-center">Product Price</th>
                         <th class="sortable text-center">Status</th>
                         <th class="sortable text-center"></th>
                     </tr>
                 </thead>
                 @{
                     var count = 1;
-                    foreach (var productListVM in Model)
+                    foreach (var productVM in Model.ProductVMs)
                     {
                         <tr>
                             <td class="text-truncate">@count</td>
-                            <td class="text-truncate"><a href="~/Admin/Category/GetBy/@productListVM.Id" title="@productListVM.Name informations">@productListVM.Name</a></td>
-                            <td class="text-truncate">@productListVM.Price</td>
+                            <td class="text-truncate tag-info"><a href="~/Admin/Product/Detail/@productVM.Id" title="@productVM.Name informations">@productVM.Name</a></td>
+                            <td class="text-truncate">@productVM.Price</td>
                             <td class="text-truncate"><span class="lable-tag tag-success btn btn-rounded">Active</span></td>
                             <td>
                                 <p class="text-truncate row justify-content-center">
-                                    <a href="~/Admin/Product/Update/@productListVM.Id" class="lable-tag tag-warning btn btn-rounded col-lg-6 col-xl-6 col-xxl-6" title="@productListVM.Name informations update">Update</a>
-                                    <a href="~/Admin/Product/Delete/@productListVM.Id" class="lable-tag tag-unpaid btn btn-rounded col-lg-6 col-xl-6 col-xxl-6" title="Delete">Delete</a>
+                                    <a href="~/Admin/Product/Update/@productVM.Id" class="lable-tag tag-warning btn btn-rounded col-lg-6 col-xl-6 col-xxl-6" title="@productVM.Name informations update">Update</a>
+                                    <a href="~/Admin/Product/Delete/@productVM.Id" class="lable-tag tag-unpaid btn btn-rounded col-lg-6 col-xl-6 col-xxl-6" title="Delete">Delete</a>
                                 </p>
                             </td>
                         </tr>
@@ -55,7 +55,7 @@
             </ul>
             <br />
             <hr />
-            <p class="text-truncate text-center"><a asp-action="Add" class="lable-tag tag-success btn btn-rounded form-control" title="Add new category">Product Add</a></p>
+            <p class="text-truncate text-center"><a asp-action="Add" asp-controller="Product" asp-area="Admin" class="lable-tag tag-success btn btn-rounded form-control" title="Add new product">Product Add</a></p>
         </div>
     </div>
 </div>
