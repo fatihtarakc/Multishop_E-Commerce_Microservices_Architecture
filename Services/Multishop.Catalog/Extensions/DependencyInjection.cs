@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Multishop.Catalog.Dtos.CategoryDtos;
 using Multishop.Catalog.Dtos.DetailDtos;
 using Multishop.Catalog.Dtos.ImageDtos;
+using Multishop.Catalog.Dtos.OfferDtos;
 using Multishop.Catalog.Dtos.ProductDtos;
 using Multishop.Catalog.Repositories.Abstract;
 using Multishop.Catalog.Repositories.Concrete;
@@ -15,6 +16,7 @@ using Multishop.Catalog.Settings.Concrete;
 using Multishop.Catalog.ValidationRules.CategoryValidationRules;
 using Multishop.Catalog.ValidationRules.DetailValidationRules;
 using Multishop.Catalog.ValidationRules.ImageValidationRules;
+using Multishop.Catalog.ValidationRules.OfferValidationRules;
 using Multishop.Catalog.ValidationRules.ProductValidationRules;
 using System.Reflection;
 
@@ -57,18 +59,25 @@ namespace Multishop.Catalog.Extensions
 
             services.AddTransient<IValidator<ImageAddDto>, ImageAddValidator>();
             services.AddTransient<IValidator<ImageUpdateDto>, ImageUpdateValidator>();
+            
+            services.AddTransient<IValidator<OfferAddDto>, OfferAddValidator>();
+            services.AddTransient<IValidator<OfferUpdateDto>, OfferUpdateValidator>();
 
             services.AddTransient<IValidator<ProductAddDto>, ProductAddValidator>();
             services.AddTransient<IValidator<ProductUpdateDto>, ProductUpdateValidator>();
 
+            services.AddTransient<IAdvertisementRepository, AdvertisementRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IDetailRepository, DetailRepository>();
             services.AddTransient<IImageRepository, ImageRepository>();
+            services.AddTransient<IOfferRepository, OfferRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
 
+            services.AddTransient<IAdvertisementService, AdvertisementService>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IDetailService, DetailService>();
             services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<IOfferService, OfferService>();
             services.AddTransient<IProductService, ProductService>();
 
             return services;

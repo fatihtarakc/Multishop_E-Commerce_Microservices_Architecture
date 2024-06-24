@@ -1,18 +1,21 @@
-﻿<div class="col-lg-4">
-    <div class="product-offer mb-30" style="height: 200px;">
-        <img class="img-fluid" src="~/img/offer-1.jpg" alt="">
-        <div class="offer-text">
-            <h6 class="text-white text-uppercase">Save 20%</h6>
-            <h3 class="text-white mb-3">Special Offer</h3>
-            <a href="" class="btn btn-primary">Shop Now</a>
-        </div>
-    </div>
-    <div class="product-offer mb-30" style="height: 200px;">
-        <img class="img-fluid" src="~/img/offer-2.jpg" alt="">
-        <div class="offer-text">
-            <h6 class="text-white text-uppercase">Save 20%</h6>
-            <h3 class="text-white mb-3">Special Offer</h3>
-            <a href="" class="btn btn-primary">Shop Now</a>
-        </div>
-    </div>
-</div>
+﻿@model HomeVM
+
+@{
+    @foreach (var offerVM in Model.OfferVMs)
+    {
+        @if (offerVM.IsActive)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="product-offer mb-30" style="height: 200px;">
+                    @*<img class="img-fluid" src="@offerVM.ImageUrl" style="object-fit:fill;" alt="">*@
+                    <img class="img-fluid" src="~/img/@offerVM.ImageUrl" style="object-fit:fill;" alt="">
+                    <div class="offer-text" style="font-family:'Comic Sans MS'">
+                        <h6 class="text-white text-uppercase">@offerVM.Title</h6>
+                        <h3 class="text-white mb-3">@offerVM.SubTitle</h3>
+                        <a href="#" class="btn btn-primary">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+}

@@ -1,0 +1,72 @@
+﻿@{
+    ViewData["Title"] = "Advertisements";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model IEnumerable<AdvertisementVM>
+<div class="row">
+    <div class="col-md-12">
+        <br />
+        <div class="chart-box" style="font-family:'Comic Sans MS'">
+            <br />
+            <h2 class="text-center" style="font-family:'Comic Sans MS'; color:skyblue">Advertisements</h2>
+            <br /><hr />
+            <div id="example_filter" class="dataTables_filter pull-right">
+                <input class="form-control" id="placeholderInput" placeholder="Search" type="text">
+            </div>
+            <table class="table table-bordered table-responsive text-center table-hover">
+                <thead>
+                    <tr>
+                        <th class="sortable text-center">#</th>
+                        <th class="sortable text-center">Title</th>
+                        <th class="sortable text-center">Description</th>
+                        <th class="sortable text-center">Status</th>
+                        <th class="sortable text-center">Image Url</th>
+                        <th class="sortable text-center"></th>
+                    </tr>
+                </thead>
+                @{
+                    var count = 1;
+                    foreach (var advertisementListVM in Model)
+                    {
+                        <tr>
+                            <td class="text-truncate">@count</td>
+                            <td class="text-truncate tag-info"><a href="~/Admin/Advertistement/Detail/@advertisementListVM.Id" title="@advertisementListVM.Title informations">@advertisementListVM.Title</a></td>
+                            <td class="text-truncate">@advertisementListVM.Description</td>
+                            @{
+                                if (advertisementListVM.IsActive)
+                                {
+                                    <td class="text-truncate"><span class="lable-tag tag-success btn btn-rounded">Active</span></td>
+                                }
+                                else
+                                {
+                                    <td class="text-truncate"><span class="lable-tag tag-unpaid btn btn-rounded">Passive</span></td>
+                                }
+                            }
+                            <td class="text-truncate">@advertisementListVM.ImageUrl</td>
+                            <td>
+                                <p class="text-truncate row justify-content-center">
+                                    <a href="~/Admin/Advertisement/Update/@advertisementListVM.Id" class="lable-tag tag-warning btn btn-rounded col-lg-6 col-xl-6 col-xxl-6" title="@advertisementListVM.Title informations update">Update</a>
+                                    <a href="~/Admin/Advertisement/Delete/@advertisementListVM.Id" class="lable-tag tag-unpaid btn btn-rounded col-lg-6 col-xl-6 col-xxl-6" title="Delete">Delete</a>
+                                </p>
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                }
+            </table>
+            <ul class="pagination m-bot-0 text-center">
+                <li> <a href="#" aria-label="Previous"> <span aria-hidden="true">«</span> </a> </li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li> <a href="#" aria-label="Next"> <span aria-hidden="true">»</span> </a> </li>
+            </ul>
+            <br />
+            <hr />
+            <p class="text-truncate text-center"><a asp-action="Add" class="lable-tag tag-success btn btn-rounded form-control" title="Add new advertisement">Advertisement Add</a></p>
+        </div>
+    </div>
+</div>
