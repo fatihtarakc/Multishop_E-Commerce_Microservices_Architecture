@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Multishop.UI.Models.ViewModels.AdvertisementVMs;
+using Multishop.UI.Models.ViewModels.BrandVMs;
 using Multishop.UI.Models.ViewModels.HomeVMs;
 using Multishop.UI.Models.ViewModels.OfferVMs;
+using Multishop.UI.Models.ViewModels.ServiceVMs;
 using Newtonsoft.Json;
 
 namespace Multishop.UI.Controllers
@@ -23,16 +25,30 @@ namespace Multishop.UI.Controllers
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
             var advertisementVMs = JsonConvert.DeserializeObject<IEnumerable<AdvertisementVM>>(jsonData);
 
+            responseMessage = await client.GetAsync("https://localhost:7001/api/Brand/Brands");
+            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+
+            jsonData = await responseMessage.Content.ReadAsStringAsync();
+            var brandVMs = JsonConvert.DeserializeObject<IEnumerable<BrandVM>>(jsonData);
+
             responseMessage = await client.GetAsync("https://localhost:7001/api/Offer/Offers");
             if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             jsonData = await responseMessage.Content.ReadAsStringAsync();
             var offerVMs = JsonConvert.DeserializeObject<IEnumerable<OfferVM>>(jsonData);
 
+            responseMessage = await client.GetAsync("https://localhost:7001/api/Service/Services");
+            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+
+            jsonData = await responseMessage.Content.ReadAsStringAsync();
+            var serviceVMs = JsonConvert.DeserializeObject<IEnumerable<ServiceVM>>(jsonData);
+
             var homeVM = new HomeVM()
             {
                 AdvertisementVMs = advertisementVMs,
-                OfferVMs = offerVMs
+                BrandVMs = brandVMs,
+                OfferVMs = offerVMs,
+                ServiceVMs = serviceVMs
             };
             return View(homeVM);
         }

@@ -16,21 +16,21 @@
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <input asp-for="Id" type="hidden" />
                 <div class="form-group text-truncate row">
-                    <div class="col-12 col-lg-6">
+                    <div class="col-12 col-lg-6 col-md-6">
                         <label asp-for="Title" class="control-label" style="text-align:start; font-size:16px; font-weight:bold; color:indigo;">Title <span class="text-danger">*</span></label>
                         <input asp-for="Title" class="lable-tag tag-info btn btn-info btn-rounded btn-block" style="cursor:text" required />
                     </div>
-                    <div class="col-12 col-lg-6">
+                    <div class="col-12 col-lg-6 col-md-6">
                         <label asp-for="Description" class="control-label" style="text-align:start; font-size:16px; font-weight:bold; color:indigo;">Description <span class="text-danger">*</span></label>
                         <input asp-for="Description" class="lable-tag tag-info btn btn-info btn-rounded btn-block" style="cursor:text" required />
                     </div>
                 </div>
                 <div class="form-group text-truncate row">
-                    <div class="col-12 col-lg-6">
+                    <div class="col-12 col-lg-6 col-md-6">
                         <label asp-for="ImageUrl" class="control-label" style="text-align:start; font-size:16px; font-weight:bold; color:indigo;">Image Url <span class="text-danger">*</span></label>
                         <input asp-for="ImageUrl" class="lable-tag tag-info btn btn-info btn-rounded btn-block" style="cursor:text" required />
                     </div>
-                    <div class="col-12 col-lg-6">
+                    <div class="col-12 col-lg-6 col-md-6">
                         <label asp-for="IsActive" class="control-label" style="text-align:start; font-size:16px; font-weight:bold; color:indigo;">Status <span class="text-danger">*</span></label>
                         <select asp-for="IsActive" class="lable-tag tag-info btn btn-info btn-rounded btn-block" style="cursor:text" required>
                             <option value="true">Active</option>
@@ -41,10 +41,10 @@
                 </div>
                 <br />
                 <div class="form-group text-truncate row">
-                    <div class="col-12 col-lg-6">
+                    <div class="col-12 col-lg-6 col-md-6">
                         <input type="submit" value="Advertisement Update" class="lable-tag tag-success btn btn-outline-success btn-rounded btn-block" />
                     </div>
-                    <div class="col-12 col-lg-6">
+                    <div class="col-12 col-lg-6 col-md-6">
                         <a asp-action="Index" class="lable-tag tag-warning btn btn-outline-warning btn-rounded btn-block" title:"Go to Advertisements">Cancel</a>
                     </div>
                 </div>

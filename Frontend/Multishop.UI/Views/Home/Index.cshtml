@@ -4,7 +4,7 @@
 
 <!-- Carousel Start -->
 <div class="container-fluid mb-3">
-    <div class="row px-xl-5">
+    <div class="row px-xl-5 justify-content-center align-items-center">
         <!-- Carousel Partial Start -->
         @await Html.PartialAsync("/Views/Home/_CarouselPartial.cshtml")
         <!-- Carousel Partial End -->
@@ -18,10 +18,6 @@
 <!-- Featured Start -->
 @await Html.PartialAsync("/Views/Home/_FeaturedPartial.cshtml")
 <!-- Featured End -->
-
-<!-- Products Start -->
-@await Html.PartialAsync("/Views/Home/_FeaturedProductsPartial.cshtml")
-<!-- Products End -->
 
 <!-- Vendor Start -->
 @await Html.PartialAsync("/Views/Home/_VendorsPartial.cshtml")

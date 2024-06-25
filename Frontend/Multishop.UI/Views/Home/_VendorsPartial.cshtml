@@ -1,32 +1,36 @@
-﻿<div class="container-fluid py-5">
-    <div class="row px-xl-5">
-        <div class="col">
-            <div class="owl-carousel vendor-carousel">
-                <div class="bg-light p-4">
-                    <img src="~/img/Adidas_Logo.svg.png" alt="">
-                </div>
-                <div class="bg-light p-4">
-                    <img src="~/img/Logo_NIKE.svg" alt="">
-                </div>
-                <div class="bg-light p-4">
-                    <img src="~/img/vendor-3.jpg" alt="">
-                </div>
-                <div class="bg-light p-4">
-                    <img src="~/img/vendor-4.jpg" alt="">
-                </div>
-                <div class="bg-light p-4">
-                    <img src="~/img/vendor-5.jpg" alt="">
-                </div>
-                <div class="bg-light p-4">
-                    <img src="~/img/vendor-6.jpg" alt="">
-                </div>
-                <div class="bg-light p-4">
-                    <img src="~/img/vendor-7.jpg" alt="">
-                </div>
-                <div class="bg-light p-4">
-                    <img src="~/img/vendor-8.jpg" alt="">
-                </div>
+﻿@model HomeVM
+
+<div class="container-fluid py-5">
+    <div class="row px-xl-5 justify-content-center align-items-center">
+        <h2 class="section-title position-relative text-center" style="font-family:'Comic Sans MS'"><span class="bg-secondary pr-3"> &nbsp;Brands</span></h2>
+        <br />
+        <br />
+        <br />
+
+        @{
+            foreach (var brandVM in Model.BrandVMs)
+            {
+                @if (brandVM.IsActive)
+                {
+                    <div class="col-lg-2 col-mb-3 col-4">
+                        <div class="p-4">
+                            <img src="~/img/@brandVM.ImageUrl" style="height:auto; width:100px" alt="@brandVM.Name">
+                        </div>
+                    </div>
+                }
+            }
+        }
+
+        @* <div class="col-lg-2 col-mb-3 col-4">
+            <div class="p-4">
+                <img src="~/img/Adidas_Logo.svg.png" style="height:auto; width:100px" alt="">
             </div>
         </div>
+        <div class="col-lg-2 col-mb-3 col-4">
+            <div class="p-4">
+                <img src="~/img/Logo_NIKE.svg" style="height:auto; width:100px" alt="">
+            </div>
+        </div> *@
+
     </div>
 </div>

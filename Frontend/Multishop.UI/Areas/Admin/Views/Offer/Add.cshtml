@@ -15,11 +15,11 @@
             <form asp-action="Add" asp-controller="Offer" asp-area="Admin" method="post" class="container-fluid py-4" style="font-family:'Comic Sans MS'; text-align:center">
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group text-truncate row">
-                    <div class="col-12 col-lg-6">
+                    <div class="col-12 col-lg-6 col-md-6">
                         <label asp-for="Title" class="control-label" style="text-align:start; font-size:16px; font-weight:bold; color:indigo;">Title <span class="text-danger">*</span></label>
                         <input asp-for="Title" class="lable-tag tag-info btn btn-info btn-rounded btn-block" style="cursor:text" required />
                     </div>
-                    <div class="col-12 col-lg-6">
+                    <div class="col-12 col-lg-6 col-md-6">
                         <label asp-for="SubTitle" class="control-label" style="text-align:start; font-size:16px; font-weight:bold; color:indigo;">Subtitle <span class="text-danger">*</span></label>
                         <input asp-for="SubTitle" class="lable-tag tag-info btn btn-info btn-rounded btn-block" style="cursor:text" required />
                     </div>
@@ -32,10 +32,10 @@
                 </div>
                 <br />
                 <div class="form-group text-truncate row">
-                    <div class="col-12 col-lg-6">
+                    <div class="col-12 col-lg-6 col-md-6">
                         <input type="submit" value="Offer Add" class="lable-tag tag-success btn btn-outline-success btn-rounded btn-block" />
                     </div>
-                    <div class="col-12 col-lg-6">
+                    <div class="col-12 col-lg-6 col-md-6">
                         <a asp-action="Index" class="lable-tag tag-warning btn btn-outline-warning btn-rounded btn-block" title:"Go to Offers">Cancel</a>
                     </div>
                 </div>

@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Update Brand";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model BrandUpdateVM
+
+<div class="row">
+    <div class="col-md-12">
+        <br />
+        <div class="chart-box" style="font-family:'Comic Sans MS'">
+            <br />
+            <h2 class="text-center" style="font-family:'Comic Sans MS'; color:skyblue">Brands</h2><span class="text-danger" style="text-transform:lowercase; font-family:'Comic Sans MS'">(* required field)</span>
+            <br /><hr />
+            <form asp-action="Update" asp-controller="Brand" asp-area="Admin" method="post" class="container-fluid py-4" style="font-family:'Comic Sans MS'; text-align:center">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input asp-for="Id" type="hidden" />
+                <div class="form-group text-truncate row">
+                    <div class="col-12 col-lg-4 col-md-4">
+                        <label asp-for="Name" class="control-label" style="text-align:start; font-size:16px; font-weight:bold; color:indigo;">Title <span class="text-danger">*</span></label>
+                        <input asp-for="Name" class="lable-tag tag-info btn btn-info btn-rounded btn-block" style="cursor:text" required />
+                    </div>
+                    <div class="col-12 col-lg-4 col-md-4">
+                        <label asp-for="ImageUrl" class="control-label" style="text-align:start; font-size:16px; font-weight:bold; color:indigo;">Image Url <span class="text-danger">*</span></label>
+                        <input asp-for="ImageUrl" class="lable-tag tag-info btn btn-info btn-rounded btn-block" style="cursor:text" required />
+                    </div>
+                    <div class="col-12 col-lg-4 col-md-4">
+                        <label asp-for="IsActive" class="control-label" style="text-align:start; font-size:16px; font-weight:bold; color:indigo;">Status <span class="text-danger">*</span></label>
+                        <select asp-for="IsActive" class="lable-tag tag-info btn btn-info btn-rounded btn-block" style="cursor:text" required>
+                            <option value="true">Active</option>
+                            <option value="false">Passive</option>
+                        </select>
+                        @* <input asp-for="IsActive" class="lable-tag tag-info btn btn-info btn-rounded btn-block" style="cursor:text" required /> *@
+                    </div>
+                </div>
+                <br />
+                <div class="form-group text-truncate row">
+                    <div class="col-12 col-lg-6 col-md-6">
+                        <input type="submit" value="Brand Update" class="lable-tag tag-success btn btn-outline-success btn-rounded btn-block" />
+                    </div>
+                    <div class="col-12 col-lg-6 col-md-6">
+                        <a asp-action="Index" class="lable-tag tag-warning btn btn-outline-warning btn-rounded btn-block" title:"Go to Brands">Cancel</a>
+                    </div>
+                </div>
+            </form>
+            <br />
+        </div>
+    </div>
+</div>

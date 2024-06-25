@@ -2,22 +2,28 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
+using Multishop.Catalog.Dtos.AdvertisementDtos;
+using Multishop.Catalog.Dtos.BrandDtos;
 using Multishop.Catalog.Dtos.CategoryDtos;
 using Multishop.Catalog.Dtos.DetailDtos;
 using Multishop.Catalog.Dtos.ImageDtos;
 using Multishop.Catalog.Dtos.OfferDtos;
 using Multishop.Catalog.Dtos.ProductDtos;
+using Multishop.Catalog.Dtos.ServiceDtos;
 using Multishop.Catalog.Repositories.Abstract;
 using Multishop.Catalog.Repositories.Concrete;
 using Multishop.Catalog.Services.Abstract;
 using Multishop.Catalog.Services.Concrete;
 using Multishop.Catalog.Settings.Abstract;
 using Multishop.Catalog.Settings.Concrete;
+using Multishop.Catalog.ValidationRules.AdvertisementValidationRules;
+using Multishop.Catalog.ValidationRules.BrandValidationRules;
 using Multishop.Catalog.ValidationRules.CategoryValidationRules;
 using Multishop.Catalog.ValidationRules.DetailValidationRules;
 using Multishop.Catalog.ValidationRules.ImageValidationRules;
 using Multishop.Catalog.ValidationRules.OfferValidationRules;
 using Multishop.Catalog.ValidationRules.ProductValidationRules;
+using Multishop.Catalog.ValidationRules.ServiceValidationRules;
 using System.Reflection;
 
 namespace Multishop.Catalog.Extensions
@@ -51,6 +57,12 @@ namespace Multishop.Catalog.Extensions
                 };
             });
 
+            services.AddTransient<IValidator<AdvertisementAddDto>, AdvertisementAddValidator>();
+            services.AddTransient<IValidator<AdvertisementUpdateDto>, AdvertisementUpdateValidator>();
+
+            services.AddTransient<IValidator<BrandAddDto>, BrandAddValidator>();
+            services.AddTransient<IValidator<BrandUpdateDto>, BrandUpdateValidator>();
+
             services.AddTransient<IValidator<CategoryAddDto>, CategoryAddValidator>();
             services.AddTransient<IValidator<CategoryUpdateDto>, CategoryUpdateValidator>();
 
@@ -65,20 +77,27 @@ namespace Multishop.Catalog.Extensions
 
             services.AddTransient<IValidator<ProductAddDto>, ProductAddValidator>();
             services.AddTransient<IValidator<ProductUpdateDto>, ProductUpdateValidator>();
+            
+            services.AddTransient<IValidator<ServiceAddDto>, ServiceAddValidator>();
+            services.AddTransient<IValidator<ServiceUpdateDto>, ServiceUpdateValidator>();
 
             services.AddTransient<IAdvertisementRepository, AdvertisementRepository>();
+            services.AddTransient<IBrandRepository, BrandRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IDetailRepository, DetailRepository>();
             services.AddTransient<IImageRepository, ImageRepository>();
             services.AddTransient<IOfferRepository, OfferRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IServiceRepository, ServiceRepository>();
 
             services.AddTransient<IAdvertisementService, AdvertisementService>();
+            services.AddTransient<IBrandService, BrandService>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IDetailService, DetailService>();
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IOfferService, OfferService>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IServiceService, ServiceService>();
 
             return services;
         }
