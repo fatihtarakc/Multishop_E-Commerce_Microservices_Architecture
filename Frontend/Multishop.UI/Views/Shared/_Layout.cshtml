@@ -15,7 +15,7 @@
     <!-- Topbar End -->
 
     <!-- Navbar Start -->
-    @await Html.PartialAsync("/Views/Shared/_NavbarPartial.cshtml")
+    @await Component.InvokeAsync("_NavbarPartial")
     <!-- Navbar End -->
 
     <!-- Render Body Start -->
