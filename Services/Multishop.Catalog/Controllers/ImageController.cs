@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Multishop.Catalog.Dtos.ImageDtos;
 using Multishop.Catalog.Services.Abstract;
 
@@ -6,6 +7,8 @@ namespace Multishop.Catalog.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize]
+    [AllowAnonymous]
     public class ImageController : ControllerBase
     {
         private readonly IImageService imageService;
@@ -21,6 +24,15 @@ namespace Multishop.Catalog.Controllers
             if (imageDtos is null) return NotFound("In system, image has not been yet !");
 
             return Ok(imageDtos);
+        }
+
+        [HttpGet("ImagesGetBy/{productId}")]
+        public async Task<IActionResult> ImagesGetBy(string productId)
+        {
+            var imageDtosByProductId = await imageService.GetAllWhereAsync(image => image.ProductId == productId);
+            if (imageDtosByProductId is null) return NotFound("In system, image has not been yet !");
+
+            return Ok(imageDtosByProductId);
         }
 
         [HttpGet("GetBy/{imageId}")]

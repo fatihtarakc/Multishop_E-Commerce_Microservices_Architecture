@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Multishop.Catalog.Dtos.DetailDtos;
 using Multishop.Catalog.Services.Abstract;
 
@@ -6,6 +7,8 @@ namespace Multishop.Catalog.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize]
+    [AllowAnonymous]
     public class DetailController : ControllerBase
     {
         private readonly IDetailService detailService;
@@ -23,10 +26,10 @@ namespace Multishop.Catalog.Controllers
             return Ok(detailDtos);
         }
 
-        [HttpGet("GetBy/{detailId}")]
-        public async Task<IActionResult> GetBy(string detailId)
+        [HttpGet("GetBy/{productId}")]
+        public async Task<IActionResult> GetBy(string productId)
         {
-            var detailDto = await detailService.GetFirstOrDefaultAsync(detail => detail.Id == detailId);
+            var detailDto = await detailService.GetFirstOrDefaultAsync(detail => detail.ProductId == productId);
             if (detailDto is null) return NotFound();
 
             return Ok(detailDto);

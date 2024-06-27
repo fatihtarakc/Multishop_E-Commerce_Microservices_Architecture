@@ -10,6 +10,7 @@ namespace Multishop.Catalog.Mappers.ImageMappers
         {
             CreateMap<Image, ImageDto>().ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
             CreateMap<Image, ImageDto>().ForMember(dest => dest.Url, opt => opt.MapFrom(src => src.Url));
+            CreateMap<Image, ImageDto>().ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId));
         }
     }
 }

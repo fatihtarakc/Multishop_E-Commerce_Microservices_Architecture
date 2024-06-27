@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Add Image";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model ImageAddVM
+
+<div class="row">
+    <div class="col-md-12">
+        <br />
+        <div class="chart-box" style="font-family:'Comic Sans MS'">
+            <br />
+            <h2 class="text-center" style="font-family:'Comic Sans MS'; color:skyblue">Add New Image</h2><span class="text-danger" style="text-transform:lowercase; font-family:'Comic Sans MS'">(* required field)</span>
+            <br /><hr />
+            <form asp-action="ImageAdd" asp-controller="Product" asp-area="Admin" method="post" class="container-fluid py-4" style="font-family:'Comic Sans MS'; text-align:center">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input type="hidden" asp-for="ProductId" />
+                <div class="form-group text-truncate row">
+                    <div class="col-12 col-lg-12">
+                        <label asp-for="Url" class="control-label" style="text-align:start; font-size:16px; font-weight:bold; color:indigo;">Image Url <span class="text-danger">*</span></label>
+                        <input asp-for="Url" class="lable-tag tag-info btn btn-info btn-rounded btn-block" style="cursor:text" required />
+                    </div>
+                </div>
+                <br />
+                <div class="form-group text-truncate row">
+                    <div class="col-12 col-lg-6">
+                        <input type="submit" value="Image Add" class="lable-tag tag-success btn btn-outline-success btn-rounded btn-block" />
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <a href="~/Admin/Product/Images/@Model.ProductId" class="lable-tag tag-warning btn btn-outline-warning btn-rounded btn-block" title:"Go to Images">Cancel</a>
+                    </div>
+                </div>
+            </form>
+            <br />
+        </div>
+    </div>
+</div>

@@ -16,6 +16,9 @@ namespace Multishop.Catalog.ValidationRules.DetailValidationRules
                 .NotEmpty().WithMessage("Please enter a features !")
                 .MinimumLength(10).WithMessage("Features can not be less than 10 characters")
                 .MaximumLength(250).WithMessage("Features can not be greater than 250 characters");
+
+            RuleFor(detail => detail.ProductId)
+               .NotEmpty().WithMessage("Please enter a productId !");
         }
     }
 }

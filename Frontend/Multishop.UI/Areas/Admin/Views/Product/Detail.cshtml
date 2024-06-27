@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Product Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model DetailVM
+<div class="row">
+    <div class="col-md-12">
+        <br />
+        <div class="chart-box" style="font-family:'Comic Sans MS'">
+            <br />
+            <h2 class="text-center" style="font-family:'Comic Sans MS'; color:skyblue">Product Detail</h2>
+            <br /><hr />
+            <div id="example_filter" class="dataTables_filter pull-right">
+                <input class="form-control" id="placeholderInput" placeholder="Search" type="text">
+            </div>
+            <table class="table table-bordered table-responsive text-center table-hover">
+                <thead>
+                    <tr>
+                        <th class="sortable text-center">Description</th>
+                        <th class="sortable text-center">Features</th>
+                    </tr>
+                </thead>
+                @{
+                    if (Model is not null)
+                    {
+                        <tr>
+                            <td class="text-truncate">@Model.Description</td>
+                            <td class="text-truncate">@Model.Features</td>
+                            <td class="text-truncate"><a href="~/Admin/Product/DetailUpdate/@ViewBag.ProductId" class="lable-tag tag-warning btn btn-rounded" title="Update">Update</a></td>
+                            <td class="text-truncate"><a href="~/Admin/Product/DetailDelete/@Model.Id" class="lable-tag tag-unpaid btn btn-rounded" title="Delete">Delete</a></td>
+                        </tr>
+                    }
+                }
+            </table>
+            <ul class="pagination m-bot-0 text-center">
+                <li> <a href="#" aria-label="Previous"> <span aria-hidden="true">«</span> </a> </li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li> <a href="#" aria-label="Next"> <span aria-hidden="true">»</span> </a> </li>
+            </ul>
+            <br />
+            <hr />
+            @if (Model is null)
+            {
+                <p class="text-truncate text-center"><a href="~/Admin/Product/DetailAdd/@ViewBag.ProductId" class="lable-tag tag-success btn btn-rounded form-control" title="Add new detail">Detail Add</a></p>
+            }
+        </div>
+    </div>
+</div>

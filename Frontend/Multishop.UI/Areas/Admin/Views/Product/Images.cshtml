@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Images";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@model IEnumerable<ImageVM>
+<div class="row">
+    <div class="col-md-12">
+        <br />
+        <div class="chart-box" style="font-family:'Comic Sans MS'">
+            <br />
+            <h2 class="text-center" style="font-family:'Comic Sans MS'; color:skyblue">Images</h2>
+            <br /><hr />
+            <div id="example_filter" class="dataTables_filter pull-right">
+                <input class="form-control" id="placeholderInput" placeholder="Search" type="text">
+            </div>
+            <table class="table table-bordered table-responsive text-center table-hover">
+                <thead>
+                    <tr>
+                        <th class="sortable text-center">#</th>
+                        <th class="sortable text-center">Url</th>
+                    </tr>
+                </thead>
+                @{
+                    var count = 1;
+                    foreach (var imageVM in Model)
+                    {
+                        <tr>
+                            <td class="text-truncate">@count</td>
+                            <td class="text-truncate">@imageVM.Url</td>
+                            <td class="text-truncate"><a href="~/Admin/Product/ImageUpdate/@imageVM.Id" class="lable-tag tag-warning btn btn-rounded" title="Update">Update</a></td>
+                            <td class="text-truncate"><a href="~/Admin/Product/ImageDelete/@imageVM.Id" class="lable-tag tag-unpaid btn btn-rounded" title="Delete">Delete</a></td>
+                        </tr>
+                        count++;
+                    }
+                }
+            </table>
+            <ul class="pagination m-bot-0 text-center">
+                <li> <a href="#" aria-label="Previous"> <span aria-hidden="true">«</span> </a> </li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li> <a href="#" aria-label="Next"> <span aria-hidden="true">»</span> </a> </li>
+            </ul>
+            <br />
+            <hr />
+            <p class="text-truncate text-center"><a href="~/Admin/Product/ImageAdd/@ViewBag.ProductId" class="lable-tag tag-success btn btn-rounded form-control" title="Add new image">Image Add</a></p>
+        </div>
+    </div>
+</div>

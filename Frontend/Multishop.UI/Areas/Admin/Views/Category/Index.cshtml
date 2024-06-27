@@ -20,7 +20,6 @@
                         <th class="sortable text-center">#</th>
                         <th class="sortable text-center">Category Name</th>
                         <th class="sortable text-center">Status</th>
-                        <th class="sortable text-center"></th>
                     </tr>
                 </thead>
                 @{
@@ -31,12 +30,8 @@
                             <td class="text-truncate">@count</td>
                             <td class="text-truncate tag-info"><a href="~/Admin/Category/Detail/@categoryListVM.Id" title="@categoryListVM.Name informations">@categoryListVM.Name</a></td>
                             <td class="text-truncate"><span class="lable-tag tag-success btn btn-rounded">Active</span></td>
-                            <td>
-                                <p class="text-truncate row justify-content-center">
-                                    <a href="~/Admin/Category/Update/@categoryListVM.Id" class="lable-tag tag-warning btn btn-rounded col-lg-6 col-xl-6 col-xxl-6" title="@categoryListVM.Name informations update">Update</a>
-                                    <a href="~/Admin/Category/Delete/@categoryListVM.Id" class="lable-tag tag-unpaid btn btn-rounded col-lg-6 col-xl-6 col-xxl-6" title="Delete">Delete</a>
-                                </p>
-                            </td>
+                            <td class="text-truncate"><a href="~/Admin/Category/Update/@categoryListVM.Id" class="lable-tag tag-warning btn btn-rounded" title="@categoryListVM.Name informations update">Update</a></td>
+                            <td class="text-truncate"><a href="~/Admin/Category/Delete/@categoryListVM.Id" class="lable-tag tag-unpaid btn btn-rounded" title="Delete">Delete</a></td>
                         </tr>
                         count++;
                     }

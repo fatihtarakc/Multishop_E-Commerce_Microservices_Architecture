@@ -10,7 +10,7 @@
         <br />
         <div class="chart-box" style="font-family:'Comic Sans MS'">
             <br />
-            <h2 class="text-center" style="font-family:'Comic Sans MS'; color:skyblue">Products</h2><span class="text-danger" style="text-transform:lowercase; font-family:'Comic Sans MS'">(* required field)</span>
+            <h2 class="text-center" style="font-family:'Comic Sans MS'; color:skyblue">Add New Product</h2><span class="text-danger" style="text-transform:lowercase; font-family:'Comic Sans MS'">(* required field)</span>
             <br /><hr />
             <form asp-action="Add" asp-controller="Product" asp-area="Admin" method="post" class="container-fluid py-4" style="font-family:'Comic Sans MS'; text-align:center">
                 <div asp-validation-summary="All" class="text-danger"></div>
@@ -32,6 +32,7 @@
                         <select asp-items="@ViewBag.Categories" asp-for="CategoryId" class="lable-tag tag-info btn btn-info btn-rounded btn-block"></select>
                     </div>
                 </div>
+                <br />
                 <div class="form-group text-truncate row">
                     <div class="col-12 col-lg-6 col-md-6">
                         <input type="submit" value="Product Add" class="lable-tag tag-success btn btn-outline-success btn-rounded btn-block" />

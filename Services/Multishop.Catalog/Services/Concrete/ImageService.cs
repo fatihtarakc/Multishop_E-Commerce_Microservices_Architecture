@@ -40,6 +40,12 @@ namespace Multishop.Catalog.Services.Concrete
             return mapper.Map<ImageDto>(image);
         }
 
+        public async Task<IEnumerable<ImageDto>> GetAllWhereAsync(Expression<Func<Image, bool>> expression)
+        {
+            var images = await imageRepository.GetAllWhereAsync(expression);
+            return mapper.Map<IEnumerable<ImageDto>>(images);
+        }
+
         public async Task<IEnumerable<ImageDto>> GetAllAsync()
         {
             var images = await imageRepository.GetAllAsync();

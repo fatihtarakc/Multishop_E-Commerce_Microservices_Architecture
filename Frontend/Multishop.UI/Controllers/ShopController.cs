@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Multishop.UI.Models.ViewModels.DetailVMs;
+using Multishop.UI.Models.ViewModels.ImageVMs;
 using Multishop.UI.Models.ViewModels.ProductVMs;
 using Newtonsoft.Json;
 
@@ -21,12 +23,57 @@ namespace Multishop.UI.Controllers
 
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
             var productVMs = JsonConvert.DeserializeObject<IEnumerable<ProductVM>>(jsonData);
-            return View(productVMs);
+
+            var productWithImagesVMs = new List<ProductWithImagesVM>();
+            foreach (var productVM in productVMs)
+            {
+                responseMessage = await client.GetAsync($"https://localhost:7001/api/Image/ImagesGetBy/{productVM.Id}");
+                if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+
+                jsonData = await responseMessage.Content.ReadAsStringAsync();
+                var imageVMs = JsonConvert.DeserializeObject<IEnumerable<ImageVM>>(jsonData);
+
+                var productWithImagesVM = new ProductWithImagesVM()
+                {
+                    Id = productVM.Id,
+                    Name = productVM.Name,
+                    Price = productVM.Price,
+                    ImageVMs = imageVMs
+                };
+                productWithImagesVMs.Add(productWithImagesVM);
+            }
+            return View(productWithImagesVMs);
         }
 
-        public IActionResult Detail()
+        [HttpGet("/Shop/ProductDetail/{productId}")]
+        public async Task<IActionResult> ProductDetail(string productId)
         {
-            return View();
+            var client = httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync($"https://localhost:7001/api/Product/GetBy/{productId}");
+            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+
+            var jsonData = await responseMessage.Content.ReadAsStringAsync();
+            var productVM = JsonConvert.DeserializeObject<ProductVM>(jsonData);
+
+            responseMessage = await client.GetAsync($"https://localhost:7001/api/Detail/GetBy/{productId}");
+            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+
+            jsonData = await responseMessage.Content.ReadAsStringAsync();
+            var detailVM = JsonConvert.DeserializeObject<DetailVM>(jsonData);
+
+            responseMessage = await client.GetAsync($"https://localhost:7001/api/Image/ImagesGetBy/{productId}");
+            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+
+            jsonData = await responseMessage.Content.ReadAsStringAsync();
+            var imageVMs = JsonConvert.DeserializeObject<IEnumerable<ImageVM>>(jsonData);
+
+            var productWithDetailImages = new ProductWithDetailImagesVM()
+            {
+                ProductVM = productVM,
+                DetailVM = detailVM,
+                ImageVMs = imageVMs
+            };
+            return View(productWithDetailImages);
         }
     }
 }

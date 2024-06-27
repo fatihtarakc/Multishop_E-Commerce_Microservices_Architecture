@@ -21,7 +21,6 @@
                         <th class="sortable text-center">Icon</th>
                         <th class="sortable text-center">Name</th>
                         <th class="sortable text-center">Status</th>
-                        <th class="sortable text-center"></th>
                     </tr>
                 </thead>
                 @{
@@ -42,12 +41,8 @@
                                     <td class="text-truncate"><span class="lable-tag tag-unpaid btn btn-rounded">Passive</span></td>
                                 }
                             }
-                            <td>
-                                <p class="text-truncate row justify-content-center">
-                                    <a href="~/Admin/Service/Update/@serviceListVM.Id" class="lable-tag tag-warning btn btn-rounded col-lg-6 col-xl-6 col-xxl-6" title="@serviceListVM.Name informations update">Update</a>
-                                    <a href="~/Admin/Service/Delete/@serviceListVM.Id" class="lable-tag tag-unpaid btn btn-rounded col-lg-6 col-xl-6 col-xxl-6" title="Delete">Delete</a>
-                                </p>
-                            </td>
+                            <td class="text-truncate"><a href="~/Admin/Service/Update/@serviceListVM.Id" class="lable-tag tag-warning btn btn-rounded" title="@serviceListVM.Name informations update">Update</a></td>
+                            <td class="text-truncate"><a href="~/Admin/Service/Delete/@serviceListVM.Id" class="lable-tag tag-unpaid btn btn-rounded" title="Delete">Delete</a></td>
                         </tr>
                         count++;
                     }
