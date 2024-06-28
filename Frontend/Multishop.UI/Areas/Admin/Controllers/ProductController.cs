@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Multishop.UI.Areas.Admin.Models.ViewModels.CategoryVMs;
+using Multishop.UI.Areas.Admin.Models.ViewModels.CommentVMs;
 using Multishop.UI.Areas.Admin.Models.ViewModels.DetailVMs;
 using Multishop.UI.Areas.Admin.Models.ViewModels.ImageVMs;
 using Multishop.UI.Areas.Admin.Models.ViewModels.ProductVMs;
@@ -308,6 +309,19 @@ namespace Multishop.UI.Areas.Admin.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet("Admin/Product/Comments/{productId},{productName}")]
+        public async Task<IActionResult> Comments(string productId, string productName)
+        {
+            var client = httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync($"https://localhost:7006/api/Comment/CommentsGetBy/{productId}");
+            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+
+            var jsonData = await responseMessage.Content.ReadAsStringAsync();
+            var commentVMs = JsonConvert.DeserializeObject<IEnumerable<CommentVM>>(jsonData);
+            ViewBag.ProductName = productName;
+            return View(commentVMs);
         }
     }
 }

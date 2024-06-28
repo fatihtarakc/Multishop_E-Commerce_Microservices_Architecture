@@ -27,7 +27,7 @@ namespace Cargo.API.Controllers
         public async Task<IActionResult> GetBy(Guid entityId)
         {
             var company = await companyService.GetFirstOrDefaultAsync(company => company.Id == entityId);
-            if (company is null) return NotFound("Searchimg company was not found !");
+            if (company is null) return NotFound("Searching company was not found !");
 
             return Ok(company);
         }

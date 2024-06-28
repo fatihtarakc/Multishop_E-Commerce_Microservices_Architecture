@@ -25,17 +25,18 @@
                 </thead>
                 @{
                     var count = 1;
-                    foreach (var productListVM in Model)
+                    foreach (var productVM in Model)
                     {
                         <tr>
                             <td class="text-truncate">@count</td>
-                            <td class="text-truncate"><a href="~/Admin/Category/GetBy/@productListVM.Id" title="@productListVM.Name informations">@productListVM.Name</a></td>
-                            <td class="text-truncate">@productListVM.Price</td>
+                            <td class="text-truncate"><a href="~/Admin/Category/GetBy/@productVM.Id" title="@productVM.Name informations">@productVM.Name</a></td>
+                            <td class="text-truncate">@productVM.Price</td>
                             <td class="text-truncate"><span class="lable-tag tag-success btn btn-rounded">Active</span></td>
-                            <td class="text-truncate"><a href="~/Admin/Product/Images/@productListVM.Id" class="lable-tag tag-success btn btn-rounded" title="@productListVM.Name informations update">Images</a></td>
-                            <td class="text-truncate"><a href="~/Admin/Product/Detail/@productListVM.Id" class="lable-tag tag-success btn btn-rounded" title="@productListVM.Name informations update">Detail</a></td>
-                            <td class="text-truncate"><a href="~/Admin/Product/Update/@productListVM.Id" class="lable-tag tag-warning btn btn-rounded" title="@productListVM.Name informations update">Update</a></td>
-                            <td class="text-truncate"><a href="~/Admin/Product/Delete/@productListVM.Id" class="lable-tag tag-unpaid btn btn-rounded" title="Delete">Delete</a></td>
+                            <td class="text-truncate"><a href="~/Admin/Product/Comments/@productVM.Id,@productVM.Name" class="lable-tag tag-success btn btn-rounded" title="@productVM.Name informations update">Comments</a></td>
+                            <td class="text-truncate"><a href="~/Admin/Product/Detail/@productVM.Id" class="lable-tag tag-success btn btn-rounded" title="@productVM.Name informations update">Detail</a></td>
+                            <td class="text-truncate"><a href="~/Admin/Product/Images/@productVM.Id" class="lable-tag tag-success btn btn-rounded" title="@productVM.Name informations update">Images</a></td>
+                            <td class="text-truncate"><a href="~/Admin/Product/Update/@productVM.Id" class="lable-tag tag-warning btn btn-rounded" title="@productVM.Name informations update">Update</a></td>
+                            <td class="text-truncate"><a href="~/Admin/Product/Delete/@productVM.Id" class="lable-tag tag-unpaid btn btn-rounded" title="Delete">Delete</a></td>
                         </tr>
                         count++;
                     }
