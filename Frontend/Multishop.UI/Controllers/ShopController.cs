@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Multishop.UI.Models.ViewModels.CommentVMs;
 using Multishop.UI.Models.ViewModels.DetailVMs;
 using Multishop.UI.Models.ViewModels.ImageVMs;
 using Multishop.UI.Models.ViewModels.ProductVMs;
@@ -67,11 +68,18 @@ namespace Multishop.UI.Controllers
             jsonData = await responseMessage.Content.ReadAsStringAsync();
             var imageVMs = JsonConvert.DeserializeObject<IEnumerable<ImageVM>>(jsonData);
 
-            var productWithDetailImages = new ProductWithDetailImagesVM()
+            responseMessage = await client.GetAsync($"https://localhost:7006/api/Comment/CommentsGetBy/{productId}");
+            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+
+            jsonData = await responseMessage.Content.ReadAsStringAsync();
+            var commentVMs = JsonConvert.DeserializeObject<IEnumerable<CommentVM>>(jsonData);
+
+            var productWithDetailImages = new ProductWithDetailImagesCommentVM()
             {
                 ProductVM = productVM,
                 DetailVM = detailVM,
-                ImageVMs = imageVMs
+                ImageVMs = imageVMs,
+                CommentVMs = commentVMs
             };
             return View(productWithDetailImages);
         }

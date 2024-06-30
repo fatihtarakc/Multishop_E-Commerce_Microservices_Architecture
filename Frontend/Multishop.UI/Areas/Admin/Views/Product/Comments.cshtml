@@ -22,53 +22,56 @@
                         <th class="sortable text-center">Email</th>
                         <th class="sortable text-center">Review</th>
                         <th class="sortable text-center">Rating</th>
-                        <th class="sortable text-center">CreationDate</th>
+                        <th class="sortable text-center">Date</th>
                         <th class="sortable text-center">Status</th>
                     </tr>
                 </thead>
                 @{
-                    var commentVMs = Model.OrderBy(comment => comment.NameSurname);
-                    var count = 1;
-                    foreach (var commentVM in Model)
+                    if (Model is not null)
                     {
-                        <tr>
-                            <td class="text-truncate">@count</td>
-                            @if (commentVM.NameSurname.Length > 10)
-                            {
-                                <td class="text-truncate"><a href="#" title="@commentVM.NameSurname">@commentVM.NameSurname.Substring(0, 10)...</a></td>
-                            }
-                            else
-                            {
-                                <td class="text-truncate">@commentVM.NameSurname</td>
-                            }
-                            @if (commentVM.Email.Length > 10)
-                            {
-                                <td class="text-truncate"><a href="#" title="@commentVM.Email">@commentVM.Email.Substring(0, 10)...</a></td>
-                            }
-                            else
-                            {
-                                <td class="text-truncate">@commentVM.Email</td>
-                            }
-                            @if (commentVM.Review.Length > 10)
-                            {
-                                <td class="text-truncate"><a href="#" title="@commentVM.Review">@commentVM.Review.Substring(0, 10)...</a></td>
-                            }
-                            else
-                            {
-                                <td class="text-truncate">@commentVM.Review</td>
-                            }
-                            <td class="text-truncate">@commentVM.Rating</td>
-                            <td class="text-truncate">@commentVM.CreationDate.ToShortDateString() @commentVM.CreationDate.ToShortTimeString()</td>
-                            @if (commentVM.IsActive)
-                            {
-                                <td class="text-truncate"><span class="lable-tag tag-success btn btn-rounded">@commentVM.IsActive</span></td>
-                            }
-                            else
-                            {
-                                <td class="text-truncate"><span class="lable-tag tag-unpaid btn btn-rounded">@commentVM.IsActive</span></td>
-                            }
-                        </tr>
-                        count++;
+                        var commentVMs = Model.OrderBy(comment => comment.NameSurname);
+                        var count = 1;
+                        foreach (var commentVM in Model)
+                        {
+                            <tr>
+                                <td class="text-truncate">@count</td>
+                                @if (commentVM.NameSurname.Length > 10)
+                                {
+                                    <td class="text-truncate"><a href="#" title="@commentVM.NameSurname">@commentVM.NameSurname.Substring(0, 10)...</a></td>
+                                }
+                                else
+                                {
+                                    <td class="text-truncate">@commentVM.NameSurname</td>
+                                }
+                                @if (commentVM.Email.Length > 10)
+                                {
+                                    <td class="text-truncate"><a href="#" title="@commentVM.Email">@commentVM.Email.Substring(0, 10)...</a></td>
+                                }
+                                else
+                                {
+                                    <td class="text-truncate">@commentVM.Email</td>
+                                }
+                                @if (commentVM.Review.Length > 10)
+                                {
+                                    <td class="text-truncate"><a href="#" title="@commentVM.Review">@commentVM.Review.Substring(0, 10)...</a></td>
+                                }
+                                else
+                                {
+                                    <td class="text-truncate">@commentVM.Review</td>
+                                }
+                                <td class="text-truncate">@commentVM.Rating</td>
+                                <td class="text-truncate">@commentVM.CreationDate.ToShortDateString() @commentVM.CreationDate.ToShortTimeString()</td>
+                                @if (commentVM.IsActive)
+                                {
+                                    <td class="text-truncate"><span class="lable-tag tag-success btn btn-rounded">@commentVM.IsActive</span></td>
+                                }
+                                else
+                                {
+                                    <td class="text-truncate"><span class="lable-tag tag-unpaid btn btn-rounded">@commentVM.IsActive</span></td>
+                                }
+                            </tr>
+                            count++;
+                        }
                     }
                 }
             </table>
