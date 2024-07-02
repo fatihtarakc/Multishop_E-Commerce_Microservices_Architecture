@@ -4,6 +4,7 @@ using Multishop.UI.Models.ViewModels.DetailVMs;
 using Multishop.UI.Models.ViewModels.ImageVMs;
 using Multishop.UI.Models.ViewModels.ProductVMs;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace Multishop.UI.Controllers
 {
@@ -34,13 +35,33 @@ namespace Multishop.UI.Controllers
                 jsonData = await responseMessage.Content.ReadAsStringAsync();
                 var imageVMs = JsonConvert.DeserializeObject<IEnumerable<ImageVM>>(jsonData);
 
+                responseMessage = await client.GetAsync($"https://localhost:7006/api/Comment/CommentsGetBy/{productVM.Id}");
+                if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+
+                jsonData = await responseMessage.Content.ReadAsStringAsync();
+                var commentVMs = JsonConvert.DeserializeObject<IEnumerable<CommentVM>>(jsonData);
+
                 var productWithImagesVM = new ProductWithImagesVM()
                 {
                     Id = productVM.Id,
                     Name = productVM.Name,
                     Price = productVM.Price,
-                    ImageVMs = imageVMs
+                    ImageVMs = imageVMs,
+                    ProductCommentCount = 0,
+                    ProductCommentRatingAverage = 0
                 };
+                if (commentVMs.Count() is not 0)
+                {
+                    productWithImagesVM.ProductCommentCount = commentVMs.Count();
+
+                    decimal commentRatingSum = 0;
+                    foreach (var commentVM in commentVMs)
+                    {
+                        commentRatingSum += commentVM.Rating;
+                    }
+                    productWithImagesVM.ProductCommentRatingAverage = commentRatingSum / commentVMs.Count();
+                }
+
                 productWithImagesVMs.Add(productWithImagesVM);
             }
             return View(productWithImagesVMs);
@@ -82,6 +103,21 @@ namespace Multishop.UI.Controllers
                 CommentVMs = commentVMs
             };
             return View(productWithDetailImages);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CommentAdd(CommentAddVM commentAddVM)
+        {
+            if (!ModelState.IsValid) return RedirectToAction("Index", "Home", new { area = "" });
+
+            var client = httpClientFactory.CreateClient();
+            var jsonData = JsonConvert.SerializeObject(commentAddVM);
+            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var responseMessage = await client.PostAsync("https://localhost:7006/api/Comment/Add", stringContent);
+            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("Index", "Home", new { area = "" });
+
+            return RedirectToAction("Index", "Home", new { area = "" });
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿@model IEnumerable<ProductWithImagesVM>
+﻿@{
+    ViewData["Title"] = "Products";
+}
+@model IEnumerable<ProductWithImagesVM>
 
 <!-- Shop Start -->
 <div class="container-fluid">
@@ -8,44 +11,44 @@
         <div class="col-lg-3 col-md-4">
 
             <!-- Price Start -->
-            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by price</span></h5>
+            <h5 class="section-title position-relative text-center bg-danger text-danger mb-3" style="font-family:'Comic Sans MS'"><span class="bg-warning pr-3">&nbsp;Filter by price</span></h5>
             @await Html.PartialAsync("/Views/Shop/_FilterByPricePartial.cshtml")
             <!-- Price End -->
             <!-- Color Start -->
-            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by color</span></h5>
+            <h5 class="section-title position-relative text-center bg-danger text-danger mb-3" style="font-family:'Comic Sans MS'"><span class="bg-warning pr-3">&nbsp;Filter by color</span></h5>
             @await Html.PartialAsync("/Views/Shop/_FilterByColorPartial.cshtml")
             <!-- Color End -->
             <!-- Size Start -->
-            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by size</span></h5>
+            <h5 class="section-title position-relative text-center bg-danger text-danger mb-3" style="font-family:'Comic Sans MS'"><span class="bg-warning pr-3">&nbsp;Filter by size</span></h5>
             @await Html.PartialAsync("/Views/Shop/_FilterBySizePartial.cshtml")
             <!-- Size End -->
 
         </div>
         <!-- Shop Sidebar End -->
         <!-- Shop Product Start -->
-        <div class="col-lg-9 col-md-8">
+        <div class="col-lg-9 col-md-8" style="font-family:'Comic Sans MS'">
             <div class="row pb-3">
                 <div class="col-12 pb-1">
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <div>
-                            <button class="btn btn-sm btn-light"><i class="fa fa-th-large"></i></button>
-                            <button class="btn btn-sm btn-light ml-2"><i class="fa fa-bars"></i></button>
+                            <button class="btn btn-sm btn-danger"><i class="fa fa-th-large"></i></button>
+                            <button class="btn btn-sm btn-danger ml-2"><i class="fa fa-bars"></i></button>
                         </div>
                         <div class="ml-2">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Sorting</button>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#">Latest</a>
-                                    <a class="dropdown-item" href="#">Popularity</a>
-                                    <a class="dropdown-item" href="#">Best Rating</a>
+                                <button type="button" class="btn btn-sm btn-danger text-warning dropdown-toggle p-2" data-toggle="dropdown">Sorting</button>
+                                <div class="dropdown-menu dropdown-menu-right bg-warning text-center">
+                                    <a class="dropdown-item text-danger" href="#">Latest</a>
+                                    <a class="dropdown-item text-danger" href="#">Popularity</a>
+                                    <a class="dropdown-item text-danger" href="#">Best Rating</a>
                                 </div>
                             </div>
                             <div class="btn-group ml-2">
-                                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Showing</button>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#">10</a>
-                                    <a class="dropdown-item" href="#">20</a>
-                                    <a class="dropdown-item" href="#">30</a>
+                                <button type="button" class="btn btn-sm btn-danger text-warning dropdown-toggle p-2" data-toggle="dropdown">Showing</button>
+                                <div class="dropdown-menu dropdown-menu-right bg-warning text-center">
+                                    <a class="dropdown-item text-danger" href="#">10</a>
+                                    <a class="dropdown-item text-danger" href="#">20</a>
+                                    <a class="dropdown-item text-danger" href="#">30</a>
                                 </div>
                             </div>
                         </div>
@@ -56,13 +59,13 @@
                     foreach (var productWithImagesVM in Model)
                     {
                         <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
-                            <div class="product-item bg-light mb-4">
+                            <div class="product-item bg-danger mb-4">
                                 <div class="product-img position-relative overflow-hidden">
 
                                     @{
                                         foreach (var imageVM in productWithImagesVM.ImageVMs)
                                         {
-                                            <img class="img-fluid w-100" src="@imageVM.Url" alt="@imageVM.Url">
+                                            <img class="img-fluid w-100" style="max-height:175px;" src="@imageVM.Url" alt="@imageVM.Url">
                                             break;
                                         }
                                     }
@@ -75,22 +78,43 @@
                                     </div>
                                 </div>
                                 <div class="text-center py-4">
-                                    <a class="h6 text-decoration-none text-truncate" href="~/Shop/ProductDetail/@productWithImagesVM.Id">@productWithImagesVM.Name</a>
+                                    <a class="h5 text-decoration-none text-warning" href="~/Shop/ProductDetail/@productWithImagesVM.Id">@productWithImagesVM.Name</a>
                                     <div class="d-flex align-items-center justify-content-center mt-2">
                                         @{
                                             var newPrice = productWithImagesVM.Price * 11;
                                             newPrice = newPrice / 10;
-                                        
-                                            <h5>₺ @productWithImagesVM.Price</h5><h6 class="text-muted ml-2"><del>₺ @newPrice</del></h6>
+
+                                            <h6 class="text-warning">₺ @productWithImagesVM.Price</h6>
+
+                                            <h6 class="text-muted ml-2 text-warning"><del>₺ @newPrice</del></h6>
                                         }
                                     </div>
                                     <div class="d-flex align-items-center justify-content-center mb-1">
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small>(99)</small>
+                                        @{
+                                            decimal ratingAverage = productWithImagesVM.ProductCommentRatingAverage;
+                                            while (true)
+                                            {
+                                                if (ratingAverage >= 1)
+                                                {
+                                                    <small class="fas fa-star text-warning mr-1"></small>
+                                                    ratingAverage--;
+                                                }
+                                                else if (ratingAverage > 0 && ratingAverage < 1)
+                                                {
+                                                    <small class="fas fa-star-half-alt text-warning mr-1"></small>
+                                                    ratingAverage = 0;
+                                                }
+                                                else
+                                                {
+                                                    for (decimal i = Math.Ceiling(productWithImagesVM.ProductCommentRatingAverage); i < 5; i++)
+                                                    {
+                                                        <small class="far fa-star text-warning mr-1"></small>
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        <small class="text-warning">(@productWithImagesVM.ProductCommentCount)</small>
                                     </div>
                                 </div>
                             </div>
@@ -101,11 +125,11 @@
                 <div class="col-12">
                     <nav>
                         <ul class="pagination justify-content-center">
-                            <li class="page-item disabled"><a class="page-link" href="#">Previous</span></a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                            <li class="page-item disabled"><a class="page-link bg-warning" href="#">Previous</a></li>
+                            <li class="page-item active"><a class="page-link bg-warning text-danger" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link bg-warning text-danger" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link bg-warning text-danger" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link bg-warning text-danger" href="#">Next</a></li>
                         </ul>
                     </nav>
                 </div>

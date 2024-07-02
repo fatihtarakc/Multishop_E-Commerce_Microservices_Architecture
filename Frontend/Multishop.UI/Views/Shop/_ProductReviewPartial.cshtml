@@ -1,52 +1,64 @@
 ﻿@model ProductWithDetailImagesCommentVM
 
-<div class="tab-pane fade" id="tab-pane-3">
-    <div class="row">
+<div class="row">
 
-        <div class="col-md-6">
-            @{
-                if (Model.CommentVMs is not null)
+    <div class="col-md-6">
+        @{
+            if (Model.CommentVMs is not null)
+            {
+                @*<h4 class="mb-4">@Model.CommentVMs.Count() review for "@Model.ProductVM.Name"</h4>*@
+
+                foreach (var commentVM in Model.CommentVMs)
                 {
-                    <h4 class="mb-4">@Model.CommentVMs.Count() review for "@Model.ProductVM.Name"</h4>
-
-                    foreach (var commentVM in Model.CommentVMs)
-                    {
-                        <div class="media mb-4">
-                            <img src="~/img/product-1.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
-                            <div class="media-body">
-                                <h6>@commentVM.NameSurname<small> - <i>@commentVM.CreationDate.ToShortDateString() @commentVM.CreationDate.ToShortTimeString()</i></small></h6>
-                                <div class="text-primary mb-2">
-                                    @{
-                                        for (int i = 1; i <= commentVM.Rating; i++)
+                    <div class="media mb-4">
+                        <img src="https://img.freepik.com/free-vector/user-blue-gradient_78370-4692.jpg?t=st=1719809591~exp=1719813191~hmac=759645fc76663ba18e1a5f5dccf7dde33a3a29230706e9edf292d289e4f09a79&w=740" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                        <div class="media-body">
+                            <h6 class="control-label text-danger" style="font-weight:bold;">@commentVM.NameSurname<small> - <i>@commentVM.CreationDate.ToShortDateString() @commentVM.CreationDate.ToShortTimeString()</i></small></h6>
+                            <p>@commentVM.Review</p>
+                            <div class="text-warning mb-2">
+                                @{
+                                    for (int i = 1; i <= commentVM.Rating; i++)
+                                    {
+                                        <i class="fas fa-star"></i>
+                                    }
+                                    if (commentVM.Rating < 5)
+                                    {
+                                        for (int i = commentVM.Rating + 1; i <= 5; i++)
                                         {
-                                            <i class="fas fa-star"></i>
-                                        }
-                                        if (commentVM.Rating < 5)
-                                        {
-                                            for (int i = commentVM.Rating + 1; i <= 5; i++)
-                                            {
-                                                <i class="far fa-star"></i>
-                                            }
+                                            <i class="far fa-star"></i>
                                         }
                                     }
-                                    @*<i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                    <i class="far fa-star"></i>*@
-                                </div>
-                                <p>@commentVM.Review</p>
+                                }
                             </div>
                         </div>
-                    }
+                    </div>
                 }
             }
-        </div>
+        }
+    </div>
 
-        <div class="col-md-6">
-            <h4 class="mb-4">Leave a review</h4>
-            <small>Your email address will not be published. Required fields are marked *</small>
-            <div class="d-flex my-3">
-                <p class="mb-0 mr-2">Your Rating * :</p>
-                <div class="text-primary">
+    <div class="col-md-6">
+
+        <form asp-action="CommentAdd" asp-controller="Shop" asp-area="" method="post" class="container-fluid" style="font-family:'Comic Sans MS'; text-align:center">
+            <input asp-for="CommentAddVM.ProductId" value="@Model.ProductVM.Id" type="hidden" />
+            <h4 class="control-label" style="font-weight:bold;">Leave a review</h4>
+            <small>Your email address will not be published.</small><span class="text-danger" style="text-transform:lowercase; font-family:'Comic Sans MS'">(* required field)</span>
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CommentAddVM.NameSurname" class="control-label" style="text-align:start; font-size:16px; font-weight:bold; color:indigo;">Your Name Surname <span class="text-danger">*</span></label>
+                <input asp-for="CommentAddVM.NameSurname" class="lable-tag btn btn-warning btn-rounded btn-block text-white" minLength="5" maxLength="50" style="cursor:text" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="CommentAddVM.Email" class="control-label" style="text-align:start; font-size:16px; font-weight:bold; color:indigo;">Your Email <span class="text-danger">*</span></label>
+                <input asp-for="CommentAddVM.Email" type="email" class="lable-tag btn btn-warning btn-rounded btn-block text-white" minLength="5" maxLength="50" style="cursor:text" required />
+            </div>
+            <div class="form-group">
+                <label asp-for="CommentAddVM.Review" class="control-label" style="text-align:start; font-size:16px; font-weight:bold; color:indigo;">Your Review <span class="text-danger">*</span></label>
+                <textarea asp-for="CommentAddVM.Review" class="lable-tag btn btn-warning btn-rounded btn-block text-white" minLength="10" maxLength="250" cols="30" rows="5" style="cursor:text" required></textarea>
+            </div>
+            <div class="d-flex my-3 text-center justify-content-center">
+                <p class="control-label" style="text-align:center; font-size:16px; font-weight:bold; color:indigo;">Your Rating <span class="text-danger">*</span> :&nbsp;&nbsp;</p>
+                <div class="text-warning">
                     <i class="far fa-star"></i>
                     <i class="far fa-star"></i>
                     <i class="far fa-star"></i>
@@ -54,23 +66,10 @@
                     <i class="far fa-star"></i>
                 </div>
             </div>
-            <form>
-                <div class="form-group">
-                    <label for="message">Your Review *</label>
-                    <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="name">Your Name Surname *</label>
-                    <input type="text" class="form-control" id="name">
-                </div>
-                <div class="form-group">
-                    <label for="email">Your Email *</label>
-                    <input type="email" class="form-control" id="email">
-                </div>
-                <div class="form-group mb-0">
-                    <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
-                </div>
-            </form>
-        </div>
+            <div class="form-group mb-0">
+                <input type="submit" value="Leave Your Review" class="lable-tag tag-warning btn btn-outline-warning btn-rounded btn-block">
+            </div>
+        </form>
+
     </div>
 </div>
