@@ -25,14 +25,25 @@
                 </thead>
                 @{
                     var count = 1;
-                    foreach (var brandListVM in Model)
+                    foreach (var brandVM in Model)
                     {
                         <tr>
                             <td class="text-truncate">@count</td>
-                            <td class="text-truncate tag-info"><a href="~/Admin/Brand/Detail/@brandListVM.Id" title="@brandListVM.Name informations">@brandListVM.Name</a></td>
-                            <td class="text-truncate">@brandListVM.ImageUrl</td>
+                            <td class="text-truncate tag-info"><a href="~/Admin/Brand/Detail/@brandVM.Id" title="@brandVM.Name informations">@brandVM.Name</a></td>
+                            <td class="text-truncate">@brandVM.ImageUrl</td>
                             @{
-                                if (brandListVM.IsActive)
+                                if (@brandVM.ImageUrl.Length > 10)
+                                {
+                                    <td class="text-truncate" title="@brandVM.ImageUrl">@brandVM.ImageUrl.Substring(0, 10)</td>
+                                }
+                                else
+                                {
+                                    <td class="text-truncate" title="@brandVM.ImageUrl">@brandVM.ImageUrl</td>
+                                }
+
+                            }
+                            @{
+                                if (brandVM.IsActive)
                                 {
                                     <td class="text-truncate"><span class="lable-tag tag-success btn btn-rounded">Active</span></td>
                                 }
@@ -41,8 +52,8 @@
                                     <td class="text-truncate"><span class="lable-tag tag-unpaid btn btn-rounded">Passive</span></td>
                                 }
                             }
-                            <td class="text-truncate"><a href="~/Admin/Brand/Update/@brandListVM.Id" class="lable-tag tag-warning btn btn-rounded" title="@brandListVM.Name informations update">Update</a></td>
-                            <td class="text-truncate"><a href="~/Admin/Brand/Delete/@brandListVM.Id" class="lable-tag tag-unpaid btn btn-rounded" title="Delete">Delete</a></td>
+                            <td class="text-truncate"><a href="~/Admin/Brand/Update/@brandVM.Id" class="lable-tag tag-warning btn btn-rounded" title="@brandVM.Name informations update">Update</a></td>
+                            <td class="text-truncate"><a href="~/Admin/Brand/Delete/@brandVM.Id" class="lable-tag tag-unpaid btn btn-rounded" title="Delete">Delete</a></td>
                         </tr>
                         count++;
                     }

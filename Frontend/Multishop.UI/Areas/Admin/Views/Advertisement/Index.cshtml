@@ -26,15 +26,24 @@
                 </thead>
                 @{
                     var count = 1;
-                    foreach (var advertisementListVM in Model)
+                    foreach (var advertisementVM in Model)
                     {
                         <tr>
                             <td class="text-truncate">@count</td>
-                            <td class="text-truncate tag-info"><a href="~/Admin/Advertistement/Detail/@advertisementListVM.Id" title="@advertisementListVM.Title informations">@advertisementListVM.Title</a></td>
-                            <td class="text-truncate">@advertisementListVM.Description</td>
-                            <td class="text-truncate">@advertisementListVM.ImageUrl</td>
+                            <td class="text-truncate tag-info"><a href="~/Admin/Advertistement/Detail/@advertisementVM.Id" title="@advertisementVM.Title informations">@advertisementVM.Title</a></td>
+                            <td class="text-truncate">@advertisementVM.Description</td>
                             @{
-                                if (advertisementListVM.IsActive)
+                                if (advertisementVM.ImageUrl.Length > 10)
+                                {
+                                    <td class="text-truncate" title="@advertisementVM.ImageUrl">@advertisementVM.ImageUrl.Substring(0, 10)</td>
+                                }
+                                else
+                                {
+                                    <td class="text-truncate" title="@advertisementVM.ImageUrl">@advertisementVM.ImageUrl</td>
+                                }
+                            }
+                            @{
+                                if (advertisementVM.IsActive)
                                 {
                                     <td class="text-truncate"><span class="lable-tag tag-success btn btn-rounded">Active</span></td>
                                 }
@@ -43,8 +52,8 @@
                                     <td class="text-truncate"><span class="lable-tag tag-unpaid btn btn-rounded">Passive</span></td>
                                 }
                             }
-                            <td class="text-truncate"><a href="~/Admin/Advertisement/Update/@advertisementListVM.Id" class="lable-tag tag-warning btn btn-rounded" title="@advertisementListVM.Title informations update">Update</a></td>
-                            <td class="text-truncate"><a href="~/Admin/Advertisement/Delete/@advertisementListVM.Id" class="lable-tag tag-unpaid btn btn-rounded" title="Delete">Delete</a></td>
+                            <td class="text-truncate"><a href="~/Admin/Advertisement/Update/@advertisementVM.Id" class="lable-tag tag-warning btn btn-rounded" title="@advertisementVM.Title informations update">Update</a></td>
+                            <td class="text-truncate"><a href="~/Admin/Advertisement/Delete/@advertisementVM.Id" class="lable-tag tag-unpaid btn btn-rounded" title="Delete">Delete</a></td>
                         </tr>
                         count++;
                     }

@@ -27,7 +27,16 @@
                     {
                         <tr>
                             <td class="text-truncate">@count</td>
-                            <td class="text-truncate">@imageVM.Url</td>
+                            @{
+                                if (imageVM.Url.Length > 10)
+                                {
+                                    <td class="text-truncate" title="@imageVM.Url">@imageVM.Url.Substring(0, 10)</td>
+                                }
+                                else
+                                {
+                                    <td class="text-truncate" title="@imageVM.Url">@imageVM.Url</td>
+                                }
+                            }
                             <td class="text-truncate"><a href="~/Admin/Product/ImageUpdate/@imageVM.Id" class="lable-tag tag-warning btn btn-rounded" title="Update">Update</a></td>
                             <td class="text-truncate"><a href="~/Admin/Product/ImageDelete/@imageVM.Id" class="lable-tag tag-unpaid btn btn-rounded" title="Delete">Delete</a></td>
                         </tr>

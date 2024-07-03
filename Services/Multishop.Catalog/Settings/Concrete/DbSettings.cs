@@ -7,6 +7,7 @@ namespace Multishop.Catalog.Settings.Concrete
         public string AdvertisementCollectionName { get; set; }
         public string BrandCollectionName { get; set; }
         public string CategoryCollectionName { get; set; }
+        public string ContactCollectionName { get; set; }
         public string DetailCollectionName { get; set; }
         public string ImageCollectionName { get; set; }
         public string OfferCollectionName { get; set; }

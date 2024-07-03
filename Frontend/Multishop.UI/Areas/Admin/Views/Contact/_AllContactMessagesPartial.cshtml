@@ -1,0 +1,82 @@
+﻿@model IEnumerable<ContactVM>
+
+<table class="table table-bordered table-responsive text-center table-hover">
+    <thead>
+        <tr>
+            <th class="sortable text-center">#</th>
+            <th class="sortable text-center">Name Surname</th>
+            <th class="sortable text-center">Email</th>
+            <th class="sortable text-center">Subject</th>
+            <th class="sortable text-center">Message</th>
+            <th class="sortable text-center">Send Date</th>
+            <th class="sortable text-center">IsRead</th>
+        </tr>
+    </thead>
+    @{
+        if (Model is not null)
+        {
+            var contactVMs = Model.OrderBy(contact => contact.SendDate);
+            var count = 1;
+            foreach (var contactVM in contactVMs)
+            {
+                <tr>
+                    <td class="text-truncate">@count</td>
+                    @if (contactVM.NameSurname.Length > 10)
+                    {
+                        <td class="text-truncate"><a href="#" title="@contactVM.NameSurname">@contactVM.NameSurname.Substring(0, 10)...</a></td>
+                    }
+                    else
+                    {
+                        <td class="text-truncate">@contactVM.NameSurname</td>
+                    }
+                    @if (contactVM.Email.Length > 10)
+                    {
+                        <td class="text-truncate"><a href="#" title="@contactVM.Email">@contactVM.Email.Substring(0, 10)...</a></td>
+                    }
+                    else
+                    {
+                        <td class="text-truncate">@contactVM.Email</td>
+                    }
+                    @if (contactVM.Subject.Length > 10)
+                    {
+                        <td class="text-truncate"><a href="#" title="@contactVM.Subject">@contactVM.Subject.Substring(0, 10)...</a></td>
+                    }
+                    else
+                    {
+                        <td class="text-truncate">@contactVM.Subject</td>
+                    }
+                    @if (contactVM.Message.Length > 10)
+                    {
+                        <td class="text-truncate"><a href="#" title="@contactVM.Message">@contactVM.Message.Substring(0, 10)...</a></td>
+                    }
+                    else
+                    {
+                        <td class="text-truncate">@contactVM.Message</td>
+                    }
+                    <td class="text-truncate">@contactVM.SendDate.ToShortDateString() @contactVM.SendDate.ToShortTimeString()</td>
+                    @if (contactVM.IsRead)
+                    {
+                        <td class="text-truncate"><span class="lable-tag tag-success btn btn-rounded">Read @contactVM.ReadDate</span></td>
+                        <td class="text-truncate"><a href="~/Admin/Contact/Update/@contactVM.Id,false" class="lable-tag tag-warning btn btn-rounded" title="Update @contactVM.Subject reading status">Update as unread</a></td>
+                    }
+                    else
+                    {
+                        <td class="text-truncate"><span class="lable-tag tag-unpaid btn btn-rounded">Unread</span></td>
+                        <td class="text-truncate"><a href="~/Admin/Contact/Update/@contactVM.Id,true" class="lable-tag tag-warning btn btn-rounded" title="Update @contactVM.Subject reading status">Update as read</a></td>
+                    }
+                    <td class="text-truncate"><a href="~/Admin/Contact/Delete/@contactVM.Id" class="lable-tag tag-unpaid btn btn-rounded" title="Delete">Delete</a></td>
+                </tr>
+                count++;
+            }
+        }
+    }
+</table>
+<ul class="pagination m-bot-0 text-center">
+    <li> <a href="#" aria-label="Previous"> <span aria-hidden="true">«</span> </a> </li>
+    <li><a href="#">1</a></li>
+    <li><a href="#">2</a></li>
+    <li><a href="#">3</a></li>
+    <li><a href="#">4</a></li>
+    <li><a href="#">5</a></li>
+    <li> <a href="#" aria-label="Next"> <span aria-hidden="true">»</span> </a> </li>
+</ul>
