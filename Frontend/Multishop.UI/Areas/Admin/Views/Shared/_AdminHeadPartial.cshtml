@@ -3,7 +3,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" href="~/img/multishoplogo.PNG">
-    <title>Multishop -  @ViewData["Title"]</title>
+    <title>Multishop -  @ViewData["WebsiteTitle"]</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="~/ovio admin template/bootstrap/css/bootstrap.min.css">
@@ -23,5 +23,22 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
     <script src="~/ovio admin template/plugins/charts/code/highcharts.js"></script>
+
+    <!-- loader style -->
+    <style>
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            z-index: 999
+        }
+    </style>
+    <!-- loader style -->
 
 </head>

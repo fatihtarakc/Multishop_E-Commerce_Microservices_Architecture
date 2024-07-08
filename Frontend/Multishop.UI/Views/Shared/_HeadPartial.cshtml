@@ -1,10 +1,10 @@
 ﻿<head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MultiShop - @ViewData["Title"]</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="~/img/multishoplogo.PNG">
+
+    <title>Multishop - @ViewData["WebsiteTitle"]</title>
 
     <!-- Favicon -->
     <link href="~/favicon.ico" rel="icon">
@@ -26,4 +26,25 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Multishop.UI.styles.css" asp-append-version="true" />
+
+    <!-- loader style -->
+    <style>
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            z-index: 999
+        }
+
+        #multishoplogo:hover {
+            font-size:50px;
+        }
+    </style>
+    <!-- loader style -->
 </head>

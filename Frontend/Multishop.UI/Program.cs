@@ -8,6 +8,7 @@ builder.Services.AddMvcService();
 
 builder.Services.AddHttpClient();
 
+builder.Services.AddRazorPages();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
