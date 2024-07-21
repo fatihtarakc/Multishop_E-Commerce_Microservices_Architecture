@@ -9,6 +9,7 @@ using Multishop.Comment.Repositories.Concrete;
 using Multishop.Comment.Services.Abstract;
 using Multishop.Comment.Services.Concrete;
 using System.Reflection;
+using System.Text;
 
 namespace Multishop.Comment.Extensions
 {
@@ -31,6 +32,12 @@ namespace Multishop.Comment.Extensions
                     ValidateAudience = true,
 
                     ValidAudience = configuration["Token:Audience"]
+
+                    //ValidateIssuer = true,
+                    //ValidIssuer = configuration["Token:Issuer"],
+                    //ValidateIssuerSigningKey = true,
+                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:IssuerSigningKey"])),
+                    //ValidateLifetime = true
                 };
             });
 

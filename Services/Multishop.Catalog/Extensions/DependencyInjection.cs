@@ -2,6 +2,7 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Multishop.Catalog.Dtos.AdvertisementDtos;
 using Multishop.Catalog.Dtos.BrandDtos;
 using Multishop.Catalog.Dtos.CategoryDtos;
@@ -27,6 +28,7 @@ using Multishop.Catalog.ValidationRules.OfferValidationRules;
 using Multishop.Catalog.ValidationRules.ProductValidationRules;
 using Multishop.Catalog.ValidationRules.ServiceValidationRules;
 using System.Reflection;
+using System.Text;
 
 namespace Multishop.Catalog.Extensions
 {
@@ -56,6 +58,12 @@ namespace Multishop.Catalog.Extensions
                     ValidateAudience = true,
 
                     ValidAudience = configuration["Token:Audience"]
+
+                    //ValidateIssuer = true,
+                    //ValidIssuer = configuration["Token:Issuer"],
+                    //ValidateIssuerSigningKey = true,
+                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:IssuerSigningKey"])),
+                    //ValidateLifetime = true
                 };
             });
 

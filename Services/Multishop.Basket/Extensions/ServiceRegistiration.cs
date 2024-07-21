@@ -1,10 +1,12 @@
 ﻿using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Multishop.Basket.Services.BasketServices;
 using Multishop.Basket.Services.LoginServices;
 using Multishop.Basket.Settings;
 using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace Multishop.Basket.Extensions
 {
@@ -27,6 +29,12 @@ namespace Multishop.Basket.Extensions
                     ValidateAudience = true,
 
                     ValidAudience = configuration["Token:Audience"]
+
+                    //ValidateIssuer = true,
+                    //ValidIssuer = configuration["Token:Issuer"],
+                    //ValidateIssuerSigningKey = true,
+                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:IssuerSigningKey"])),
+                    //ValidateLifetime = true
                 };
             });
 

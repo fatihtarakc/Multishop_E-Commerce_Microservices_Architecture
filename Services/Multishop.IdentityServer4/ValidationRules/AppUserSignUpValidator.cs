@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Multishop.IdentityServer4.Dtos;
+using Multishop.IdentityServer4.Dtos.AppUserDtos;
 
 namespace Multishop.IdentityServer4.ValidationRules
 {

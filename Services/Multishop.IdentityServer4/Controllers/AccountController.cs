@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Multishop.IdentityServer4.Dtos;
-using Multishop.IdentityServer4.Models;
+using Multishop.IdentityServer4.Data.Entities;
+using Multishop.IdentityServer4.Dtos.AppUserDtos;
+using Multishop.IdentityServer4.Services.Abstract;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Multishop.IdentityServer4.Controllers
@@ -10,12 +12,14 @@ namespace Multishop.IdentityServer4.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        private readonly UserManager<AppUser> userManager;
+        private readonly SignInManager<AppUser> signInManager;
+        private readonly ITokenService tokenService;
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.tokenService = tokenService;
         }
 
         [HttpPost("SignIn")]
@@ -29,7 +33,10 @@ namespace Multishop.IdentityServer4.Controllers
             Microsoft.AspNetCore.Identity.SignInResult signInResult = await signInManager.PasswordSignInAsync(appUserByEmail, appUserSignInDto.Password, appUserSignInDto.RememberMe, false);
             if (!signInResult.Succeeded) return BadRequest("Email or password is incorrect !");
 
-            return Ok("Sign in process is succeeded !");
+            var appUserDto = new AppUserDto { Id = appUserByEmail.Id, Username = appUserByEmail.UserName, Role = (await userManager.GetRolesAsync(appUserByEmail)).FirstOrDefault() };
+
+            var token = tokenService.Generator(appUserDto);
+            return Ok(token);
         }
 
         [HttpPost("SignUp")]
@@ -42,7 +49,7 @@ namespace Multishop.IdentityServer4.Controllers
             if (!(appUserByEmail is null)) return BadRequest("This email address cannot be used !");
             if (!(appUserByUsername is null)) return BadRequest("This email address cannot be used !");
 
-            var appUser = new ApplicationUser()
+            var appUser = new AppUser()
             {
                 Name = appUserSignUpDto.Name,
                 Surname = appUserSignUpDto.Surname,

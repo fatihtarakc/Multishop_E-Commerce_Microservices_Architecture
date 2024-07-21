@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Multishop.IdentityServer4.Models;
+using Multishop.IdentityServer4.Data.Entities;
 
-namespace Multishop.IdentityServer4.Data
+namespace Multishop.IdentityServer4.Data.Context
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<AppUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

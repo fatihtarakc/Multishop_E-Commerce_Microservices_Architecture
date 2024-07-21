@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Order.API.Extensions
 {
@@ -17,6 +18,12 @@ namespace Order.API.Extensions
                     ValidateAudience = true,
 
                     ValidAudience = configuration["Token:Audience"]
+
+                    //ValidateIssuer = true,
+                    //ValidIssuer = configuration["Token:Issuer"],
+                    //ValidateIssuerSigningKey = true,
+                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:IssuerSigningKey"])),
+                    //ValidateLifetime = true
                 };
             });
 

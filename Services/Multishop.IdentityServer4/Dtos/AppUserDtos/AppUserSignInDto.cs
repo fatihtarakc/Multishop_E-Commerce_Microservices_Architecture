@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Multishop.IdentityServer4.Dtos
+namespace Multishop.IdentityServer4.Dtos.AppUserDtos
 {
     public class AppUserSignInDto
     {

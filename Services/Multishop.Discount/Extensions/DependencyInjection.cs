@@ -6,6 +6,7 @@ using Multishop.Discount.Repostories.Abstract;
 using Multishop.Discount.Repostories.Concrete;
 using Multishop.Discount.Services.Abstract;
 using Multishop.Discount.Services.Concrete;
+using System.Text;
 
 namespace Multishop.Discount.Extensions
 {
@@ -38,6 +39,12 @@ namespace Multishop.Discount.Extensions
                     ValidateAudience = true,
 
                     ValidAudience = configuration["Token:Audience"]
+
+                    //ValidateIssuer = true,
+                    //ValidIssuer = configuration["Token:Issuer"],
+                    //ValidateIssuerSigningKey = true,
+                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:IssuerSigningKey"])),
+                    //ValidateLifetime = true
                 };
             });
             return services;

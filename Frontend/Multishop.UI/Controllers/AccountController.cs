@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Multishop.UI.Models.ViewModels.AppUserVMs;
+using Multishop.UI.Services.Abstract;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -8,9 +9,11 @@ namespace Multishop.UI.Controllers
     public class AccountController : Controller
     {
         private readonly IHttpClientFactory httpClientFactory;
-        public AccountController(IHttpClientFactory httpClientFactory)
+        private readonly ISignInService signInService;
+        public AccountController(IHttpClientFactory httpClientFactory, ISignInService signInService)
         {
             this.httpClientFactory = httpClientFactory;
+            this.signInService = signInService;
         }
 
         public IActionResult SignIn()
@@ -23,12 +26,19 @@ namespace Multishop.UI.Controllers
         {
             if (!ModelState.IsValid) return View(appUserSignInVM);
 
-            var client = httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(appUserSignInVM);
             var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var client = httpClientFactory.CreateClient();
 
             var responseMessage = await client.PostAsync("https://localhost:7000/api/Account/SignIn", stringContent);
-            if (responseMessage.StatusCode == System.Net.HttpStatusCode.OK) return RedirectToAction("SignIn");
+            if (responseMessage.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                bool response = await signInService.SignInAsync(HttpContext, responseMessage, appUserSignInVM.RememberMe);
+
+                if (!response) return View(appUserSignInVM);
+
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
 
             else if (responseMessage.StatusCode == System.Net.HttpStatusCode.BadRequest) ModelState.AddModelError("", "Email or password is incorrect !");
 
@@ -47,9 +57,9 @@ namespace Multishop.UI.Controllers
         {
             if (!ModelState.IsValid) return View(appUserSignUpVM);
 
-            var client = httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(appUserSignUpVM);
             var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            var client = httpClientFactory.CreateClient();
 
             var responseMessage = await client.PostAsync("https://localhost:7000/api/Account/SignUp", stringContent);
             if (responseMessage.StatusCode == System.Net.HttpStatusCode.OK) return RedirectToAction("SignIn");

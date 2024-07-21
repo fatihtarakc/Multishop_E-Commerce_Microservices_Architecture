@@ -18,6 +18,7 @@ namespace Multishop.UI.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var user = User.Claims;
             var client = httpClientFactory.CreateClient();
             var responseMessage = await client.GetAsync("https://localhost:7001/api/Advertisement/Advertisements");
             if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });

@@ -3,8 +3,6 @@
 
 
 using IdentityServer4;
-using Multishop.IdentityServer4.Data;
-using Multishop.IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +12,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using Multishop.IdentityServer4.ValidationRules;
+using Multishop.IdentityServer4.Data.Context;
+using Multishop.IdentityServer4.Data.Entities;
+using Multishop.IdentityServer4.Services.Abstract;
+using Multishop.IdentityServer4.Services.Concrete;
 
 namespace Multishop.IdentityServer4
 {
@@ -37,9 +39,8 @@ namespace Multishop.IdentityServer4
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("conn")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => 
+            services.AddIdentity<AppUser, IdentityRole>(options => 
             {
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Password.RequiredLength = 8;
                 options.Password.RequireUppercase = true;
@@ -50,6 +51,8 @@ namespace Multishop.IdentityServer4
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddErrorDescriber<CustomIdentityValidator>()
                 .AddDefaultTokenProviders();
+
+            services.AddTransient<ITokenService, TokenService>();
 
             var builder = services.AddIdentityServer(options =>
             {
@@ -65,7 +68,7 @@ namespace Multishop.IdentityServer4
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryClients(Config.Clients)
                 .AddInMemoryIdentityResources(Config.IdentityResources)
-                .AddAspNetIdentity<ApplicationUser>();
+                .AddAspNetIdentity<AppUser>();
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
