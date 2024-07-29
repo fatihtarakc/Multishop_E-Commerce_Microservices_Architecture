@@ -7,7 +7,6 @@ namespace Multishop.Catalog.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
     [AllowAnonymous]
     public class BrandController : ControllerBase
     {
@@ -35,6 +34,7 @@ namespace Multishop.Catalog.Controllers
             return Ok(brandDto);
         }
 
+        [Authorize]
         [HttpPost("Add")]
         public async Task<IActionResult> Add(BrandAddDto brandAddDto)
         {
@@ -44,6 +44,7 @@ namespace Multishop.Catalog.Controllers
             return Ok($"{brandAddDto.Name} was added successfuly !");
         }
 
+        [Authorize]
         [HttpDelete("Delete/{brandId}")]
         public async Task<IActionResult> Delete(string brandId)
         {
@@ -53,6 +54,7 @@ namespace Multishop.Catalog.Controllers
             return Ok("This brand was deleted successfully !");
         }
 
+        [Authorize]
         [HttpPut("Update")]
         public async Task<IActionResult> Update(BrandUpdateDto brandUpdateDto)
         {

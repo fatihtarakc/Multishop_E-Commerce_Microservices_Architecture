@@ -7,7 +7,6 @@ namespace Multishop.Catalog.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
     [AllowAnonymous]
     public class ContactController : ControllerBase
     {
@@ -53,6 +52,7 @@ namespace Multishop.Catalog.Controllers
             return Ok($"{contactAddDto.Subject} was added successfuly !");
         }
 
+        [Authorize]
         [HttpDelete("Delete/{contactId}")]
         public async Task<IActionResult> Delete(string contactId)
         {
@@ -62,6 +62,7 @@ namespace Multishop.Catalog.Controllers
             return Ok("This contact was deleted successfully !");
         }
 
+        [Authorize]
         [HttpPut("Update")]
         public async Task<IActionResult> Update(ContactUpdateDto contactUpdateDto)
         {
@@ -71,6 +72,7 @@ namespace Multishop.Catalog.Controllers
             return Ok("Contact was updated successfully !");
         }
 
+        [Authorize]
         [HttpPut("Update/{contactId},{isRead}")]
         public async Task<IActionResult> Update(string contactId, bool isRead)
         {

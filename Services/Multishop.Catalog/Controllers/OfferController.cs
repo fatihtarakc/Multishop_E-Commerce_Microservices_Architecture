@@ -7,7 +7,6 @@ namespace Multishop.Catalog.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
     [AllowAnonymous]
     public class OfferController : ControllerBase
     {
@@ -35,6 +34,7 @@ namespace Multishop.Catalog.Controllers
             return Ok(offerDto);
         }
 
+        [Authorize]
         [HttpPost("Add")]
         public async Task<IActionResult> Add(OfferAddDto offerAddDto)
         {
@@ -44,6 +44,7 @@ namespace Multishop.Catalog.Controllers
             return Ok($"{offerAddDto.Title} was added successfully !");
         }
 
+        [Authorize]
         [HttpDelete("Delete/{offerId}")]
         public async Task<IActionResult> Delete(string offerId)
         {
@@ -53,6 +54,7 @@ namespace Multishop.Catalog.Controllers
             return Ok("This offer was deleted successfully !");
         }
 
+        [Authorize]
         [HttpPut("Update")]
         public async Task<IActionResult> Update(OfferUpdateDto offerUpdateDto)
         {

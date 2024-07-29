@@ -7,7 +7,6 @@ namespace Multishop.Catalog.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
     [AllowAnonymous]
     public class ImageController : ControllerBase
     {
@@ -44,6 +43,7 @@ namespace Multishop.Catalog.Controllers
             return Ok(imageDto);
         }
 
+        [Authorize]
         [HttpPost("Add")]
         public async Task<IActionResult> Add(ImageAddDto imageAddDto)
         {
@@ -53,6 +53,7 @@ namespace Multishop.Catalog.Controllers
             return Ok($"{imageAddDto.Url} was added successfully !");
         }
 
+        [Authorize]
         [HttpDelete("Delete/{imageId}")]
         public async Task<IActionResult> Delete(string imageId)
         {
@@ -62,6 +63,7 @@ namespace Multishop.Catalog.Controllers
             return Ok("This image was deleted successfully !");
         }
 
+        [Authorize]
         [HttpPut("Update")]
         public async Task<IActionResult> Update(ImageUpdateDto imageUpdateDto)
         {
