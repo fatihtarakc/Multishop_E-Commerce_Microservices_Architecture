@@ -7,7 +7,6 @@ namespace Multishop.Catalog.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
     public class AdvertisementController : ControllerBase
     {
         private readonly IAdvertisementService advertisementService;

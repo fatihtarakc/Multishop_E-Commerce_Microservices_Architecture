@@ -12,16 +12,21 @@ namespace Multishop.IdentityServer4
     {
         public static IEnumerable<ApiResource> ApiResources => new ApiResource[]
         {
+            new ApiResource("Resource-ApiGateway") {Scopes = { "ApiGatewayFullPermission" } },
             new ApiResource("Resource-Catalog") {Scopes = { "CatalogFullPermission", "CatalogReadPermission"} },
             new ApiResource("Resource-Discount") {Scopes = { "DiscountFullPermission" } },
             new ApiResource("Resource-Order") {Scopes = { "OrderFullPermission" } },
             new ApiResource("Resource-Cargo") {Scopes = { "CargoFullPermission", "CargoReadPermission" } },
             new ApiResource("Resource-Basket") {Scopes = { "BasketFullPermission" } },
+            new ApiResource("Resource-Comment") {Scopes = { "CommentFullPermission" } },
+            new ApiResource("Resource-Payment") {Scopes = { "PaymentFullPermission" } },
+            new ApiResource("Resource-Image") {Scopes = { "ImageFullPermission" } },
             new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
         };
 
         public static IEnumerable<ApiScope> ApiScopes => new ApiScope[]
         {
+            new ApiScope("OcelotFullPermission", "Full authority for ocelot microservices processes"),
             new ApiScope("CatalogFullPermission", "Full authority for catalog microservices processes"),
             new ApiScope("CatalogReadPermission", "Reading authority for catalog microservices processes"),
             new ApiScope("DiscountFullPermission", "Full authority for discount microservices processes"),
@@ -29,6 +34,9 @@ namespace Multishop.IdentityServer4
             new ApiScope("CargoFullPermission", "Full authority for cargo microservices processes"),
             new ApiScope("CargoReadPermission", "Reading authority for cargo microservices processes"),
             new ApiScope("BasketFullPermission", "Full authority for basket microservices processes"),
+            new ApiScope("CommentFullPermission", "Full authority for comment microservices processes"),
+            new ApiScope("PaymentFullPermission", "Full authority for payment microservices processes"),
+            new ApiScope("ImageFullPermission", "Full authority for image microservices processes"),
             new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
         };
 
@@ -45,7 +53,7 @@ namespace Multishop.IdentityServer4
             new Client
             {
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
-                AllowedScopes = { "DiscountFullPermission", "CatalogReadPermission", "CatalogFullPermission"},
+                AllowedScopes = { "DiscountFullPermission", "CatalogReadPermission", "CatalogFullPermission", "CommentFullPermission", "ApiGatewayFullPermission"},
                 ClientId = "Multishop.VisitorId",
                 ClientName = "Multishop.VisitorName",
                 ClientSecrets = {new Secret("multishop.visitor".Sha256())}
@@ -55,7 +63,7 @@ namespace Multishop.IdentityServer4
             new Client
             {
                 AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-                AllowedScopes = { "CatalogFullPermission" },
+                AllowedScopes = { "CatalogFullPermission", "CommentFullPermission", "ApiGatewayFullPermission" },
                 ClientId = "Multishop.ManagerId",
                 ClientName = "Multishop.ManagerName",
                 ClientSecrets = {new Secret("multishop.manager".Sha256())}
@@ -66,7 +74,7 @@ namespace Multishop.IdentityServer4
             {
                 AccessTokenLifetime = 600, // 600 seconds => 10 minutes
                 AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-                AllowedScopes = { "CatalogFullPermission", "DiscountFullPermission", "OrderFullPermission", "CargoFullPermission", "BasketFullPermission", IdentityServerConstants.LocalApi.ScopeName, IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile },
+                AllowedScopes = { "CatalogFullPermission", "DiscountFullPermission", "OrderFullPermission", "CargoFullPermission", "BasketFullPermission", "CommentFullPermission", "ApiGatewayFullPermission", IdentityServerConstants.LocalApi.ScopeName, IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile },
                 ClientId = "Multishop.AdminId",
                 ClientName = "Multishop.AdminName",
                 ClientSecrets = {new Secret("multishop.admin".Sha256())}

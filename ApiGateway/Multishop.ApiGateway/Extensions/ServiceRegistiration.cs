@@ -1,18 +1,17 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+﻿using Ocelot.DependencyInjection;
 
-namespace Order.API.Extensions
+namespace Multishop.ApiGateway.Extensions
 {
-    public static class DependencyInjection
+    public static class ServiceRegistiration
     {
-        public static IServiceCollection AddApiService(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddApiGatewayService(this IServiceCollection services, IConfiguration configuration) 
         {
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            services.AddAuthentication().AddJwtBearer(configuration["Token:AuthenticationProviderKey"], options =>
             {
                 options.Authority = configuration["Token:IdentityServer4Url"];
                 options.RequireHttpsMetadata = true;
 
-                options.TokenValidationParameters = new TokenValidationParameters()
+                options.TokenValidationParameters = new()
                 {
                     ValidateAudience = true,
 
@@ -25,6 +24,9 @@ namespace Order.API.Extensions
                     //ValidateLifetime = true
                 };
             });
+
+            configuration = new ConfigurationBuilder().AddJsonFile("ocelot.json").Build();
+            services.AddOcelot(configuration);
 
             return services;
         }

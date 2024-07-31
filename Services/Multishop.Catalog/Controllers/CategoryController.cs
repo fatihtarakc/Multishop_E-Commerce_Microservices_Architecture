@@ -7,7 +7,6 @@ namespace Multishop.Catalog.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService categoryService;

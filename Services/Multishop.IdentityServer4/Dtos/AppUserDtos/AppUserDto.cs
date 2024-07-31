@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Multishop.IdentityServer4.Dtos.AppUserDtos
+﻿namespace Multishop.IdentityServer4.Dtos.AppUserDtos
 {
     public class AppUserDto
     {

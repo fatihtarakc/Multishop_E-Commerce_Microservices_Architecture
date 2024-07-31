@@ -8,7 +8,6 @@ namespace Order.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class OrderController : ControllerBase
     {
         private readonly IMediator mediator;
@@ -35,6 +34,7 @@ namespace Order.API.Controllers
             return Ok(orderDetailQueryResponse);
         }
 
+        [Authorize]
         [HttpPost("Add")]
         public async Task<IActionResult> Add(OrderAddCommandRequest orderAddCommandRequest)
         {
@@ -44,6 +44,7 @@ namespace Order.API.Controllers
             return Ok("This order info was added successfully !");
         }
 
+        [Authorize]
         [HttpDelete("Delete/{orderId}")]
         public async Task<IActionResult> Delete(Guid orderId)
         {
@@ -53,6 +54,7 @@ namespace Order.API.Controllers
             return Ok("This order info was deleted successfully !");
         }
 
+        [Authorize]
         [HttpPut("Update")]
         public async Task<IActionResult> Update(OrderUpdateCommandRequest orderUpdateCommandRequest)
         {

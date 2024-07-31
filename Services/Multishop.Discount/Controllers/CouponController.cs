@@ -7,7 +7,6 @@ namespace Multishop.Discount.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class CouponController : ControllerBase
     {
         private readonly ICouponService couponService;
@@ -34,6 +33,7 @@ namespace Multishop.Discount.Controllers
             return Ok(couponDetailDto);
         }
 
+        [Authorize]
         [HttpPost("Add")]
         public async Task<IActionResult> Add(CouponAddDto couponAddDto)
         {
@@ -45,6 +45,7 @@ namespace Multishop.Discount.Controllers
             return Ok("New coupon was added successfully !");
         }
 
+        [Authorize]
         [HttpDelete("Delete/{couponId}")]
         public async Task<IActionResult> Delete(Guid couponId)
         {
@@ -54,6 +55,7 @@ namespace Multishop.Discount.Controllers
             return Ok("Coupon was deleted successfully !");
         }
 
+        [Authorize]
         [HttpPut("Update/{couponId},{isActive}")]
         public async Task<IActionResult> Update(Guid couponId, bool isActive)
         {
@@ -63,6 +65,7 @@ namespace Multishop.Discount.Controllers
             return Ok("Coupon was updated successfully !");
         }
 
+        [Authorize]
         [HttpPut("Update")]
         public async Task<IActionResult> Update(CouponUpdateDto couponUpdateDto)
         {

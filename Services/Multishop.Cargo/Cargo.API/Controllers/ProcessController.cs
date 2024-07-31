@@ -7,7 +7,6 @@ namespace Cargo.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class ProcessController : ControllerBase
     {
         private readonly IProcessService processService;
@@ -32,6 +31,7 @@ namespace Cargo.API.Controllers
             return Ok(process);
         }
 
+        [Authorize]
         [HttpPost("Add")]
         public async Task<IActionResult> Add(ProcessAddDto entityAddDto)
         {
@@ -43,6 +43,7 @@ namespace Cargo.API.Controllers
             return Ok("New cargo process was added successfully !");
         }
 
+        [Authorize]
         [HttpDelete("Delete/{entityId}")]
         public async Task<IActionResult> Delete(Guid entityId)
         {
@@ -52,6 +53,7 @@ namespace Cargo.API.Controllers
             return Ok("Cargo process was deleted successfully !");
         }
 
+        [Authorize]
         [HttpPut("Update")]
         public async Task<IActionResult> Update(ProcessUpdateDto entityUpdateDto)
         {

@@ -45,7 +45,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{CC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multishop.UI", "Frontend\Multishop.UI\Multishop.UI.csproj", "{04C23C34-F03D-40B8-8E56-AEC5DC412639}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multishop.Comment", "Services\Multishop.Comment\Multishop.Comment.csproj", "{358F77DF-891B-49AA-B845-A857543E552D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multishop.Comment", "Services\Multishop.Comment\Multishop.Comment.csproj", "{358F77DF-891B-49AA-B845-A857543E552D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateway", "ApiGateway", "{4CDFF18C-1D1F-42B1-BAB5-8F1BC97B7301}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multishop.ApiGateway", "ApiGateway\Multishop.ApiGateway\Multishop.ApiGateway.csproj", "{8151F7BF-5BCF-47D0-B286-45C98BEF6D18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multishop.Payment", "Services\Multishop.Payment\Multishop.Payment.csproj", "{5A99189C-0300-433A-90B8-83FC2878C291}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multishop.Image", "Services\Multishop.Image\Multishop.Image.csproj", "{84B56A16-6FCE-44CD-B109-15A93956386D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +121,18 @@ Global
 		{358F77DF-891B-49AA-B845-A857543E552D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{358F77DF-891B-49AA-B845-A857543E552D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{358F77DF-891B-49AA-B845-A857543E552D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8151F7BF-5BCF-47D0-B286-45C98BEF6D18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8151F7BF-5BCF-47D0-B286-45C98BEF6D18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8151F7BF-5BCF-47D0-B286-45C98BEF6D18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8151F7BF-5BCF-47D0-B286-45C98BEF6D18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A99189C-0300-433A-90B8-83FC2878C291}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A99189C-0300-433A-90B8-83FC2878C291}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A99189C-0300-433A-90B8-83FC2878C291}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A99189C-0300-433A-90B8-83FC2878C291}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84B56A16-6FCE-44CD-B109-15A93956386D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84B56A16-6FCE-44CD-B109-15A93956386D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84B56A16-6FCE-44CD-B109-15A93956386D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84B56A16-6FCE-44CD-B109-15A93956386D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -138,6 +158,9 @@ Global
 		{D39BA2C7-CBB5-4104-829D-61FB30E293C0} = {65F94A11-60D5-4D66-913F-6FB6C8380DD1}
 		{04C23C34-F03D-40B8-8E56-AEC5DC412639} = {CCAD3A1B-4BFE-402A-90A2-8169965330C5}
 		{358F77DF-891B-49AA-B845-A857543E552D} = {65F94A11-60D5-4D66-913F-6FB6C8380DD1}
+		{8151F7BF-5BCF-47D0-B286-45C98BEF6D18} = {4CDFF18C-1D1F-42B1-BAB5-8F1BC97B7301}
+		{5A99189C-0300-433A-90B8-83FC2878C291} = {65F94A11-60D5-4D66-913F-6FB6C8380DD1}
+		{84B56A16-6FCE-44CD-B109-15A93956386D} = {65F94A11-60D5-4D66-913F-6FB6C8380DD1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {151FB8A0-3013-4452-9FB6-B1C42F02ACD0}

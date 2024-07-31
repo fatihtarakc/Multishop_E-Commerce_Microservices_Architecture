@@ -44,9 +44,6 @@ namespace Multishop.Basket.Controllers
             if (!wasDeleted) return BadRequest("Basket deleted process is unsuccess !");
 
             return Ok("Basket was deleted successfully !");
-            {
-
-            }
         }
     }
 }

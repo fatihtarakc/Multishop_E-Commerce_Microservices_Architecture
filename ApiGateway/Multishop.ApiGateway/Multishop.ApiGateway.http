@@ -1,0 +1,6 @@
+@Multishop.ApiGateway_HostAddress = http://localhost:5191
+
+GET {{Multishop.ApiGateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
