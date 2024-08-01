@@ -1,24 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Multishop.UI.Models.ViewModels.CategoryVMs;
-using Newtonsoft.Json;
+using Multishop.UI.Services.Abstract;
 
 namespace Multishop.UI.ViewComponents.Layout
 {
     public class _NavbarPartial : ViewComponent
     {
-        private readonly IHttpClientFactory httpClientFactory;
-        public _NavbarPartial(IHttpClientFactory httpClientFactory)
+        private readonly ICategoryService categoryService;
+        public _NavbarPartial(ICategoryService categoryService)
         {
-            this.httpClientFactory = httpClientFactory;
+            this.categoryService = categoryService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7001/api/Category/Categories");
-
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var categoryVMs = JsonConvert.DeserializeObject<IEnumerable<CategoryVM>>(jsonData);
+            var categoryVMs = await categoryService.GetAllAsync();
             return View(categoryVMs);
         }
     }

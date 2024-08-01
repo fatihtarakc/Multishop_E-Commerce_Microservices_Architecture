@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Multishop.UI.Areas.Admin.Models.ViewModels.CategoryVMs;
 using Multishop.UI.Services.Abstract;
 using Newtonsoft.Json;
-using System.Text;
 
 namespace Multishop.UI.Areas.Admin.Controllers
 {
