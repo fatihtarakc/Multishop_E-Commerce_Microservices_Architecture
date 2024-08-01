@@ -10,10 +10,12 @@ namespace Multishop.UI.Controllers
     {
         private readonly IHttpClientFactory httpClientFactory;
         private readonly ISignInService signInService;
-        public AccountController(IHttpClientFactory httpClientFactory, ISignInService signInService)
+        private readonly IUserService userService;
+        public AccountController(IHttpClientFactory httpClientFactory, ISignInService signInService, IUserService userService)
         {
             this.httpClientFactory = httpClientFactory;
             this.signInService = signInService;
+            this.userService = userService;
         }
 
         public IActionResult SignIn()
@@ -78,6 +80,12 @@ namespace Multishop.UI.Controllers
             if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return View("SignIn");
+        }
+
+        public async Task<IActionResult> UserGetFirstOrDefaultAsync()
+        {
+            var user = await userService.GetFirstOrDefaultAsync();
+            return View(user);
         }
     }
 }
