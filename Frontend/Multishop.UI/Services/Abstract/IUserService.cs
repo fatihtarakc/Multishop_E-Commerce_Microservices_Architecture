@@ -6,6 +6,8 @@ namespace Multishop.UI.Services.Abstract
     {
         Task<AppUserVM> GetFirstOrDefaultAsync();
 
+        Task<string> TokenGetFirstOrDefaultAsync();
+
         Task<string> RefreshTokenGetFirstOrDefaultAsync();
     }
 }

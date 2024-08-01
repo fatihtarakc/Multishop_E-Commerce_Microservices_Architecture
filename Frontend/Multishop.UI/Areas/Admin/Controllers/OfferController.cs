@@ -21,7 +21,7 @@ namespace Multishop.UI.Areas.Admin.Controllers
             if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var offerVMs = JsonConvert.DeserializeObject<IEnumerable<OfferVM>>(jsonData);
+            var offerVMs = JsonConvert.DeserializeObject<IEnumerable<UI.Models.ViewModels.OfferVMs.OfferVM>>(jsonData);
             return View(offerVMs);
         }
 

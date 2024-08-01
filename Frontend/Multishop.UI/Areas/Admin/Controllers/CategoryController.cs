@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using Multishop.UI.Areas.Admin.Models.ViewModels.CategoryVMs;
-using Multishop.UI.Areas.Admin.Models.ViewModels.ProductVMs;
+using Multishop.UI.Services.Abstract;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -9,6 +10,12 @@ namespace Multishop.UI.Areas.Admin.Controllers
     [Area("Admin")]
     public class CategoryController : Controller
     {
+        private readonly ICategoryService categoryService;
+        public CategoryController(ICategoryService categoryService)
+        {
+            this.categoryService = categoryService;
+        }
+
         private readonly IHttpClientFactory httpClientFactory;
         public CategoryController(IHttpClientFactory httpClientFactory)
         {
@@ -17,30 +24,22 @@ namespace Multishop.UI.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7001/api/Category/Categories");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
-
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var categoryVMs = JsonConvert.DeserializeObject<IEnumerable<CategoryVM>>(jsonData);
+            var categoryVMs = await categoryService.GetAllAsync();
             return View(categoryVMs);
         }
 
         [HttpGet("Admin/Category/Detail/{categoryId}")]
         public async Task<IActionResult> Detail(string categoryId)
         {
+            var categoryVM = await categoryService.GetFirstOrDefaultAsync(categoryId);
+            if (categoryVM is null) return RedirectToAction("NotFound", "Home", new { area = "" });
+
             var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7001/api/Category/GetBy/{categoryId}");
+            var responseMessage = await client.GetAsync($"https://localhost:7001/api/Product/ProductsGetBy/{categoryId}");
             if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var categoryVM = JsonConvert.DeserializeObject<CategoryVM>(jsonData);
-
-            responseMessage = await client.GetAsync($"https://localhost:7001/api/Product/ProductsGetBy/{categoryId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
-
-            jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var productVMs = JsonConvert.DeserializeObject<IEnumerable<ProductVM>>(jsonData);
+            var productVMs = JsonConvert.DeserializeObject<IEnumerable<UI.Models.ViewModels.ProductVMs.ProductVM>>(jsonData);
 
             var categoryProductsVM = new CategoryProductsVM();
             categoryProductsVM.CategoryVM = categoryVM;
@@ -59,11 +58,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) return View(categoryAddVM);
 
-            var client = httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(categoryAddVM);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7001/api/Category/Add", stringContent);
-            if (!responseMessage.IsSuccessStatusCode) ModelState.AddModelError("Error", "Something went wrong !");
+            bool response = await categoryService.AddAsync(categoryAddVM);
+            if (!response) ModelState.AddModelError("Error", "Something went wrong !");
 
             return RedirectToAction("Index");
         }
@@ -71,9 +67,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [HttpGet("Admin/Category/Delete/{categoryId}")]
         public async Task<IActionResult> Delete(string categoryId)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7001/api/Category/Delete/{categoryId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            bool response = await categoryService.DeleteAsync(categoryId);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
@@ -81,12 +76,9 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [HttpGet("Admin/Category/Update/{categoryId}")]
         public async Task<IActionResult> Update(string categoryId)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7001/api/Category/GetBy/{categoryId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            var categoryUpdateVM = (await categoryService.GetFirstOrDefaultAsync(categoryId)).Adapt<CategoryUpdateVM>();
+            if (categoryUpdateVM is null) return RedirectToAction("NotFound", "Home", new { area = "" });
 
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var categoryUpdateVM = JsonConvert.DeserializeObject<CategoryUpdateVM>(jsonData);
             return View(categoryUpdateVM);
         }
 
@@ -96,11 +88,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) return View(categoryUpdateVM);
 
-            var client = httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(categoryUpdateVM);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7001/api/Category/Update", stringContent);
-            if (!responseMessage.IsSuccessStatusCode) ModelState.AddModelError("Error", "Something went wrong !");
+            bool response = await categoryService.UpdateAsync(categoryUpdateVM);
+            if (!response) ModelState.AddModelError("Error", "Something went wrong !");
 
             return RedirectToAction("Index");
         }

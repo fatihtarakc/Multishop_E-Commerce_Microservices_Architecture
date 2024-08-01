@@ -1,15 +1,13 @@
-﻿using Multishop.UI.Areas.Admin.Models.ViewModels.ProductVMs;
-
-namespace Multishop.UI.Areas.Admin.Models.ViewModels.CategoryVMs
+﻿namespace Multishop.UI.Areas.Admin.Models.ViewModels.CategoryVMs
 {
     public class CategoryProductsVM
     {
         public CategoryProductsVM()
         {
-            ProductVMs = new List<ProductVM>();
+            ProductVMs = new List<UI.Models.ViewModels.ProductVMs.ProductVM>();
         }
 
-        public CategoryVM CategoryVM { get; set; }
-        public IEnumerable<ProductVM> ProductVMs { get; set; }
+        public UI.Models.ViewModels.CategoryVMs.CategoryVM CategoryVM { get; set; }
+        public IEnumerable<UI.Models.ViewModels.ProductVMs.ProductVM> ProductVMs { get; set; }
     }
 }

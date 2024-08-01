@@ -1,8 +1,6 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Multishop.UI.Areas.Admin.Models.ViewModels.CategoryVMs;
-using Multishop.UI.Areas.Admin.Models.ViewModels.CommentVMs;
 using Multishop.UI.Areas.Admin.Models.ViewModels.DetailVMs;
 using Multishop.UI.Areas.Admin.Models.ViewModels.ImageVMs;
 using Multishop.UI.Areas.Admin.Models.ViewModels.ProductVMs;
@@ -28,7 +26,7 @@ namespace Multishop.UI.Areas.Admin.Controllers
             if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var productVMs = JsonConvert.DeserializeObject<IEnumerable<ProductVM>>(jsonData);
+            var productVMs = JsonConvert.DeserializeObject<IEnumerable<UI.Models.ViewModels.ProductVMs.ProductVM>>(jsonData);
             return View(productVMs);
         }
 
@@ -39,7 +37,7 @@ namespace Multishop.UI.Areas.Admin.Controllers
             if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var categoryVMs = JsonConvert.DeserializeObject<IEnumerable<CategoryVM>>(jsonData);
+            var categoryVMs = JsonConvert.DeserializeObject<IEnumerable<UI.Models.ViewModels.CategoryVMs.CategoryVM>>(jsonData);
             IEnumerable<SelectListItem> categories = (from category in categoryVMs
                                                       select new SelectListItem
                                                       {
@@ -59,7 +57,7 @@ namespace Multishop.UI.Areas.Admin.Controllers
             if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var categoryVMs = JsonConvert.DeserializeObject<IEnumerable<CategoryVM>>(jsonData);
+            var categoryVMs = JsonConvert.DeserializeObject<IEnumerable<UI.Models.ViewModels.CategoryVMs.CategoryVM>>(jsonData);
             IEnumerable<SelectListItem> categories = (from category in categoryVMs
                                                       select new SelectListItem
                                                       {
@@ -100,7 +98,7 @@ namespace Multishop.UI.Areas.Admin.Controllers
             if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var categoryVMs = JsonConvert.DeserializeObject<IEnumerable<CategoryVM>>(jsonData);
+            var categoryVMs = JsonConvert.DeserializeObject<IEnumerable<UI.Models.ViewModels.CategoryVMs.CategoryVM>>(jsonData);
             IEnumerable<SelectListItem> categories = (from category in categoryVMs
                                                       select new SelectListItem
                                                       {
@@ -144,7 +142,7 @@ namespace Multishop.UI.Areas.Admin.Controllers
             if (responseMessage.StatusCode == HttpStatusCode.NotFound) return View();
 
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var detailVM = JsonConvert.DeserializeObject<DetailVM>(jsonData);
+            var detailVM = JsonConvert.DeserializeObject<UI.Models.ViewModels.DetailVMs.DetailVM>(jsonData);
             return View(detailVM);
         }
 
@@ -195,7 +193,7 @@ namespace Multishop.UI.Areas.Admin.Controllers
             if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var detailVM = JsonConvert.DeserializeObject<DetailVM>(jsonData);
+            var detailVM = JsonConvert.DeserializeObject<UI.Models.ViewModels.DetailVMs.DetailVM>(jsonData);
 
             var detailUpdateVM = detailVM.Adapt<DetailUpdateVM>();
             detailUpdateVM.ProductId = productId;
@@ -319,7 +317,7 @@ namespace Multishop.UI.Areas.Admin.Controllers
             if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var commentVMs = JsonConvert.DeserializeObject<IEnumerable<CommentVM>>(jsonData);
+            var commentVMs = JsonConvert.DeserializeObject<IEnumerable<UI.Models.ViewModels.CommentVMs.CommentVM>>(jsonData);
             ViewBag.ProductName = productName;
             return View(commentVMs);
         }

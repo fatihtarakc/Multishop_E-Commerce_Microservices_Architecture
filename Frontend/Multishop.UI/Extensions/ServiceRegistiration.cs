@@ -14,25 +14,32 @@ namespace Multishop.UI.Extensions
         {
             services.AddFluentValidationAutoValidation().AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
+            var apiGatewayPath = configuration["ApiGateway:Path"];
+            var catalogPath = configuration["ServicesPath:Catalog"];
+            var identityServerPath = configuration["ServicesPath:IdentityServer"];
+
             services.AddTransient<ISignInService, SignInService>();
+            services.AddHttpClient<ICategoryService, CategoryService>(options =>
+            {
+                options.BaseAddress = new Uri(apiGatewayPath + "/" + catalogPath);
+            });
             services.AddHttpClient<IUserService, UserService>(options =>
             {
-                options.BaseAddress = new Uri(configuration["ApiGateway:Path"] + "/" + configuration["ServicesPath:IdentityServer"]);
+                options.BaseAddress = new Uri(apiGatewayPath + "/" + identityServerPath);
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddCookie(JwtBearerDefaults.AuthenticationScheme, options => 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddCookie(JwtBearerDefaults.AuthenticationScheme, options =>
             {
                 options.AccessDeniedPath = "/Home/AccessDenied";
                 options.LoginPath = "/Account/SignIn";
                 options.LogoutPath = "/Account/SignOut";
-                
+
                 options.Cookie.Name = "MultishopCookie";
                 options.Cookie.SameSite = SameSiteMode.Strict;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
                 options.Cookie.HttpOnly = false;
             });
 
-            services.AddHttpClient();
             services.AddHttpContextAccessor();
             return services;
         }

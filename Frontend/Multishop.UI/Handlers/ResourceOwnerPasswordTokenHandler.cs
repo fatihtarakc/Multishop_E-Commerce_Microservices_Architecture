@@ -24,10 +24,10 @@ namespace Multishop.UI.Handlers
 
             if (response.StatusCode is not HttpStatusCode.Unauthorized) return response;
 
-            var token = await userService.RefreshTokenGetFirstOrDefaultAsync();
-            if (token is null) return new HttpResponseMessage(HttpStatusCode.NotFound);
+            var refreshToken = await userService.RefreshTokenGetFirstOrDefaultAsync();
+            if (refreshToken is null) return new HttpResponseMessage(HttpStatusCode.NotFound);
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", refreshToken);
             return await base.SendAsync(request, cancellationToken);
         }
     }

@@ -16,6 +16,11 @@ namespace Multishop.UI.Services.Concrete
             return await httpClient.GetFromJsonAsync<AppUserVM>("/api/user/getfirstordefault");
         }
 
+        public async Task<string> TokenGetFirstOrDefaultAsync()
+        {
+            return null;
+        }
+
         public async Task<string> RefreshTokenGetFirstOrDefaultAsync()
         {
             return null;
