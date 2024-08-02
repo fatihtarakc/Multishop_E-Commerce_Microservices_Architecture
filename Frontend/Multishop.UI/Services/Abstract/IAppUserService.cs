@@ -2,7 +2,7 @@
 
 namespace Multishop.UI.Services.Abstract
 {
-    public interface IUserService
+    public interface IAppUserService
     {
         Task<AppUserVM> GetFirstOrDefaultAsync();
 

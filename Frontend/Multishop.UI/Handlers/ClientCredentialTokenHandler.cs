@@ -5,8 +5,8 @@ namespace Multishop.UI.Handlers
 {
     public class ClientCredentialTokenHandler : DelegatingHandler
     {
-        private readonly IUserService userService;
-        public ClientCredentialTokenHandler(IUserService userService)
+        private readonly IAppUserService userService;
+        public ClientCredentialTokenHandler(IAppUserService userService)
         {
             this.userService = userService;
         }

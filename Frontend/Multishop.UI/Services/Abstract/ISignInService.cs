@@ -2,7 +2,6 @@
 {
     public interface ISignInService
     {
-        string GetUserId();
         Task<bool> SignInAsync(HttpContext httpContext, HttpResponseMessage responseMessage, bool rememberMe);
     }
 }

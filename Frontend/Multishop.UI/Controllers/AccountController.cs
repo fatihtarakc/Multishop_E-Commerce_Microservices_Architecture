@@ -10,12 +10,12 @@ namespace Multishop.UI.Controllers
     {
         private readonly IHttpClientFactory httpClientFactory;
         private readonly ISignInService signInService;
-        private readonly IUserService userService;
-        public AccountController(IHttpClientFactory httpClientFactory, ISignInService signInService, IUserService userService)
+        private readonly IAppUserService appUserService;
+        public AccountController(IHttpClientFactory httpClientFactory, ISignInService signInService, IAppUserService appUserService)
         {
             this.httpClientFactory = httpClientFactory;
             this.signInService = signInService;
-            this.userService = userService;
+            this.appUserService = appUserService;
         }
 
         public IActionResult SignIn()
@@ -36,7 +36,6 @@ namespace Multishop.UI.Controllers
             if (responseMessage.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 bool response = await signInService.SignInAsync(HttpContext, responseMessage, appUserSignInVM.RememberMe);
-
                 if (!response) return View(appUserSignInVM);
 
                 return RedirectToAction("Index", "Home", new { area = "" });
@@ -84,7 +83,7 @@ namespace Multishop.UI.Controllers
 
         public async Task<IActionResult> UserGetFirstOrDefaultAsync()
         {
-            var user = await userService.GetFirstOrDefaultAsync();
+            var user = await appUserService.GetFirstOrDefaultAsync();
             return View(user);
         }
     }

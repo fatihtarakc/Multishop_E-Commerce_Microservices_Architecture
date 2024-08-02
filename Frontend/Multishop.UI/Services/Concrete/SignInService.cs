@@ -9,14 +9,6 @@ namespace Multishop.UI.Services.Concrete
 {
     public class SignInService : ISignInService
     {
-        private readonly IHttpContextAccessor httpContextAccessor;
-        public SignInService(IHttpContextAccessor httpContextAccessor)
-        {
-            this.httpContextAccessor = httpContextAccessor;
-        }
-
-        public string GetUserId() => httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
         public async Task<bool> SignInAsync(HttpContext httpContext, HttpResponseMessage responseMessage, bool rememberMe)
         {
             var jsonData = await responseMessage.Content.ReadAsStringAsync();

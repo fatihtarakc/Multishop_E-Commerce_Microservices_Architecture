@@ -26,7 +26,7 @@ namespace Multishop.UI.Extensions
             {
                 options.BaseAddress = new Uri(apiGatewayPath + "/" + catalogPath);
             });
-            services.AddHttpClient<IUserService, UserService>(options =>
+            services.AddHttpClient<IAppUserService, AppUserService>(options =>
             {
                 options.BaseAddress = new Uri(apiGatewayPath + "/" + identityServerPath);
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();

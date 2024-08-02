@@ -6,7 +6,7 @@ using Multishop.Catalog.Services.Abstract;
 namespace Multishop.Catalog.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Authorize]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService categoryService;
@@ -33,7 +33,6 @@ namespace Multishop.Catalog.Controllers
             return Ok(categoryDto);
         }
 
-        [Authorize]
         [HttpPost("Add")]
         public async Task<IActionResult> Add(CategoryAddDto categoryAddDto)
         {
@@ -43,7 +42,6 @@ namespace Multishop.Catalog.Controllers
             return Ok($"{categoryAddDto.Name} was added successfuly !");
         }
 
-        [Authorize]
         [HttpDelete("Delete/{categoryId}")]
         public async Task<IActionResult> Delete(string categoryId)
         {
@@ -53,7 +51,6 @@ namespace Multishop.Catalog.Controllers
             return Ok("This category was deleted successfully !");
         }
 
-        [Authorize]
         [HttpPut("Update")]
         public async Task<IActionResult> Update(CategoryUpdateDto categoryUpdateDto)
         {

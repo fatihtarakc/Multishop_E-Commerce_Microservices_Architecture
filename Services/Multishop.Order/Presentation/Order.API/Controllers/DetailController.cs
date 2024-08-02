@@ -7,7 +7,7 @@ using Order.Application.Cqrs.Queries.DetailQueries;
 namespace Order.API.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Authorize]
     public class DetailController : ControllerBase
     {
         private readonly IMediator mediator;
@@ -34,7 +34,6 @@ namespace Order.API.Controllers
             return Ok(detailDetailQueryResponse);
         }
 
-        [Authorize]
         [HttpPost("Add")]
         public async Task<IActionResult> Add(DetailAddCommandRequest detailAddCommandRequest)
         {
@@ -44,7 +43,6 @@ namespace Order.API.Controllers
             return Ok("This detail info was added successfully !");
         }
 
-        [Authorize]
         [HttpDelete("Delete/{addressId}")]
         public async Task<IActionResult> Delete(Guid addressId)
         {
@@ -54,7 +52,6 @@ namespace Order.API.Controllers
             return Ok("This detail info was deleted successfully !");
         }
 
-        [Authorize]
         [HttpPut("Update")]
         public async Task<IActionResult> Update(DetailUpdateCommandRequest detailUpdateCommandRequest)
         {

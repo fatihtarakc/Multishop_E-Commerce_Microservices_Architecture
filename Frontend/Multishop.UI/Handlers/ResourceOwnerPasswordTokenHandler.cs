@@ -9,8 +9,8 @@ namespace Multishop.UI.Handlers
     public class ResourceOwnerPasswordTokenHandler : DelegatingHandler
     {
         private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly IUserService userService;
-        public ResourceOwnerPasswordTokenHandler(IHttpContextAccessor httpContextAccessor, IUserService userService)
+        private readonly IAppUserService userService;
+        public ResourceOwnerPasswordTokenHandler(IHttpContextAccessor httpContextAccessor, IAppUserService userService)
         {
             this.httpContextAccessor = httpContextAccessor;
             this.userService = userService;

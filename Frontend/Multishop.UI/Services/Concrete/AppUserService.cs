@@ -3,10 +3,10 @@ using Multishop.UI.Services.Abstract;
 
 namespace Multishop.UI.Services.Concrete
 {
-    public class UserService : IUserService
+    public class AppUserService : IAppUserService
     {
         private readonly HttpClient httpClient;
-        public UserService(HttpClient httpClient)
+        public AppUserService(HttpClient httpClient)
         {
             this.httpClient = httpClient;
         }

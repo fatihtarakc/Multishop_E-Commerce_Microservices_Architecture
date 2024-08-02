@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cargo.API.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Authorize]
     public class CompanyController : ControllerBase
     {
         private readonly ICompanyService companyService;
@@ -31,7 +31,6 @@ namespace Cargo.API.Controllers
             return Ok(company);
         }
 
-        [Authorize]
         [HttpPost("Add")]
         public async Task<IActionResult> Add(CompanyAddDto entityAddDto)
         {
@@ -43,7 +42,6 @@ namespace Cargo.API.Controllers
             return Ok("New company was added successfully !");
         }
 
-        [Authorize]
         [HttpDelete("Delete/{entityId}")]
         public async Task<IActionResult> Delete(Guid entityId)
         {
@@ -53,7 +51,6 @@ namespace Cargo.API.Controllers
             return Ok("Company was deleted successfully !");
         }
 
-        [Authorize]
         [HttpPut("Update")]
         public async Task<IActionResult> Update(CompanyUpdateDto entityUpdateDto)
         {

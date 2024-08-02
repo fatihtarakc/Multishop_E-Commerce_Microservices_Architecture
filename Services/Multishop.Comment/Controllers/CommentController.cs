@@ -6,7 +6,7 @@ using Multishop.Comment.Services.Abstract;
 namespace Multishop.Comment.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Authorize]
     public class CommentController : ControllerBase
     {
         private readonly ICommentService commentService;
@@ -38,7 +38,6 @@ namespace Multishop.Comment.Controllers
             return Ok(commentDto);
         }
 
-        [Authorize]
         [HttpPost("Add")]
         public async Task<IActionResult> Add(CommentAddDto entityAddDto)
         {
@@ -50,7 +49,6 @@ namespace Multishop.Comment.Controllers
             return Ok("New comment was added successfully !");
         }
 
-        [Authorize]
         [HttpDelete("Delete/{entityId}")]
         public async Task<IActionResult> Delete(Guid entityId)
         {
@@ -60,7 +58,6 @@ namespace Multishop.Comment.Controllers
             return Ok("Comment was deleted successfully !");
         }
 
-        [Authorize]
         [HttpPut("Update")]
         public async Task<IActionResult> Update(CommentUpdateDto entityUpdateDto)
         {

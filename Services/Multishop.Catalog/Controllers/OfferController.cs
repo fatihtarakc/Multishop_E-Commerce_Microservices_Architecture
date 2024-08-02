@@ -6,7 +6,7 @@ using Multishop.Catalog.Services.Abstract;
 namespace Multishop.Catalog.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Authorize]
     public class OfferController : ControllerBase
     {
         private readonly IOfferService offerService;
@@ -33,7 +33,6 @@ namespace Multishop.Catalog.Controllers
             return Ok(offerDto);
         }
 
-        [Authorize]
         [HttpPost("Add")]
         public async Task<IActionResult> Add(OfferAddDto offerAddDto)
         {
@@ -43,7 +42,6 @@ namespace Multishop.Catalog.Controllers
             return Ok($"{offerAddDto.Title} was added successfully !");
         }
 
-        [Authorize]
         [HttpDelete("Delete/{offerId}")]
         public async Task<IActionResult> Delete(string offerId)
         {
@@ -53,7 +51,6 @@ namespace Multishop.Catalog.Controllers
             return Ok("This offer was deleted successfully !");
         }
 
-        [Authorize]
         [HttpPut("Update")]
         public async Task<IActionResult> Update(OfferUpdateDto offerUpdateDto)
         {
