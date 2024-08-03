@@ -14,8 +14,8 @@ namespace Multishop.IdentityServer4.Controllers
     {
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
-        private readonly ITokenService tokenService;
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService)
+        private readonly IAppUserService tokenService;
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IAppUserService tokenService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -33,7 +33,7 @@ namespace Multishop.IdentityServer4.Controllers
             Microsoft.AspNetCore.Identity.SignInResult signInResult = await signInManager.PasswordSignInAsync(appUserByEmail, appUserSignInDto.Password, appUserSignInDto.RememberMe, false);
             if (!signInResult.Succeeded) return BadRequest("Email or password is incorrect !");
 
-            var appUserDto = new AppUserDto { Id = appUserByEmail.Id, Username = appUserByEmail.UserName, Role = (await userManager.GetRolesAsync(appUserByEmail)).FirstOrDefault() };
+            var appUserDto = new AppUserDto { Id = appUserByEmail.Id, Email = appUserByEmail.Email, Role = (await userManager.GetRolesAsync(appUserByEmail)).FirstOrDefault() };
 
             var token = tokenService.Generator(appUserDto);
             return Ok(token);

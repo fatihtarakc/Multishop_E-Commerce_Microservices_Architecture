@@ -52,7 +52,7 @@ namespace Multishop.IdentityServer4
                 .AddErrorDescriber<CustomIdentityValidator>()
                 .AddDefaultTokenProviders();
 
-            services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IAppUserService, AppUserService>();
 
             var builder = services.AddIdentityServer(options =>
             {

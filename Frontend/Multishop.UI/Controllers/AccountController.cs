@@ -9,12 +9,10 @@ namespace Multishop.UI.Controllers
     public class AccountController : Controller
     {
         private readonly IHttpClientFactory httpClientFactory;
-        private readonly ISignInService signInService;
         private readonly IAppUserService appUserService;
-        public AccountController(IHttpClientFactory httpClientFactory, ISignInService signInService, IAppUserService appUserService)
+        public AccountController(IHttpClientFactory httpClientFactory, IAppUserService appUserService)
         {
             this.httpClientFactory = httpClientFactory;
-            this.signInService = signInService;
             this.appUserService = appUserService;
         }
 
@@ -28,24 +26,10 @@ namespace Multishop.UI.Controllers
         {
             if (!ModelState.IsValid) return View(appUserSignInVM);
 
-            var jsonData = JsonConvert.SerializeObject(appUserSignInVM);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var client = httpClientFactory.CreateClient();
+            bool response = await appUserService.SignInAsync(appUserSignInVM);
+            if (!response) return View(appUserSignInVM);
 
-            var responseMessage = await client.PostAsync("https://localhost:7000/api/Account/SignIn", stringContent);
-            if (responseMessage.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                bool response = await signInService.SignInAsync(HttpContext, responseMessage, appUserSignInVM.RememberMe);
-                if (!response) return View(appUserSignInVM);
-
-                return RedirectToAction("Index", "Home", new { area = "" });
-            }
-
-            else if (responseMessage.StatusCode == System.Net.HttpStatusCode.BadRequest) ModelState.AddModelError("", "Email or password is incorrect !");
-
-            else ModelState.AddModelError("", "Something went wrong !");
-
-            return RedirectToAction("SignIn");
+            return RedirectToAction("Index", "Home", new { area = "" });
         }
 
         public IActionResult SignUp()

@@ -11,15 +11,15 @@ using System.Text;
 
 namespace Multishop.IdentityServer4.Services.Concrete
 {
-    public class TokenService : ITokenService
+    public class AppUserService : IAppUserService
     {
         private readonly IConfiguration configuration;
-        public TokenService(IConfiguration configuration)
+        public AppUserService(IConfiguration configuration)
         {
             this.configuration = configuration;
         }
 
-        public TokenDto Generator(AppUserDto appUserDto)
+        public TokenDto TokenGenerator(AppUserDto appUserDto)
         {
             var claims = new List<Claim>();
 
@@ -27,7 +27,7 @@ namespace Multishop.IdentityServer4.Services.Concrete
 
             claims.Add(new Claim(ClaimTypes.NameIdentifier, appUserDto.Id));
 
-            if (!string.IsNullOrWhiteSpace(appUserDto.Username)) claims.Add(new Claim("username", appUserDto.Username));
+            if (!string.IsNullOrWhiteSpace(appUserDto.Email)) claims.Add(new Claim("email", appUserDto.Email));
 
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:IssuerSigningKey"]));
 

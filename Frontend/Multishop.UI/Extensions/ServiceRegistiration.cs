@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Multishop.UI.Handlers;
+using Multishop.UI.Options;
 using Multishop.UI.Services.Abstract;
 using Multishop.UI.Services.Concrete;
 using System.Reflection;
@@ -16,7 +18,8 @@ namespace Multishop.UI.Extensions
             services.AddHttpContextAccessor();
             services.AddFluentValidationAutoValidation().AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-            services.AddTransient<ISignInService, SignInService>();
+            services.Configure<ClientOptions>
+                (configuration.GetSection(ClientOptions.Client));
 
             var apiGatewayPath = configuration["ApiGateway:Path"];
             var catalogPath = configuration["ServicesPath:Catalog"];
@@ -31,16 +34,12 @@ namespace Multishop.UI.Extensions
                 options.BaseAddress = new Uri(apiGatewayPath + "/" + identityServerPath);
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddCookie(JwtBearerDefaults.AuthenticationScheme, options =>
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => 
             {
-                options.AccessDeniedPath = "/Home/AccessDenied";
                 options.LoginPath = "/Account/SignIn";
-                options.LogoutPath = "/Account/SignOut";
-
                 options.Cookie.Name = "MultishopCookie";
-                options.Cookie.SameSite = SameSiteMode.Strict;
-                options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-                options.Cookie.HttpOnly = false;
+                options.ExpireTimeSpan = TimeSpan.FromDays(1);
+                options.SlidingExpiration = true;
             });
 
             return services;

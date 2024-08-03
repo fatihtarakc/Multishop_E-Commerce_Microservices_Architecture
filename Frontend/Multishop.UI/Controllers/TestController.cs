@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using static System.Net.WebRequestMethods;
 
 namespace Multishop.UI.Controllers
 {
@@ -41,6 +40,7 @@ namespace Multishop.UI.Controllers
             }
 
             var client = httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             var responseMessage = await client.GetAsync("https://localhost:7001/api/Category/Categories");
             if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
 
