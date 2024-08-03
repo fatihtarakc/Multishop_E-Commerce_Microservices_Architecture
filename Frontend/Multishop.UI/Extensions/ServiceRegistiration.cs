@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Multishop.UI.Handlers;
 using Multishop.UI.Options;
 using Multishop.UI.Services.Abstract;
@@ -24,25 +23,26 @@ namespace Multishop.UI.Extensions
             services.Configure<Options.RouteOptions>
                 (configuration.GetSection(Options.RouteOptions.Route));
 
-            var apiGatewayPath = configuration["ApiGateway:Path"];
-            var catalogPath = configuration["ServicesPath:Catalog"];
-            var identityServerPath = configuration["ServicesPath:IdentityServer"];
-
-            services.AddHttpClient<ICategoryService, CategoryService>(options =>
-            {
-                options.BaseAddress = new Uri(apiGatewayPath + "/" + catalogPath);
-            });
-            services.AddHttpClient<IAppUserService, AppUserService>(options =>
-            {
-                options.BaseAddress = new Uri(apiGatewayPath + "/" + identityServerPath);
-            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
-
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
                 options.LoginPath = "/Account/SignIn";
                 options.Cookie.Name = "MultishopCookie";
                 options.ExpireTimeSpan = TimeSpan.FromDays(1);
                 options.SlidingExpiration = true;
+            });
+
+            var route = configuration.GetSection(Options.RouteOptions.Route).Get<Options.RouteOptions>();
+
+            services.AddTransient<ResourceOwnerPasswordTokenHandler>();
+
+            services.AddHttpClient<IAppUserService, AppUserService>(options =>
+            {
+                options.BaseAddress = new Uri(route.IdentityServer);
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            services.AddHttpClient<ICategoryService, CategoryService>(options =>
+            {
+                options.BaseAddress = new Uri(route.ApiGateway + "/" + route.Catalog);
             });
 
             return services;

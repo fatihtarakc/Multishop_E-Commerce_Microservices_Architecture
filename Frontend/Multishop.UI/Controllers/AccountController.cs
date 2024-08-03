@@ -26,7 +26,7 @@ namespace Multishop.UI.Controllers
         {
             if (!ModelState.IsValid) return View(appUserSignInVM);
 
-            bool response = await appUserService.SignInAsync(appUserSignInVM);
+            bool response = await appUserService.SignInWithTokenAsync(appUserSignInVM);
             if (!response) return View(appUserSignInVM);
 
             return RedirectToAction("Index", "Home", new { area = "" });

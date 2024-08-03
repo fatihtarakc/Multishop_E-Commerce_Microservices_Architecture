@@ -8,26 +8,29 @@ namespace Multishop.UI.Handlers
 {
     public class ResourceOwnerPasswordTokenHandler : DelegatingHandler
     {
+        private readonly IAppUserService appUserService;
         private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly IAppUserService userService;
-        public ResourceOwnerPasswordTokenHandler(IHttpContextAccessor httpContextAccessor, IAppUserService userService)
+        public ResourceOwnerPasswordTokenHandler(IAppUserService appUserService, IHttpContextAccessor httpContextAccessor)
         {
+            this.appUserService = appUserService;
             this.httpContextAccessor = httpContextAccessor;
-            this.userService = userService;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var accessToken = await httpContextAccessor.HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+            var httpContext = httpContextAccessor.HttpContext;
+            if (httpContext is null) return new HttpResponseMessage { StatusCode = HttpStatusCode.BadRequest }; 
+
+            var accessToken = await httpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            var response = await base.SendAsync(request, cancellationToken);
+            var httpResponseMessage = await base.SendAsync(request, cancellationToken);
 
-            if (response.StatusCode is not HttpStatusCode.Unauthorized) return response;
+            if (httpResponseMessage.StatusCode is not HttpStatusCode.Unauthorized) return httpResponseMessage;
 
-            var refreshToken = await userService.RefreshTokenGetFirstOrDefaultAsync();
-            if (refreshToken is null) return new HttpResponseMessage(HttpStatusCode.NotFound);
+            bool response = await appUserService.SignInWithRefreshTokenAsync();
+            if (!response) return new HttpResponseMessage { StatusCode = HttpStatusCode.BadRequest };
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", refreshToken);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             return await base.SendAsync(request, cancellationToken);
         }
     }
