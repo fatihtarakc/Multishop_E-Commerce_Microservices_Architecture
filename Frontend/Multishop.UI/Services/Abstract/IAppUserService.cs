@@ -4,12 +4,12 @@ namespace Multishop.UI.Services.Abstract
 {
     public interface IAppUserService
     {
-        Task<bool> SignInAsync(AppUserSignInVM appUserSignInVM);
+        Task<bool> SignInWithTokenAsync(AppUserSignInVM appUserSignInVM);
+
+        Task<bool> SignInWithRefreshTokenAsync();
 
         Task<AppUserVM> GetFirstOrDefaultAsync();
 
         Task<string> TokenGetFirstOrDefaultAsync();
-
-        Task<string> RefreshTokenGetFirstOrDefaultAsync();
     }
 }

@@ -21,6 +21,9 @@ namespace Multishop.UI.Extensions
             services.Configure<ClientOptions>
                 (configuration.GetSection(ClientOptions.Client));
 
+            services.Configure<Options.RouteOptions>
+                (configuration.GetSection(Options.RouteOptions.Route));
+
             var apiGatewayPath = configuration["ApiGateway:Path"];
             var catalogPath = configuration["ServicesPath:Catalog"];
             var identityServerPath = configuration["ServicesPath:IdentityServer"];
