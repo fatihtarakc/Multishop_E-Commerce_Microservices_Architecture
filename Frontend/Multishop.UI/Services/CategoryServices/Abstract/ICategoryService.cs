@@ -1,7 +1,7 @@
 ﻿using Multishop.UI.Areas.Admin.Models.ViewModels.CategoryVMs;
 using Multishop.UI.Models.ViewModels.CategoryVMs;
 
-namespace Multishop.UI.Services.Abstract
+namespace Multishop.UI.Services.CategoryServices.Abstract
 {
     public interface ICategoryService
     {

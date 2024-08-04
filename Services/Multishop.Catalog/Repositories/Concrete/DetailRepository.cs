@@ -1,7 +1,7 @@
 ﻿using MongoDB.Driver;
 using Multishop.Catalog.Data.Entities;
+using Multishop.Catalog.Options;
 using Multishop.Catalog.Repositories.Abstract;
-using Multishop.Catalog.Settings.Abstract;
 using System.Linq.Expressions;
 
 namespace Multishop.Catalog.Repositories.Concrete
@@ -9,11 +9,11 @@ namespace Multishop.Catalog.Repositories.Concrete
     public class DetailRepository : IDetailRepository
     {
         private readonly IMongoCollection<Detail> detailCollection;
-        public DetailRepository(IDbSettings dbSettings)
+        public DetailRepository(IMongodbDatabaseOptions mongodbDatabaseOptions)
         {
-            var client = new MongoClient(dbSettings.ConnectionString);
-            var db = client.GetDatabase(dbSettings.DatabaseName);
-            detailCollection = db.GetCollection<Detail>(dbSettings.DetailCollectionName);
+            var client = new MongoClient(mongodbDatabaseOptions.ConnectionString);
+            var db = client.GetDatabase(mongodbDatabaseOptions.DatabaseName);
+            detailCollection = db.GetCollection<Detail>(mongodbDatabaseOptions.DetailCollectionName);
         }
 
         public async Task AddAsync(Detail entity)

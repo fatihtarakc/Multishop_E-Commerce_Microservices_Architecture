@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Multishop.UI.Models.ViewModels.AppUserVMs;
-using Multishop.UI.Services.Abstract;
+using Multishop.UI.Services.IdentityServices.Abstract;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -8,12 +8,12 @@ namespace Multishop.UI.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IIdentityService identityService;
         private readonly IHttpClientFactory httpClientFactory;
-        private readonly IAppUserService appUserService;
-        public AccountController(IHttpClientFactory httpClientFactory, IAppUserService appUserService)
+        public AccountController(IIdentityService identityService, IHttpClientFactory httpClientFactory)
         {
+            this.identityService = identityService;
             this.httpClientFactory = httpClientFactory;
-            this.appUserService = appUserService;
         }
 
         public IActionResult SignIn()
@@ -26,7 +26,7 @@ namespace Multishop.UI.Controllers
         {
             if (!ModelState.IsValid) return View(appUserSignInVM);
 
-            bool response = await appUserService.SignInWithTokenAsync(appUserSignInVM);
+            bool response = await identityService.SignInWithTokenAsync(appUserSignInVM);
             if (!response) return View(appUserSignInVM);
 
             return RedirectToAction("Index", "Home", new { area = "" });
@@ -67,7 +67,7 @@ namespace Multishop.UI.Controllers
 
         public async Task<IActionResult> UserGetFirstOrDefaultAsync()
         {
-            var user = await appUserService.GetFirstOrDefaultAsync();
+            var user = await identityService.GetFirstOrDefaultAsync();
             return View(user);
         }
     }

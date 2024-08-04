@@ -1,6 +1,6 @@
-﻿namespace Multishop.Catalog.Settings.Abstract
+﻿namespace Multishop.Catalog.Options
 {
-    public interface IDbSettings
+    public interface IMongodbDatabaseOptions
     {
         public string AdvertisementCollectionName { get; set; }
         public string BrandCollectionName { get; set; }

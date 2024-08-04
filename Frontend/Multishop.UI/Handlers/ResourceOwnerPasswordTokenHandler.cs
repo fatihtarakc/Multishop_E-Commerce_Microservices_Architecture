@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Multishop.UI.Services.Abstract;
+using Multishop.UI.Services.IdentityServices.Abstract;
 using System.Net;
 using System.Net.Http.Headers;
 
@@ -8,11 +8,11 @@ namespace Multishop.UI.Handlers
 {
     public class ResourceOwnerPasswordTokenHandler : DelegatingHandler
     {
-        private readonly IAppUserService appUserService;
+        private readonly IIdentityService identityService;
         private readonly IHttpContextAccessor httpContextAccessor;
-        public ResourceOwnerPasswordTokenHandler(IAppUserService appUserService, IHttpContextAccessor httpContextAccessor)
+        public ResourceOwnerPasswordTokenHandler(IIdentityService identityService, IHttpContextAccessor httpContextAccessor)
         {
-            this.appUserService = appUserService;
+            this.identityService = identityService;
             this.httpContextAccessor = httpContextAccessor;
         }
 
@@ -27,7 +27,7 @@ namespace Multishop.UI.Handlers
 
             if (httpResponseMessage.StatusCode is not HttpStatusCode.Unauthorized) return httpResponseMessage;
 
-            bool response = await appUserService.SignInWithRefreshTokenAsync();
+            bool response = await identityService.SignInWithRefreshTokenAsync();
             if (!response) return new HttpResponseMessage { StatusCode = HttpStatusCode.BadRequest };
 
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);

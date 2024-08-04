@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Multishop.UI.Services.Abstract;
+using Multishop.UI.Services.CategoryServices.Abstract;
 
 namespace Multishop.UI.ViewComponents.Layout
 {

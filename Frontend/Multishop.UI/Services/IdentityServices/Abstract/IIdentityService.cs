@@ -1,8 +1,8 @@
 ﻿using Multishop.UI.Models.ViewModels.AppUserVMs;
 
-namespace Multishop.UI.Services.Abstract
+namespace Multishop.UI.Services.IdentityServices.Abstract
 {
-    public interface IAppUserService
+    public interface IIdentityService
     {
         Task<bool> SignInWithTokenAsync(AppUserSignInVM appUserSignInVM);
 
@@ -10,6 +10,6 @@ namespace Multishop.UI.Services.Abstract
 
         Task<AppUserVM> GetFirstOrDefaultAsync();
 
-        Task<string> TokenGetFirstOrDefaultAsync();
+        Task<string> ClientCredentialTokenGetFirstOrDefaultAsync();
     }
 }

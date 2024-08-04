@@ -3,8 +3,10 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Multishop.UI.Handlers;
 using Multishop.UI.Options;
-using Multishop.UI.Services.Abstract;
-using Multishop.UI.Services.Concrete;
+using Multishop.UI.Services.CategoryServices.Abstract;
+using Multishop.UI.Services.CategoryServices.Concrete;
+using Multishop.UI.Services.IdentityServices.Abstract;
+using Multishop.UI.Services.IdentityServices.Concrete;
 using System.Reflection;
 
 namespace Multishop.UI.Extensions
@@ -15,13 +17,8 @@ namespace Multishop.UI.Extensions
         {
             services.AddHttpClient();
             services.AddHttpContextAccessor();
+            services.AddAccessTokenManagement();
             services.AddFluentValidationAutoValidation().AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-
-            services.Configure<ClientOptions>
-                (configuration.GetSection(ClientOptions.Client));
-
-            services.Configure<Options.RouteOptions>
-                (configuration.GetSection(Options.RouteOptions.Route));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
@@ -31,11 +28,18 @@ namespace Multishop.UI.Extensions
                 options.SlidingExpiration = true;
             });
 
-            var route = configuration.GetSection(Options.RouteOptions.Route).Get<Options.RouteOptions>();
+            services.Configure<ClientOptions>
+                (configuration.GetSection(ClientOptions.Client));
 
+            services.Configure<Options.RouteOptions>
+                (configuration.GetSection(Options.RouteOptions.Route));
+
+            services.AddTransient<ClientCredentialsTokenHandler>();
             services.AddTransient<ResourceOwnerPasswordTokenHandler>();
 
-            services.AddHttpClient<IAppUserService, AppUserService>(options =>
+            var route = configuration.GetSection(Options.RouteOptions.Route).Get<Options.RouteOptions>();
+
+            services.AddHttpClient<IIdentityService, IdentityService>(options =>
             {
                 options.BaseAddress = new Uri(route.IdentityServer);
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
@@ -43,7 +47,7 @@ namespace Multishop.UI.Extensions
             services.AddHttpClient<ICategoryService, CategoryService>(options =>
             {
                 options.BaseAddress = new Uri(route.ApiGateway + "/" + route.Catalog);
-            });
+            }).AddHttpMessageHandler<ClientCredentialsTokenHandler>();
 
             return services;
         }

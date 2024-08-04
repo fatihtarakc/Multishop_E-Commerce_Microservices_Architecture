@@ -1,7 +1,7 @@
 ﻿using MongoDB.Driver;
 using Multishop.Catalog.Data.Entities;
+using Multishop.Catalog.Options;
 using Multishop.Catalog.Repositories.Abstract;
-using Multishop.Catalog.Settings.Abstract;
 using System.Linq.Expressions;
 
 namespace Multishop.Catalog.Repositories.Concrete
@@ -9,11 +9,11 @@ namespace Multishop.Catalog.Repositories.Concrete
     public class AdvertisementRepository : IAdvertisementRepository
     {
         private readonly IMongoCollection<Advertisement> advertisementCollection;
-        public AdvertisementRepository(IDbSettings dbSettings)
+        public AdvertisementRepository(IMongodbDatabaseOptions mongodbDatabaseOptions)
         {
-            var client = new MongoClient(dbSettings.ConnectionString);
-            var db = client.GetDatabase(dbSettings.DatabaseName);
-            advertisementCollection = db.GetCollection<Advertisement>(dbSettings.AdvertisementCollectionName);
+            var client = new MongoClient(mongodbDatabaseOptions.ConnectionString);
+            var db = client.GetDatabase(mongodbDatabaseOptions.DatabaseName);
+            advertisementCollection = db.GetCollection<Advertisement>(mongodbDatabaseOptions.AdvertisementCollectionName);
         }
 
         public async Task AddAsync(Advertisement entity)

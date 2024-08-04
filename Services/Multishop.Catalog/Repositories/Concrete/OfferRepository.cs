@@ -1,7 +1,7 @@
 ﻿using MongoDB.Driver;
 using Multishop.Catalog.Data.Entities;
+using Multishop.Catalog.Options;
 using Multishop.Catalog.Repositories.Abstract;
-using Multishop.Catalog.Settings.Abstract;
 using System.Linq.Expressions;
 
 namespace Multishop.Catalog.Repositories.Concrete
@@ -9,11 +9,11 @@ namespace Multishop.Catalog.Repositories.Concrete
     public class OfferRepository : IOfferRepository
     {
         private readonly IMongoCollection<Offer> offerCollection;
-        public OfferRepository(IDbSettings dbSettings)
+        public OfferRepository(IMongodbDatabaseOptions mongodbDatabaseOptions)
         {
-            var client = new MongoClient(dbSettings.ConnectionString);
-            var db = client.GetDatabase(dbSettings.DatabaseName);
-            offerCollection = db.GetCollection<Offer>(dbSettings.OfferCollectionName);
+            var client = new MongoClient(mongodbDatabaseOptions.ConnectionString);
+            var db = client.GetDatabase(mongodbDatabaseOptions.DatabaseName);
+            offerCollection = db.GetCollection<Offer>(mongodbDatabaseOptions.OfferCollectionName);
         }
 
         public async Task AddAsync(Offer entity)

@@ -1,9 +1,9 @@
-﻿using Multishop.Catalog.Settings.Abstract;
-
-namespace Multishop.Catalog.Settings.Concrete
+﻿namespace Multishop.Catalog.Options
 {
-    public class DbSettings : IDbSettings
+    public class MongodbDatabaseOptions : IMongodbDatabaseOptions
     {
+        public const string MongodbDatabase = "MongodbDatabase";
+
         public string AdvertisementCollectionName { get; set; }
         public string BrandCollectionName { get; set; }
         public string CategoryCollectionName { get; set; }

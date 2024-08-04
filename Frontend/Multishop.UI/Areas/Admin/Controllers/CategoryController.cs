@@ -1,7 +1,7 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Multishop.UI.Areas.Admin.Models.ViewModels.CategoryVMs;
-using Multishop.UI.Services.Abstract;
+using Multishop.UI.Services.CategoryServices.Abstract;
 using Newtonsoft.Json;
 
 namespace Multishop.UI.Areas.Admin.Controllers

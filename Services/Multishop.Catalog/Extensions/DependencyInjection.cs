@@ -11,12 +11,11 @@ using Multishop.Catalog.Dtos.ImageDtos;
 using Multishop.Catalog.Dtos.OfferDtos;
 using Multishop.Catalog.Dtos.ProductDtos;
 using Multishop.Catalog.Dtos.ServiceDtos;
+using Multishop.Catalog.Options;
 using Multishop.Catalog.Repositories.Abstract;
 using Multishop.Catalog.Repositories.Concrete;
 using Multishop.Catalog.Services.Abstract;
 using Multishop.Catalog.Services.Concrete;
-using Multishop.Catalog.Settings.Abstract;
-using Multishop.Catalog.Settings.Concrete;
 using Multishop.Catalog.ValidationRules.AdvertisementValidationRules;
 using Multishop.Catalog.ValidationRules.BrandValidationRules;
 using Multishop.Catalog.ValidationRules.CategoryValidationRules;
@@ -40,11 +39,11 @@ namespace Multishop.Catalog.Extensions
             services.AddFluentValidation
                 (services => { services.RegisterValidatorsFromAssemblyContaining<Program>().DisableDataAnnotationsValidation = false; });
 
-            services.Configure<DbSettings>(configuration.GetSection("MongoDbDatabaseSettings"));
+            services.Configure<MongodbDatabaseOptions>(configuration.GetSection(MongodbDatabaseOptions.MongodbDatabase));
 
-            services.AddTransient<IDbSettings>(serviceProvider =>
+            services.AddTransient<IMongodbDatabaseOptions>(serviceProvider =>
             {
-                return serviceProvider.GetRequiredService<IOptions<DbSettings>>().Value;
+                return serviceProvider.GetRequiredService<IOptions<MongodbDatabaseOptions>>().Value;
             });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => 

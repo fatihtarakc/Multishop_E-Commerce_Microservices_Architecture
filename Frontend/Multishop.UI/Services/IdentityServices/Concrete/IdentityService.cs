@@ -5,24 +5,27 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Multishop.UI.Models.ViewModels.AppUserVMs;
 using Multishop.UI.Models.ViewModels.JwtVMs;
-using Multishop.UI.Services.Abstract;
 using System.Net;
 using System.Security.Claims;
+using Multishop.UI.Services.IdentityServices.Abstract;
+using IdentityModel.AspNetCore.AccessTokenManagement;
 
-namespace Multishop.UI.Services.Concrete
+namespace Multishop.UI.Services.IdentityServices.Concrete
 {
-    public class AppUserService : IAppUserService
+    public class IdentityService : IIdentityService
     {
         private readonly Options.ClientOptions clientOptions;
         private readonly Options.RouteOptions routeOptions;
         private readonly HttpClient httpClient;
         private readonly IHttpContextAccessor httpContextAccessor;
-        public AppUserService(IOptions<Options.ClientOptions> clientOptions, IOptions<Options.RouteOptions> routeOptions, HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
+        private readonly IClientAccessTokenCache clientAccessTokenCache;
+        public IdentityService(IOptions<Options.ClientOptions> clientOptions, IOptions<Options.RouteOptions> routeOptions, HttpClient httpClient, IHttpContextAccessor httpContextAccessor, IClientAccessTokenCache clientAccessTokenCache)
         {
             this.clientOptions = clientOptions.Value;
             this.routeOptions = routeOptions.Value;
             this.httpClient = httpClient;
             this.httpContextAccessor = httpContextAccessor;
+            this.clientAccessTokenCache = clientAccessTokenCache;
         }
 
         public async Task<bool> SignInWithTokenAsync(AppUserSignInVM appUserSignInVM)
@@ -104,7 +107,7 @@ namespace Multishop.UI.Services.Concrete
             authenticationProperties.StoreTokens(authenticationTokens);
 
             await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, authenticationResult.Principal, authenticationProperties);
-            
+
             return true;
         }
 
@@ -113,9 +116,27 @@ namespace Multishop.UI.Services.Concrete
             return await httpClient.GetFromJsonAsync<AppUserVM>("/api/user/getfirstordefault");
         }
 
-        public async Task<string> TokenGetFirstOrDefaultAsync()
+        public async Task<string> ClientCredentialTokenGetFirstOrDefaultAsync()
         {
-            return null;
+            var clientAccessToken = await clientAccessTokenCache.GetAsync("multishopClientName");
+            if (clientAccessToken is not null) return clientAccessToken.AccessToken;
+
+            var discoveryDocumentResponse = await httpClient.GetDiscoveryDocumentAsync
+                (new DiscoveryDocumentRequest { Address = routeOptions.IdentityServer, Policy = new DiscoveryPolicy { RequireHttps = true } });
+            if (discoveryDocumentResponse.HttpStatusCode is not HttpStatusCode.OK) return null;
+
+            var clientCredentialsTokenRequest = new ClientCredentialsTokenRequest
+            {
+                ClientId = clientOptions.Visitor.Id,
+                ClientSecret = clientOptions.Visitor.Secret,
+                Address = discoveryDocumentResponse.TokenEndpoint
+            };
+
+            var tokenResponse = await httpClient.RequestClientCredentialsTokenAsync(clientCredentialsTokenRequest);
+            if (tokenResponse.HttpStatusCode is not HttpStatusCode.OK) return null;
+
+            await clientAccessTokenCache.SetAsync("multishopClientName", tokenResponse.AccessToken, tokenResponse.ExpiresIn);
+            return tokenResponse.AccessToken;
         }
     }
 }

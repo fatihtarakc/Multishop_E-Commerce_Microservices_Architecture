@@ -1,19 +1,19 @@
-﻿using Multishop.UI.Services.Abstract;
+﻿using Multishop.UI.Services.IdentityServices.Abstract;
 using System.Net.Http.Headers;
 
 namespace Multishop.UI.Handlers
 {
-    public class ClientCredentialTokenHandler : DelegatingHandler
+    public class ClientCredentialsTokenHandler : DelegatingHandler
     {
-        private readonly IAppUserService userService;
-        public ClientCredentialTokenHandler(IAppUserService userService)
+        private readonly IIdentityService identityService;
+        public ClientCredentialsTokenHandler(IIdentityService identityService)
         {
-            this.userService = userService;
+            this.identityService = identityService;
         }
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var token = await userService.TokenGetFirstOrDefaultAsync();
+            var token = await identityService.ClientCredentialTokenGetFirstOrDefaultAsync();
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             return await base.SendAsync(request, cancellationToken);
         }
