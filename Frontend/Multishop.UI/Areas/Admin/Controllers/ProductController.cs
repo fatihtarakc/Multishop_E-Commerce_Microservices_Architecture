@@ -4,40 +4,42 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Multishop.UI.Areas.Admin.Models.ViewModels.DetailVMs;
 using Multishop.UI.Areas.Admin.Models.ViewModels.ImageVMs;
 using Multishop.UI.Areas.Admin.Models.ViewModels.ProductVMs;
-using Newtonsoft.Json;
-using System.Net;
-using System.Text;
+using Multishop.UI.Services.CategoryServices.Abstract;
+using Multishop.UI.Services.CommentServices.Abstract;
+using Multishop.UI.Services.DetailServices.Abstract;
+using Multishop.UI.Services.ImageServices.Abstract;
+using Multishop.UI.Services.ProductServices.Abstract;
 
 namespace Multishop.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class ProductController : Controller
     {
-        private readonly IHttpClientFactory httpClientFactory;
-        public ProductController(IHttpClientFactory httpClientFactory)
+        private readonly IProductService productService;
+        private readonly ICategoryService categoryService;
+        private readonly ICommentService commentService;
+        private readonly IDetailService detailService;
+        private readonly IImageService imageService;
+        public ProductController(IProductService productService, ICategoryService categoryService, ICommentService commentService, IDetailService detailService, IImageService imageService)
         {
-            this.httpClientFactory = httpClientFactory;
+            this.productService = productService;
+            this.categoryService = categoryService;
+            this.commentService = commentService;
+            this.detailService = detailService;
+            this.imageService = imageService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7001/api/Product/Products");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
-
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var productVMs = JsonConvert.DeserializeObject<IEnumerable<UI.Models.ViewModels.ProductVMs.ProductVM>>(jsonData);
+            var productVMs = await productService.GetAllAsync();
             return View(productVMs);
         }
 
         public async Task<IActionResult> Add()
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7001/api/Category/Categories");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            var categoryVMs = await categoryService.GetAllAsync();
+            if (categoryVMs is null) return RedirectToAction("NotFound", "Home", new { area = "" });
 
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var categoryVMs = JsonConvert.DeserializeObject<IEnumerable<UI.Models.ViewModels.CategoryVMs.CategoryVM>>(jsonData);
             IEnumerable<SelectListItem> categories = (from category in categoryVMs
                                                       select new SelectListItem
                                                       {
@@ -52,12 +54,9 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(ProductAddVM productAddVM)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7001/api/Category/Categories");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            var categoryVMs = await categoryService.GetAllAsync();
+            if (categoryVMs is null) return RedirectToAction("NotFound", "Home", new { area = "" });
 
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var categoryVMs = JsonConvert.DeserializeObject<IEnumerable<UI.Models.ViewModels.CategoryVMs.CategoryVM>>(jsonData);
             IEnumerable<SelectListItem> categories = (from category in categoryVMs
                                                       select new SelectListItem
                                                       {
@@ -66,26 +65,19 @@ namespace Multishop.UI.Areas.Admin.Controllers
                                                       }).ToList();
             ViewBag.Categories = categories;
 
-            if (ModelState.IsValid)
-            {
-                client = httpClientFactory.CreateClient();
-                jsonData = JsonConvert.SerializeObject(productAddVM);
-                var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-                responseMessage = await client.PostAsync("https://localhost:7001/api/Product/Add", stringContent);
-                if (!responseMessage.IsSuccessStatusCode) ModelState.AddModelError("Error", "Something went wrong !");
+            if (!ModelState.IsValid) return View(productAddVM);
 
-                return RedirectToAction("Index");
-            }
+            bool response = await productService.AddAsync(productAddVM);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
-            return View(productAddVM);
+            return RedirectToAction("Index");
         }
 
         [HttpGet("Admin/Product/Delete/{productId}")]
         public async Task<IActionResult> Delete(string productId)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7001/api/Product/Delete/{productId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            bool response = await productService.DeleteAsync(productId);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
@@ -93,12 +85,9 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [HttpGet("Admin/Product/Update/{productId}")]
         public async Task<IActionResult> Update(string productId)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7001/api/Category/Categories");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            var categoryVMs = await categoryService.GetAllAsync();
+            if (categoryVMs is null) return RedirectToAction("NotFound", "Home", new { area = "" });
 
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var categoryVMs = JsonConvert.DeserializeObject<IEnumerable<UI.Models.ViewModels.CategoryVMs.CategoryVM>>(jsonData);
             IEnumerable<SelectListItem> categories = (from category in categoryVMs
                                                       select new SelectListItem
                                                       {
@@ -107,12 +96,9 @@ namespace Multishop.UI.Areas.Admin.Controllers
                                                       }).ToList();
             ViewBag.Categories = categories;
 
-            client = httpClientFactory.CreateClient();
-            responseMessage = await client.GetAsync($"https://localhost:7001/api/Product/GetBy/{productId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            var productUpdateVM = (await productService.GetFirstOrDefaultAsync(productId)).Adapt<ProductUpdateVM>();
+            if (productUpdateVM is null) return RedirectToAction("NotFound", "Home", new { area = "" });
 
-            jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var productUpdateVM = JsonConvert.DeserializeObject<ProductUpdateVM>(jsonData);
             return View(productUpdateVM);
         }
 
@@ -120,13 +106,21 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(ProductUpdateVM productUpdateVM)
         {
+            var categoryVMs = await categoryService.GetAllAsync();
+            if (categoryVMs is null) return RedirectToAction("NotFound", "Home", new { area = "" });
+
+            IEnumerable<SelectListItem> categories = (from category in categoryVMs
+                                                      select new SelectListItem
+                                                      {
+                                                          Value = category.Id,
+                                                          Text = category.Name
+                                                      }).ToList();
+            ViewBag.Categories = categories;
+
             if (!ModelState.IsValid) return View(productUpdateVM);
 
-            var client = httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(productUpdateVM);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7001/api/Product/Update", stringContent);
-            if (!responseMessage.IsSuccessStatusCode) ModelState.AddModelError("Error", "Something went wrong !");
+            bool response = await productService.UpdateAsync(productUpdateVM);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
@@ -134,15 +128,9 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [HttpGet("Admin/Product/Detail/{productId}")]
         public async Task<IActionResult> Detail(string productId)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7001/api/Detail/GetBy/{productId}");
-            if (!(responseMessage.StatusCode == HttpStatusCode.OK || responseMessage.StatusCode == HttpStatusCode.NotFound)) return RedirectToAction("NotFound", "Home", new { area = "" });
-
+            var detailVM = await detailService.GetFirstOrDefaultAsync(productId);
             ViewBag.ProductId = productId;
-            if (responseMessage.StatusCode == HttpStatusCode.NotFound) return View();
 
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var detailVM = JsonConvert.DeserializeObject<UI.Models.ViewModels.DetailVMs.DetailVM>(jsonData);
             return View(detailVM);
         }
 
@@ -162,15 +150,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) return View(detailAddVM);
 
-            var client = httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(detailAddVM);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7001/api/Detail/Add", stringContent);
-            if (!responseMessage.IsSuccessStatusCode)
-            {
-                ModelState.AddModelError("Error", "Something went wrong !");
-                return View(detailAddVM);
-            }
+            bool response = await detailService.AddAsync(detailAddVM);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
@@ -178,9 +159,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [HttpGet("Admin/Product/DetailDelete/{detailId}")]
         public async Task<IActionResult> DetailDelete(string detailId)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7001/api/Detail/Delete/{detailId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            bool response = await detailService.DeleteAsync(detailId);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
@@ -188,15 +168,10 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [HttpGet("Admin/Product/DetailUpdate/{productId}")]
         public async Task<IActionResult> DetailUpdate(string productId)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7001/api/Detail/GetBy/{productId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
-
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var detailVM = JsonConvert.DeserializeObject<UI.Models.ViewModels.DetailVMs.DetailVM>(jsonData);
-
-            var detailUpdateVM = detailVM.Adapt<DetailUpdateVM>();
+            var detailUpdateVM = (await detailService.GetFirstOrDefaultAsync(productId)).Adapt<DetailUpdateVM>();
+            if (detailUpdateVM is null) return RedirectToAction("NotFound", "Home", new { area = "" });
             detailUpdateVM.ProductId = productId;
+
             return View(detailUpdateVM);
         }
 
@@ -206,15 +181,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) return View(detailUpdateVM);
 
-            var client = httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(detailUpdateVM);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7001/api/Detail/Update", stringContent);
-            if (!responseMessage.IsSuccessStatusCode)
-            {
-                ModelState.AddModelError("Error", "Something went wrong !");
-                return View(detailUpdateVM);
-            }
+            bool response = await detailService.UpdateAsync(detailUpdateVM);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
@@ -222,13 +190,10 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [HttpGet("Admin/Product/Images/{productId}")]
         public async Task<IActionResult> Images(string productId)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7001/api/Image/ImagesGetBy/{productId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
-
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var imageVMs = JsonConvert.DeserializeObject<IEnumerable<ImageVM>>(jsonData);
+            var imageVMs = await imageService.GetAllByAsync(productId);
+            if (imageVMs is null) return RedirectToAction("NotFound", "Home", new { area = "" });
             ViewBag.ProductId = productId;
+
             return View(imageVMs);
         }
 
@@ -248,15 +213,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) return View(imageAddVM);
 
-            var client = httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(imageAddVM);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7001/api/Image/Add", stringContent);
-            if (!responseMessage.IsSuccessStatusCode)
-            {
-                ModelState.AddModelError("Error", "Something went wrong !");
-                return View(imageAddVM);
-            }
+            bool response = await imageService.AddAsync(imageAddVM);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
@@ -264,9 +222,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [HttpGet("Admin/Product/ImageDelete/{imageId}")]
         public async Task<IActionResult> ImageDelete(string imageId)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7001/api/Image/Delete/{imageId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            bool response = await imageService.DeleteAsync(imageId);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
@@ -274,19 +231,9 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [HttpGet("Admin/Product/ImageUpdate/{imageId}")]
         public async Task<IActionResult> ImageUpdate(string imageId)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7001/api/Image/GetBy/{imageId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            var imageUpdateVM = (await productService.GetFirstOrDefaultAsync(imageId)).Adapt<Areas.Admin.Models.ViewModels.ImageVMs.ImageUpdateVM>();
+            if (imageUpdateVM is null) return RedirectToAction("NotFound", "Home", new { area = "" });
 
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var imageVM = JsonConvert.DeserializeObject<ImageVM>(jsonData);
-
-            var imageUpdateVM = new ImageUpdateVM()
-            {
-                Id = imageVM.Id,
-                Url = imageVM.Url,
-                ProductId = imageVM.ProductId
-            };
             return View(imageUpdateVM);
         }
 
@@ -296,15 +243,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) return View(imageUpdateVM);
 
-            var client = httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(imageUpdateVM);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7001/api/Image/Update", stringContent);
-            if (!responseMessage.IsSuccessStatusCode)
-            {
-                ModelState.AddModelError("Error", "Something went wrong !");
-                return View(imageUpdateVM);
-            }
+            bool response = await imageService.UpdateAsync(imageUpdateVM);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
@@ -312,13 +252,9 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [HttpGet("Admin/Product/Comments/{productId},{productName}")]
         public async Task<IActionResult> Comments(string productId, string productName)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7006/api/Comment/CommentsGetBy/{productId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
-
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var commentVMs = JsonConvert.DeserializeObject<IEnumerable<UI.Models.ViewModels.CommentVMs.CommentVM>>(jsonData);
+            var commentVMs = await commentService.GetAllByAsync(productId);
             ViewBag.ProductName = productName;
+
             return View(commentVMs);
         }
     }

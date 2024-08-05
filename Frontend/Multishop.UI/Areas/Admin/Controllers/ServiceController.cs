@@ -1,27 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using Multishop.UI.Areas.Admin.Models.ViewModels.ServiceVMs;
-using Newtonsoft.Json;
-using System.Text;
+using Multishop.UI.Services.ServiceServices.Abstract;
 
 namespace Multishop.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class ServiceController : Controller
     {
-        private readonly IHttpClientFactory httpClientFactory;
-        public ServiceController(IHttpClientFactory httpClientFactory)
+        private readonly IServiceService serviceService;
+        public ServiceController(IServiceService serviceService)
         {
-            this.httpClientFactory = httpClientFactory;
+            this.serviceService = serviceService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7001/api/Service/Services");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
-
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var serviceVMs = JsonConvert.DeserializeObject<IEnumerable<UI.Models.ViewModels.ServiceVMs.ServiceVM>>(jsonData);
+            var serviceVMs = await serviceService.GetAllAsync();
             return View(serviceVMs);
         }
 
@@ -36,11 +31,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) return View(serviceAddVM);
 
-            var client = httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(serviceAddVM);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7001/api/Service/Add", stringContent);
-            if (!responseMessage.IsSuccessStatusCode) ModelState.AddModelError("Error", "Something went wrong !");
+            bool response = await serviceService.AddAsync(serviceAddVM);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
@@ -48,9 +40,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [HttpGet("Admin/Service/Delete/{serviceId}")]
         public async Task<IActionResult> Delete(string serviceId)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7001/api/Service/Delete/{serviceId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            bool response = await serviceService.DeleteAsync(serviceId);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
@@ -58,12 +49,9 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [HttpGet("Admin/Service/Update/{serviceId}")]
         public async Task<IActionResult> Update(string serviceId)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7001/api/Service/GetBy/{serviceId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            var serviceUpdateVM = (await serviceService.GetFirstOrDefaultAsync(serviceId)).Adapt<ServiceUpdateVM>();
+            if (serviceUpdateVM is null) return RedirectToAction("NotFound", "Home", new { area = "" });
 
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var serviceUpdateVM = JsonConvert.DeserializeObject<ServiceUpdateVM>(jsonData);
             return View(serviceUpdateVM);
         }
 
@@ -73,11 +61,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) return View(serviceUpdateVM);
 
-            var client = httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(serviceUpdateVM);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7001/api/Service/Update", stringContent);
-            if (!responseMessage.IsSuccessStatusCode) ModelState.AddModelError("Error", "Something went wrong !");
+            bool response = await serviceService.UpdateAsync(serviceUpdateVM);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }

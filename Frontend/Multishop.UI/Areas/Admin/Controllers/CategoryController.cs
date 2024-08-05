@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Multishop.UI.Areas.Admin.Models.ViewModels.CategoryVMs;
 using Multishop.UI.Services.CategoryServices.Abstract;
-using Newtonsoft.Json;
+using Multishop.UI.Services.ProductServices.Abstract;
 
 namespace Multishop.UI.Areas.Admin.Controllers
 {
@@ -10,15 +10,11 @@ namespace Multishop.UI.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryService categoryService;
-        public CategoryController(ICategoryService categoryService)
+        private readonly IProductService productService;
+        public CategoryController(ICategoryService categoryService, IProductService productService)
         {
             this.categoryService = categoryService;
-        }
-
-        private readonly IHttpClientFactory httpClientFactory;
-        public CategoryController(IHttpClientFactory httpClientFactory)
-        {
-            this.httpClientFactory = httpClientFactory;
+            this.productService = productService;
         }
 
         public async Task<IActionResult> Index()
@@ -33,12 +29,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
             var categoryVM = await categoryService.GetFirstOrDefaultAsync(categoryId);
             if (categoryVM is null) return RedirectToAction("NotFound", "Home", new { area = "" });
 
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7001/api/Product/ProductsGetBy/{categoryId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
-
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var productVMs = JsonConvert.DeserializeObject<IEnumerable<UI.Models.ViewModels.ProductVMs.ProductVM>>(jsonData);
+            var productVMs = await productService.GetAllByAsync(categoryId);
+            if (productVMs is null) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             var categoryProductsVM = new CategoryProductsVM();
             categoryProductsVM.CategoryVM = categoryVM;
@@ -58,7 +50,7 @@ namespace Multishop.UI.Areas.Admin.Controllers
             if (!ModelState.IsValid) return View(categoryAddVM);
 
             bool response = await categoryService.AddAsync(categoryAddVM);
-            if (!response) ModelState.AddModelError("Error", "Something went wrong !");
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
@@ -88,7 +80,7 @@ namespace Multishop.UI.Areas.Admin.Controllers
             if (!ModelState.IsValid) return View(categoryUpdateVM);
 
             bool response = await categoryService.UpdateAsync(categoryUpdateVM);
-            if (!response) ModelState.AddModelError("Error", "Something went wrong !");
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }

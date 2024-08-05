@@ -1,48 +1,39 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Multishop.UI.Models.ViewModels.AdvertisementVMs;
-using Multishop.UI.Models.ViewModels.BrandVMs;
 using Multishop.UI.Models.ViewModels.HomeVMs;
-using Multishop.UI.Models.ViewModels.OfferVMs;
-using Multishop.UI.Models.ViewModels.ServiceVMs;
-using Newtonsoft.Json;
+using Multishop.UI.Services.AdvertisementServices.Abstract;
+using Multishop.UI.Services.BrandServices.Abstract;
+using Multishop.UI.Services.OfferServices.Abstract;
+using Multishop.UI.Services.ServiceServices.Abstract;
 
 namespace Multishop.UI.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IHttpClientFactory httpClientFactory;
-        public HomeController(IHttpClientFactory httpClientFactory)
+        private readonly IAdvertisementService advertisementService;
+        private readonly IBrandService brandService;
+        private readonly IOfferService offerService;
+        private readonly IServiceService serviceService;
+        public HomeController(IAdvertisementService advertisementService, IBrandService brandService, IOfferService offerService, IServiceService serviceService)
         {
-            this.httpClientFactory = httpClientFactory;
+            this.advertisementService = advertisementService;
+            this.brandService = brandService;
+            this.offerService = offerService;
+            this.serviceService = serviceService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var user = User.Claims;
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7001/api/Advertisement/Advertisements");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            var advertisementVMs = await advertisementService.GetAllAsync();
+            if (advertisementVMs is null) return RedirectToAction("NotFound", "Home", new { area = "" });
 
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var advertisementVMs = JsonConvert.DeserializeObject<IEnumerable<AdvertisementVM>>(jsonData);
+            var brandVMs = await brandService.GetAllAsync();
+            if (brandVMs is null) return RedirectToAction("NotFound", "Home", new { area = "" });
 
-            responseMessage = await client.GetAsync("https://localhost:7001/api/Brand/Brands");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            var offerVMs = await offerService.GetAllAsync();
+            if (offerVMs is null) return RedirectToAction("NotFound", "Home", new { area = "" });
 
-            jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var brandVMs = JsonConvert.DeserializeObject<IEnumerable<BrandVM>>(jsonData);
-
-            responseMessage = await client.GetAsync("https://localhost:7001/api/Offer/Offers");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
-
-            jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var offerVMs = JsonConvert.DeserializeObject<IEnumerable<OfferVM>>(jsonData);
-
-            responseMessage = await client.GetAsync("https://localhost:7001/api/Service/Services");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
-
-            jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var serviceVMs = JsonConvert.DeserializeObject<IEnumerable<ServiceVM>>(jsonData);
+            var serviceVMs = await serviceService.GetAllAsync();
+            if (serviceVMs is null) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             var homeVM = new HomeVM()
             {

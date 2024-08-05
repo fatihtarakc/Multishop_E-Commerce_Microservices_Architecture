@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Multishop.UI.Models.ViewModels.ContactVMs;
-using Newtonsoft.Json;
-using System.Text;
+using Multishop.UI.Services.ContactServices.Abstract;
 
 namespace Multishop.UI.Controllers
 {
     public class ContactController : Controller
     {
-        private readonly IHttpClientFactory httpClientFactory;
-        public ContactController(IHttpClientFactory httpClientFactory)
+        private readonly IContactService contactService;
+        public ContactController(IContactService contactService)
         {
-            this.httpClientFactory = httpClientFactory;
+            this.contactService = contactService;
         }
 
         public IActionResult Index()
@@ -24,13 +23,8 @@ namespace Multishop.UI.Controllers
         {
             if (!ModelState.IsValid) return View(contactAddVM);
 
-            var client = httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(contactAddVM);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            
-            var responseMessage = await client.PostAsync("https://localhost:7001/api/Contact/Add", stringContent);
-            if (!responseMessage.IsSuccessStatusCode) ModelState.AddModelError("Error", "Something went wrong !");
-            else ModelState.AddModelError("Error", "Your messages was sent successfully !");
+            bool response = await contactService.AddAsync(contactAddVM);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }

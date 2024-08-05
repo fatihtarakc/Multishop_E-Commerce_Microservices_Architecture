@@ -1,27 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using Multishop.UI.Areas.Admin.Models.ViewModels.BrandVMs;
-using Newtonsoft.Json;
-using System.Text;
+using Multishop.UI.Services.BrandServices.Abstract;
 
 namespace Multishop.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class BrandController : Controller
     {
-        private readonly IHttpClientFactory httpClientFactory;
-        public BrandController(IHttpClientFactory httpClientFactory)
+        private readonly IBrandService brandService;
+        public BrandController(IBrandService brandService)
         {
-            this.httpClientFactory = httpClientFactory;
+            this.brandService = brandService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7001/api/Brand/Brands");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
-
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var brandVMs = JsonConvert.DeserializeObject<IEnumerable<UI.Models.ViewModels.BrandVMs.BrandVM>>(jsonData);
+            var brandVMs = await brandService.GetAllAsync();
             return View(brandVMs);
         }
 
@@ -36,11 +31,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) return View(brandAddVM);
 
-            var client = httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(brandAddVM);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7001/api/Brand/Add", stringContent);
-            if (!responseMessage.IsSuccessStatusCode) ModelState.AddModelError("Error", "Something went wrong !");
+            bool response = await brandService.AddAsync(brandAddVM);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
@@ -48,9 +40,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [HttpGet("Admin/Brand/Delete/{brandId}")]
         public async Task<IActionResult> Delete(string brandId)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7001/api/Brand/Delete/{brandId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            bool response = await brandService.DeleteAsync(brandId);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
@@ -58,12 +49,9 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [HttpGet("Admin/Brand/Update/{brandId}")]
         public async Task<IActionResult> Update(string brandId)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7001/api/Brand/GetBy/{brandId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            var brandUpdateVM = (await brandService.GetFirstOrDefaultAsync(brandId)).Adapt<BrandUpdateVM>();
+            if (brandUpdateVM is null) return RedirectToAction("NotFound", "Home", new { area = "" });
 
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var brandUpdateVM = JsonConvert.DeserializeObject<BrandUpdateVM>(jsonData);
             return View(brandUpdateVM);
         }
 
@@ -73,11 +61,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) return View(brandUpdateVM);
 
-            var client = httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(brandUpdateVM);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7001/api/Brand/Update", stringContent);
-            if (!responseMessage.IsSuccessStatusCode) ModelState.AddModelError("Error", "Something went wrong !");
+            bool response = await brandService.UpdateAsync(brandUpdateVM);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }

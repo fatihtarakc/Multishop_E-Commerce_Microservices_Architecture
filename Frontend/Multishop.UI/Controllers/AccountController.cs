@@ -1,19 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Multishop.UI.Models.ViewModels.AppUserVMs;
 using Multishop.UI.Services.IdentityServices.Abstract;
-using Newtonsoft.Json;
-using System.Text;
 
 namespace Multishop.UI.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IIdentityService identityService;
-        private readonly IHttpClientFactory httpClientFactory;
-        public AccountController(IIdentityService identityService, IHttpClientFactory httpClientFactory)
+        public AccountController(IIdentityService identityService)
         {
             this.identityService = identityService;
-            this.httpClientFactory = httpClientFactory;
         }
 
         public IActionResult SignIn()
@@ -42,11 +38,7 @@ namespace Multishop.UI.Controllers
         {
             if (!ModelState.IsValid) return View(appUserSignUpVM);
 
-            var jsonData = JsonConvert.SerializeObject(appUserSignUpVM);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var client = httpClientFactory.CreateClient();
-
-            var responseMessage = await client.PostAsync("https://localhost:7000/api/Account/SignUp", stringContent);
+            var responseMessage = await identityService.SignUpAsync(appUserSignUpVM);
             if (responseMessage.StatusCode == System.Net.HttpStatusCode.OK) return RedirectToAction("SignIn");
 
             else if (responseMessage.StatusCode == System.Net.HttpStatusCode.BadRequest) ModelState.AddModelError("", "This email or username cannot be used !");
@@ -58,9 +50,8 @@ namespace Multishop.UI.Controllers
 
         public async Task<IActionResult> SignOut()
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7000/api/Account/SignOut");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            bool response = await identityService.SignOutAsync();
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return View("SignIn");
         }

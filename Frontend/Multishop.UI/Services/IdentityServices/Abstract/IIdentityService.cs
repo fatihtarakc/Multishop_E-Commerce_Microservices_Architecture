@@ -8,6 +8,10 @@ namespace Multishop.UI.Services.IdentityServices.Abstract
 
         Task<bool> SignInWithRefreshTokenAsync();
 
+        Task<HttpResponseMessage> SignUpAsync(AppUserSignUpVM appUserSignUpVM);
+
+        Task<bool> SignOutAsync();
+
         Task<AppUserVM> GetFirstOrDefaultAsync();
 
         Task<string> ClientCredentialTokenGetFirstOrDefaultAsync();

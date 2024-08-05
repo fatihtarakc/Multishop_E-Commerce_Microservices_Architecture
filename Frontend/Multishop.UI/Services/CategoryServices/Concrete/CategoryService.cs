@@ -25,17 +25,13 @@ namespace Multishop.UI.Services.CategoryServices.Concrete
         public async Task<CategoryVM> GetFirstOrDefaultAsync(string categoryId)
         {
             var httpResponseMessage = await httpClient.GetAsync($"/category/getby/{categoryId}");
-            if (httpResponseMessage.StatusCode is not HttpStatusCode.OK) return null;
-
-            return await httpResponseMessage.Content.ReadFromJsonAsync<CategoryVM>();
+            return httpResponseMessage.StatusCode is HttpStatusCode.OK ? await httpResponseMessage.Content.ReadFromJsonAsync<CategoryVM>() : null;
         }
 
         public async Task<IEnumerable<CategoryVM>> GetAllAsync()
         {
             var httpResponseMessage = await httpClient.GetAsync("/category/categories");
-            if (httpResponseMessage.StatusCode is not HttpStatusCode.OK) return null;
-
-            return await httpResponseMessage.Content.ReadFromJsonAsync<List<CategoryVM>>();
+            return httpResponseMessage.StatusCode is HttpStatusCode.OK ? await httpResponseMessage.Content.ReadFromJsonAsync<IEnumerable<CategoryVM>>() : null;
         }
     }
 }

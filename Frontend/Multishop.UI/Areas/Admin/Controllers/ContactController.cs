@@ -1,35 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Multishop.UI.Areas.Admin.Models.ViewModels.ContactVMs;
-using Newtonsoft.Json;
+using Multishop.UI.Services.ContactServices.Abstract;
 
 namespace Multishop.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class ContactController : Controller
     {
-        private readonly IHttpClientFactory httpClientFactory;
-        public ContactController(IHttpClientFactory httpClientFactory)
+        private readonly IContactService contactService;
+        public ContactController(IContactService contactService)
         {
-            this.httpClientFactory = httpClientFactory;
+            this.contactService = contactService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7001/api/Contact/Contacts");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
-
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var contactVMs = JsonConvert.DeserializeObject<IEnumerable<ContactVM>>(jsonData);
+            var contactVMs = await contactService.GetAllAsync();
             return View(contactVMs);
         }
 
         [HttpGet("Admin/Contact/Delete/{contactId}")]
         public async Task<IActionResult> Delete(string contactId)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7001/api/Contact/Delete/{contactId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            bool response = await contactService.DeleteAsync(contactId);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
@@ -37,9 +30,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [HttpGet("Admin/Contact/Update/{contactId},{isRead}")]
         public async Task<IActionResult> Update(string contactId, bool isRead)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.PutAsync($"https://localhost:7001/api/Contact/Update/{contactId},{isRead}", null);
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            bool response = await contactService.UpdateAsync(contactId, isRead);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }

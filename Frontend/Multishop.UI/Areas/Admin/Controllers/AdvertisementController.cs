@@ -1,27 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using Multishop.UI.Areas.Admin.Models.ViewModels.AdvertisementVMs;
-using Newtonsoft.Json;
-using System.Text;
+using Multishop.UI.Services.AdvertisementServices.Abstract;
 
 namespace Multishop.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class AdvertisementController : Controller
     {
-        private readonly IHttpClientFactory httpClientFactory;
-        public AdvertisementController(IHttpClientFactory httpClientFactory)
+        private readonly IAdvertisementService advertisementService;
+        public AdvertisementController(IAdvertisementService advertisementService)
         {
-            this.httpClientFactory = httpClientFactory;
+            this.advertisementService = advertisementService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("https://localhost:7001/api/Advertisement/Advertisements");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
-
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var advertisementVMs = JsonConvert.DeserializeObject<IEnumerable<UI.Models.ViewModels.AdvertisementVMs.AdvertisementVM>>(jsonData);
+            var advertisementVMs = await advertisementService.GetAllAsync();
             return View(advertisementVMs);
         }
 
@@ -36,11 +31,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) return View(advertisementAddVM);
 
-            var client = httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(advertisementAddVM);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("https://localhost:7001/api/Advertisement/Add", stringContent);
-            if (!responseMessage.IsSuccessStatusCode) ModelState.AddModelError("Error", "Something went wrong !");
+            bool response = await advertisementService.AddAsync(advertisementAddVM);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
@@ -48,9 +40,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [HttpGet("Admin/Advertisement/Delete/{advertisementId}")]
         public async Task<IActionResult> Delete(string advertisementId)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"https://localhost:7001/api/Advertisement/Delete/{advertisementId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            bool response = await advertisementService.DeleteAsync(advertisementId);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
@@ -58,12 +49,9 @@ namespace Multishop.UI.Areas.Admin.Controllers
         [HttpGet("Admin/Advertisement/Update/{advertisementId}")]
         public async Task<IActionResult> Update(string advertisementId)
         {
-            var client = httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7001/api/Advertisement/GetBy/{advertisementId}");
-            if (!responseMessage.IsSuccessStatusCode) return RedirectToAction("NotFound", "Home", new { area = "" });
+            var advertisementUpdateVM = (await advertisementService.GetFirstOrDefaultAsync(advertisementId)).Adapt<AdvertisementUpdateVM>();
+            if (advertisementUpdateVM is null) return RedirectToAction("NotFound", "Home", new { area = "" });
 
-            var jsonData = await responseMessage.Content.ReadAsStringAsync();
-            var advertisementUpdateVM = JsonConvert.DeserializeObject<AdvertisementUpdateVM>(jsonData);
             return View(advertisementUpdateVM);
         }
 
@@ -73,11 +61,8 @@ namespace Multishop.UI.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid) return View(advertisementUpdateVM);
 
-            var client = httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(advertisementUpdateVM);
-            var stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("https://localhost:7001/api/Advertisement/Update", stringContent);
-            if (!responseMessage.IsSuccessStatusCode) ModelState.AddModelError("Error", "Something went wrong !");
+            bool response = await advertisementService.UpdateAsync(advertisementUpdateVM);
+            if (!response) return RedirectToAction("NotFound", "Home", new { area = "" });
 
             return RedirectToAction("Index");
         }
