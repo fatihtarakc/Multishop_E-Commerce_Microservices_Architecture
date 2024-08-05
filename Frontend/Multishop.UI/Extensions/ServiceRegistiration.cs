@@ -55,6 +55,18 @@ namespace Multishop.UI.Extensions
             services.AddTransient<ClientCredentialsTokenHandler>();
             services.AddTransient<ResourceOwnerPasswordTokenHandler>();
 
+            services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IAdvertisementService, AdvertisementService>();
+            services.AddTransient<IBrandService, BrandService>();
+            services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<ICommentService, CommentService>();
+            services.AddTransient<IContactService, ContactService>();
+            services.AddTransient<IDetailService, DetailService>();
+            services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<IOfferService, OfferService>();
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IServiceService, ServiceService>();
+
             var route = configuration.GetSection(Options.RouteOptions.Route).Get<Options.RouteOptions>();
 
             services.AddHttpClient<IIdentityService, IdentityService>(options =>
