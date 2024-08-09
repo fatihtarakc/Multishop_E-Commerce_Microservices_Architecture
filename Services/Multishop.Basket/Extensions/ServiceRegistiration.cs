@@ -1,12 +1,10 @@
 ﻿using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using Multishop.Basket.Services.BasketServices;
 using Multishop.Basket.Services.LoginServices;
 using Multishop.Basket.Settings;
 using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 
 namespace Multishop.Basket.Extensions
 {
