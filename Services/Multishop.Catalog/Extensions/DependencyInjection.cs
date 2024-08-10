@@ -2,6 +2,7 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
+using Multishop.Catalog.Data.Entities;
 using Multishop.Catalog.Dtos.AdvertisementDtos;
 using Multishop.Catalog.Dtos.BrandDtos;
 using Multishop.Catalog.Dtos.CategoryDtos;
@@ -34,19 +35,7 @@ namespace Multishop.Catalog.Extensions
     {
         public static IServiceCollection AddCatalogService(this IServiceCollection services, IConfiguration configuration) 
         {
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
-            services.AddFluentValidation
-                (services => { services.RegisterValidatorsFromAssemblyContaining<Program>().DisableDataAnnotationsValidation = false; });
-
-            services.Configure<MongodbDatabaseOptions>(configuration.GetSection(MongodbDatabaseOptions.MongodbDatabase));
-
-            services.AddTransient<IMongodbDatabaseOptions>(serviceProvider =>
-            {
-                return serviceProvider.GetRequiredService<IOptions<MongodbDatabaseOptions>>().Value;
-            });
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.Authority = configuration["Token:IdentityServer4Url"];
                 options.RequireHttpsMetadata = true;
@@ -65,32 +54,12 @@ namespace Multishop.Catalog.Extensions
                 };
             });
 
-            services.AddTransient<IValidator<AdvertisementAddDto>, AdvertisementAddValidator>();
-            services.AddTransient<IValidator<AdvertisementUpdateDto>, AdvertisementUpdateValidator>();
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-            services.AddTransient<IValidator<BrandAddDto>, BrandAddValidator>();
-            services.AddTransient<IValidator<BrandUpdateDto>, BrandUpdateValidator>();
+            services.AddFluentValidationAutoValidation().AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-            services.AddTransient<IValidator<CategoryAddDto>, CategoryAddValidator>();
-            services.AddTransient<IValidator<CategoryUpdateDto>, CategoryUpdateValidator>();
-
-            services.AddTransient<IValidator<ContactAddDto>, ContactAddValidator>();
-            services.AddTransient<IValidator<ContactUpdateDto>, ContactUpdateValidator>();
-
-            services.AddTransient<IValidator<DetailAddDto>, DetailAddValidator>();
-            services.AddTransient<IValidator<DetailUpdateDto>, DetailUpdateValidator>();
-
-            services.AddTransient<IValidator<ImageAddDto>, ImageAddValidator>();
-            services.AddTransient<IValidator<ImageUpdateDto>, ImageUpdateValidator>();
-            
-            services.AddTransient<IValidator<OfferAddDto>, OfferAddValidator>();
-            services.AddTransient<IValidator<OfferUpdateDto>, OfferUpdateValidator>();
-
-            services.AddTransient<IValidator<ProductAddDto>, ProductAddValidator>();
-            services.AddTransient<IValidator<ProductUpdateDto>, ProductUpdateValidator>();
-            
-            services.AddTransient<IValidator<ServiceAddDto>, ServiceAddValidator>();
-            services.AddTransient<IValidator<ServiceUpdateDto>, ServiceUpdateValidator>();
+            services.Configure<Options.MongodbDatabaseOptions>
+                (configuration.GetSection(Options.MongodbDatabaseOptions.MongodbDatabase));
 
             services.AddTransient<IAdvertisementRepository, AdvertisementRepository>();
             services.AddTransient<IBrandRepository, BrandRepository>();

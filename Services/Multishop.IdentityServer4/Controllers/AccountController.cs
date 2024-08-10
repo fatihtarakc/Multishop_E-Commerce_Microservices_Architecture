@@ -14,12 +14,12 @@ namespace Multishop.IdentityServer4.Controllers
     {
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
-        private readonly IAppUserService appUserService;
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IAppUserService appUserService)
+        private readonly IIdentityService identityService;
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IIdentityService identityService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
-            this.appUserService = appUserService;
+            this.identityService = identityService;
         }
 
         [HttpPost("SignIn")]
@@ -35,7 +35,7 @@ namespace Multishop.IdentityServer4.Controllers
 
             var appUserDto = new AppUserDto { Id = appUserByEmail.Id, Email = appUserByEmail.Email, Role = (await userManager.GetRolesAsync(appUserByEmail)).FirstOrDefault() };
 
-            var token = appUserService.TokenGenerator(appUserDto);
+            var token = identityService.TokenGenerator(appUserDto);
             return Ok(token);
         }
 

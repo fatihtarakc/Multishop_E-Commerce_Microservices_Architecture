@@ -17,8 +17,8 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
-        "AllowedScopes": [ "IdentityFullPermission" ]
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AllowedScopes": [ "IdentityFullPermission" ]
       }
     },
     // Catalog Microservice
@@ -35,8 +35,8 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
-        "AllowedScopes": [ "CatalogFullPermission" ]
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AllowedScopes": [ "CatalogFullPermission" ]
       }
     },
     // Discount Microservice
@@ -53,8 +53,8 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
-        "AllowedScopes": [ "DiscountFullPermission" ]
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AllowedScopes": [ "DiscountFullPermission" ]
       }
     },
     // Order Microservice
@@ -71,8 +71,8 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
-        "AllowedScopes": [ "OrderFullPermission" ]
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AllowedScopes": [ "OrderFullPermission" ]
       }
     },
     // Cargo Microservice
@@ -89,8 +89,8 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
-        "AllowedScopes": [ "CargoFullPermission" ]
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AllowedScopes": [ "CargoFullPermission" ]
       }
     },
     // Basket Microservice
@@ -107,8 +107,8 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
-        "AllowedScopes": [ "BasketFullPermission" ]
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AllowedScopes": [ "BasketFullPermission" ]
       }
     },
     // Comment Microservice
@@ -125,8 +125,8 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
-        "AllowedScopes": [ "CommentFullPermission" ]
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AllowedScopes": [ "CommentFullPermission" ]
       }
     },
     // Payment Microservice
@@ -143,8 +143,8 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
-        "AllowedScopes": [ "PaymentFullPermission" ]
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AllowedScopes": [ "PaymentFullPermission" ]
       }
     },
     // Image Microservice
@@ -161,8 +161,8 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
-        "AllowedScopes": [ "ImageFullPermission" ]
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AllowedScopes": [ "ImageFullPermission" ]
       }
     }
   ]

@@ -11,10 +11,10 @@ using System.Text;
 
 namespace Multishop.IdentityServer4.Services.Concrete
 {
-    public class AppUserService : IAppUserService
+    public class IdentityService : IIdentityService
     {
         private readonly IConfiguration configuration;
-        public AppUserService(IConfiguration configuration)
+        public IdentityService(IConfiguration configuration)
         {
             this.configuration = configuration;
         }

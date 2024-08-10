@@ -117,8 +117,11 @@ namespace Multishop.UI.Services.IdentityServices.Concrete
         public async Task<bool> SignOutAsync() =>
             (await httpClient.GetAsync("/account/signout")).StatusCode is HttpStatusCode.OK ? true : false;
 
-        public async Task<AppUserVM> GetFirstOrDefaultAsync() =>
-            await httpClient.GetFromJsonAsync<AppUserVM>("/api/user/getfirstordefault");
+        public async Task<AppUserVM> GetFirstOrDefaultAsync()
+        {
+            var httpResponseMessage = await httpClient.GetAsync("/api/user/getfirstordefault");
+            return httpResponseMessage.StatusCode is HttpStatusCode.OK ? await httpResponseMessage.Content.ReadFromJsonAsync<AppUserVM>() : null;
+        }
 
         public async Task<string> ClientCredentialTokenGetFirstOrDefaultAsync()
         {

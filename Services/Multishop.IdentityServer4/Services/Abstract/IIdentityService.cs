@@ -3,7 +3,7 @@ using Multishop.IdentityServer4.Dtos.TokenDtos;
 
 namespace Multishop.IdentityServer4.Services.Abstract
 {
-    public interface IAppUserService
+    public interface IIdentityService
     {
         TokenDto TokenGenerator(AppUserDto appUserDto);
     }

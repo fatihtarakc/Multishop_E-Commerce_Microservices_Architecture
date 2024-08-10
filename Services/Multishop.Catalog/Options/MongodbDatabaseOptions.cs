@@ -1,19 +1,19 @@
 ﻿namespace Multishop.Catalog.Options
 {
-    public class MongodbDatabaseOptions : IMongodbDatabaseOptions
+    public class MongodbDatabaseOptions
     {
         public const string MongodbDatabase = "MongodbDatabase";
 
-        public string AdvertisementCollectionName { get; set; }
-        public string BrandCollectionName { get; set; }
-        public string CategoryCollectionName { get; set; }
-        public string ContactCollectionName { get; set; }
-        public string DetailCollectionName { get; set; }
-        public string ImageCollectionName { get; set; }
-        public string OfferCollectionName { get; set; }
-        public string ProductCollectionName { get; set; }
-        public string ServiceCollectionName { get; set; }
+        public string AdvertisementCollection { get; set; }
+        public string BrandCollection { get; set; }
+        public string CategoryCollection { get; set; }
+        public string ContactCollection { get; set; }
+        public string DetailCollection { get; set; }
+        public string ImageCollection { get; set; }
+        public string OfferCollection { get; set; }
+        public string ProductCollection { get; set; }
+        public string ServiceCollection { get; set; }
         public string ConnectionString { get; set; }
-        public string DatabaseName { get; set; }
+        public string Database { get; set; }
     }
 }

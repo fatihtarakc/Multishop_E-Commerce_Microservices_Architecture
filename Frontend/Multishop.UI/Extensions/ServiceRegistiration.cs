@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Multishop.UI.Handlers;
 using Multishop.UI.Options;
 using Multishop.UI.Services.AdvertisementServices.Abstract;
@@ -33,10 +34,16 @@ namespace Multishop.UI.Extensions
     {
         public static IServiceCollection AddMvcService(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddHttpClient();
-            services.AddHttpContextAccessor();
-            services.AddAccessTokenManagement();
-            services.AddFluentValidationAutoValidation().AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddCookie(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.LoginPath = "/Account/SignIn";
+                options.LogoutPath = "/Account/SignUp";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.Cookie.HttpOnly = false;
+                options.Cookie.SameSite = SameSiteMode.Strict;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+                options.Cookie.Name = "MultishopCookie";
+            });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
@@ -45,15 +52,10 @@ namespace Multishop.UI.Extensions
                 options.ExpireTimeSpan = TimeSpan.FromDays(1);
                 options.SlidingExpiration = true;
             });
-
-            services.Configure<ClientOptions>
-                (configuration.GetSection(ClientOptions.Client));
-
-            services.Configure<Options.RouteOptions>
-                (configuration.GetSection(Options.RouteOptions.Route));
-
-            services.AddTransient<ClientCredentialsTokenHandler>();
-            services.AddTransient<ResourceOwnerPasswordTokenHandler>();
+            services.AddHttpClient();
+            services.AddHttpContextAccessor();
+            services.AddAccessTokenManagement();
+            services.AddFluentValidationAutoValidation().AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             services.AddTransient<IIdentityService, IdentityService>();
             services.AddTransient<IAdvertisementService, AdvertisementService>();
@@ -66,6 +68,15 @@ namespace Multishop.UI.Extensions
             services.AddTransient<IOfferService, OfferService>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IServiceService, ServiceService>();
+
+            services.Configure<ClientOptions>
+                (configuration.GetSection(ClientOptions.Client));
+
+            services.Configure<Options.RouteOptions>
+                (configuration.GetSection(Options.RouteOptions.Route));
+
+            services.AddTransient<ClientCredentialsTokenHandler>();
+            services.AddTransient<ResourceOwnerPasswordTokenHandler>();
 
             var route = configuration.GetSection(Options.RouteOptions.Route).Get<Options.RouteOptions>();
 

@@ -25,6 +25,7 @@ namespace Multishop.UI.ValidationRules.AppUserValidationRules
 
             RuleFor(appUser => appUser.Email)
                 .NotEmpty().WithMessage("Please enter your email !")
+                .EmailAddress().WithMessage("Email address is invalid !")
                 .Must(TRCharacterControl).WithMessage("Turkish charachters cannot use for email !")
                 .MinimumLength(5).WithMessage("Email can not be less than 5 characters !")
                 .MaximumLength(50).WithMessage("Email can not be greater than 50 characters !");

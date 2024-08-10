@@ -1,6 +1,6 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using Multishop.Catalog.Data.Entities;
-using Multishop.Catalog.Options;
 using Multishop.Catalog.Repositories.Abstract;
 using System.Linq.Expressions;
 
@@ -9,36 +9,28 @@ namespace Multishop.Catalog.Repositories.Concrete
     public class DetailRepository : IDetailRepository
     {
         private readonly IMongoCollection<Detail> detailCollection;
-        public DetailRepository(IMongodbDatabaseOptions mongodbDatabaseOptions)
+        private readonly Options.MongodbDatabaseOptions mongodbDatabaseOptions;
+        public DetailRepository(IOptions<Options.MongodbDatabaseOptions> mongodbDatabaseOptions)
         {
-            var client = new MongoClient(mongodbDatabaseOptions.ConnectionString);
-            var db = client.GetDatabase(mongodbDatabaseOptions.DatabaseName);
-            detailCollection = db.GetCollection<Detail>(mongodbDatabaseOptions.DetailCollectionName);
+            this.mongodbDatabaseOptions = mongodbDatabaseOptions.Value;
+            var client = new MongoClient(this.mongodbDatabaseOptions.ConnectionString);
+            var db = client.GetDatabase(this.mongodbDatabaseOptions.Database);
+            detailCollection = db.GetCollection<Detail>(this.mongodbDatabaseOptions.DetailCollection);
         }
 
-        public async Task AddAsync(Detail entity)
-        {
+        public async Task AddAsync(Detail entity) =>
             await detailCollection.InsertOneAsync(entity);
-        }
 
-        public async Task DeleteAsync(string entityId)
-        {
+        public async Task DeleteAsync(string entityId) =>
             await detailCollection.DeleteOneAsync(detail => detail.Id == entityId);
-        }
 
-        public async Task UpdateAsync(Detail entity)
-        {
+        public async Task UpdateAsync(Detail entity) =>
             await detailCollection.FindOneAndReplaceAsync(detail => detail.Id == entity.Id, entity);
-        }
 
-        public async Task<Detail> GetFirstOrDefaultAsync(Expression<Func<Detail, bool>> expression)
-        {
-            return await detailCollection.Find(expression).FirstOrDefaultAsync();
-        }
+        public async Task<Detail> GetFirstOrDefaultAsync(Expression<Func<Detail, bool>> expression) =>
+            await detailCollection.Find(expression).FirstOrDefaultAsync();
 
-        public async Task<IEnumerable<Detail>> GetAllAsync()
-        {
-            return await detailCollection.Find(detail => true).ToListAsync();
-        }
+        public async Task<IEnumerable<Detail>> GetAllAsync() =>
+            await detailCollection.Find(detail => true).ToListAsync();
     }
 }
