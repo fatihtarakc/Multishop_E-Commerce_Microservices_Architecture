@@ -27,7 +27,7 @@ namespace Multishop.IdentityServer4.Services.Concrete
 
             claims.Add(new Claim(ClaimTypes.NameIdentifier, appUserDto.Id));
 
-            if (!string.IsNullOrWhiteSpace(appUserDto.Email)) claims.Add(new Claim("email", appUserDto.Email));
+            if (!string.IsNullOrWhiteSpace(appUserDto.Username)) claims.Add(new Claim("username", appUserDto.Username));
 
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:IssuerSigningKey"]));
 

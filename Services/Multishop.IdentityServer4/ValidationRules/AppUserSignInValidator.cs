@@ -7,9 +7,8 @@ namespace Multishop.IdentityServer4.ValidationRules
     {
         public AppUserSignInValidator() 
         {
-            RuleFor(appUser => appUser.Email)
-                .NotEmpty().WithMessage("Please enter your email !")
-                .EmailAddress().WithMessage("Email address is invalid !");
+            RuleFor(appUser => appUser.Username)
+                .NotEmpty().WithMessage("Please enter your username !");
 
             RuleFor(appUser => appUser.Password)
                 .NotEmpty().WithMessage("Please enter your password !");

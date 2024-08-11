@@ -18,14 +18,14 @@ namespace Multishop.UI.Services.IdentityServices.Concrete
         private readonly Options.RouteOptions routeOptions;
         private readonly HttpClient httpClient;
         private readonly IHttpContextAccessor httpContextAccessor;
-        private readonly IClientAccessTokenCache clientAccessTokenCache;
-        public IdentityService(IOptions<Options.ClientOptions> clientOptions, IOptions<Options.RouteOptions> routeOptions, HttpClient httpClient, IHttpContextAccessor httpContextAccessor, IClientAccessTokenCache clientAccessTokenCache)
+        //private readonly IClientAccessTokenCache clientAccessTokenCache;
+        public IdentityService(IOptions<Options.ClientOptions> clientOptions, IOptions<Options.RouteOptions> routeOptions, HttpClient httpClient, IHttpContextAccessor httpContextAccessor/*, IClientAccessTokenCache clientAccessTokenCache*/)
         {
             this.clientOptions = clientOptions.Value;
             this.routeOptions = routeOptions.Value;
             this.httpClient = httpClient;
             this.httpContextAccessor = httpContextAccessor;
-            this.clientAccessTokenCache = clientAccessTokenCache;
+            //this.clientAccessTokenCache = clientAccessTokenCache;
         }
 
         public async Task<bool> SignInWithTokenAsync(AppUserSignInVM appUserSignInVM)
@@ -38,7 +38,7 @@ namespace Multishop.UI.Services.IdentityServices.Concrete
             {
                 ClientId = clientOptions.Manager.Id,
                 ClientSecret = clientOptions.Manager.Secret,
-                Email = appUserSignInVM.Email,
+                UserName = appUserSignInVM.Username,
                 Password = appUserSignInVM.Password,
                 Address = discoveryDocumentResponse.TokenEndpoint
             };
@@ -73,40 +73,40 @@ namespace Multishop.UI.Services.IdentityServices.Concrete
 
         public async Task<bool> SignInWithRefreshTokenAsync()
         {
-            var discoveryDocumentResponse = await httpClient.GetDiscoveryDocumentAsync
-                (new DiscoveryDocumentRequest { Address = routeOptions.IdentityServer, Policy = new DiscoveryPolicy { RequireHttps = true } });
-            if (discoveryDocumentResponse.HttpStatusCode is not HttpStatusCode.OK) return false;
+            //var discoveryDocumentResponse = await httpClient.GetDiscoveryDocumentAsync
+            //    (new DiscoveryDocumentRequest { Address = routeOptions.IdentityServer, Policy = new DiscoveryPolicy { RequireHttps = true } });
+            //if (discoveryDocumentResponse.HttpStatusCode is not HttpStatusCode.OK) return false;
 
-            var httpContext = httpContextAccessor.HttpContext;
-            if (httpContext is null) return false;
+            //var httpContext = httpContextAccessor.HttpContext;
+            //if (httpContext is null) return false;
 
-            var refreshToken = await httpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken);
+            //var refreshToken = await httpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken);
 
-            var refreshTokenRequest = new RefreshTokenRequest
-            {
-                RefreshToken = refreshToken,
-                ClientId = clientOptions.Manager.Id,
-                ClientSecret = clientOptions.Manager.Secret,
-                Address = discoveryDocumentResponse.TokenEndpoint
-            };
+            //var refreshTokenRequest = new RefreshTokenRequest
+            //{
+            //    RefreshToken = refreshToken,
+            //    ClientId = clientOptions.Manager.Id,
+            //    ClientSecret = clientOptions.Manager.Secret,
+            //    Address = discoveryDocumentResponse.TokenEndpoint
+            //};
 
-            var tokenResponse = await httpClient.RequestRefreshTokenAsync(refreshTokenRequest);
-            if (tokenResponse.HttpStatusCode is not HttpStatusCode.OK) return false;
+            //var tokenResponse = await httpClient.RequestRefreshTokenAsync(refreshTokenRequest);
+            //if (tokenResponse.HttpStatusCode is not HttpStatusCode.OK) return false;
 
-            var authenticationTokens = new List<AuthenticationToken>()
-            {
-                new AuthenticationToken { Name = OpenIdConnectParameterNames.AccessToken, Value = tokenResponse.AccessToken },
-                new AuthenticationToken { Name = OpenIdConnectParameterNames.RefreshToken, Value = tokenResponse.RefreshToken },
-                new AuthenticationToken { Name = OpenIdConnectParameterNames.ExpiresIn, Value = DateTime.UtcNow.AddSeconds(tokenResponse.ExpiresIn).ToString() }
-            };
+            //var authenticationTokens = new List<AuthenticationToken>()
+            //{
+            //    new AuthenticationToken { Name = OpenIdConnectParameterNames.AccessToken, Value = tokenResponse.AccessToken },
+            //    new AuthenticationToken { Name = OpenIdConnectParameterNames.RefreshToken, Value = tokenResponse.RefreshToken },
+            //    new AuthenticationToken { Name = OpenIdConnectParameterNames.ExpiresIn, Value = DateTime.UtcNow.AddSeconds(tokenResponse.ExpiresIn).ToString() }
+            //};
 
-            var authenticationResult = await httpContext.AuthenticateAsync();
-            if (!authenticationResult.Succeeded) return false;
+            //var authenticationResult = await httpContext.AuthenticateAsync();
+            //if (!authenticationResult.Succeeded) return false;
 
-            var authenticationProperties = authenticationResult.Properties;
-            authenticationProperties.StoreTokens(authenticationTokens);
+            //var authenticationProperties = authenticationResult.Properties;
+            //authenticationProperties.StoreTokens(authenticationTokens);
 
-            await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, authenticationResult.Principal, authenticationProperties);
+            //await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, authenticationResult.Principal, authenticationProperties);
 
             return true;
         }
@@ -125,25 +125,26 @@ namespace Multishop.UI.Services.IdentityServices.Concrete
 
         public async Task<string> ClientCredentialTokenGetFirstOrDefaultAsync()
         {
-            var clientAccessToken = await clientAccessTokenCache.GetAsync("multishopClientName");
-            if (clientAccessToken is not null) return clientAccessToken.AccessToken;
+            //var clientAccessToken = await clientAccessTokenCache.GetAsync("multishopClientName");
+            //if (clientAccessToken is not null) return clientAccessToken.AccessToken;
 
-            var discoveryDocumentResponse = await httpClient.GetDiscoveryDocumentAsync
-                (new DiscoveryDocumentRequest { Address = routeOptions.IdentityServer, Policy = new DiscoveryPolicy { RequireHttps = true } });
-            if (discoveryDocumentResponse.HttpStatusCode is not HttpStatusCode.OK) return null;
+            //var discoveryDocumentResponse = await httpClient.GetDiscoveryDocumentAsync
+            //    (new DiscoveryDocumentRequest { Address = routeOptions.IdentityServer, Policy = new DiscoveryPolicy { RequireHttps = true } });
+            //if (discoveryDocumentResponse.HttpStatusCode is not HttpStatusCode.OK) return null;
 
-            var clientCredentialsTokenRequest = new ClientCredentialsTokenRequest
-            {
-                ClientId = clientOptions.Visitor.Id,
-                ClientSecret = clientOptions.Visitor.Secret,
-                Address = discoveryDocumentResponse.TokenEndpoint
-            };
+            //var clientCredentialsTokenRequest = new ClientCredentialsTokenRequest
+            //{
+            //    ClientId = clientOptions.Visitor.Id,
+            //    ClientSecret = clientOptions.Visitor.Secret,
+            //    Address = discoveryDocumentResponse.TokenEndpoint
+            //};
 
-            var tokenResponse = await httpClient.RequestClientCredentialsTokenAsync(clientCredentialsTokenRequest);
-            if (tokenResponse.HttpStatusCode is not HttpStatusCode.OK) return null;
+            //var tokenResponse = await httpClient.RequestClientCredentialsTokenAsync(clientCredentialsTokenRequest);
+            //if (tokenResponse.HttpStatusCode is not HttpStatusCode.OK) return null;
 
-            await clientAccessTokenCache.SetAsync("multishopClientName", tokenResponse.AccessToken, tokenResponse.ExpiresIn);
-            return tokenResponse.AccessToken;
+            //await clientAccessTokenCache.SetAsync("multishopClientName", tokenResponse.AccessToken, tokenResponse.ExpiresIn);
+            //return tokenResponse.AccessToken;
+            return null;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Multishop.UI.ValidationRules.AppUserValidationRules
                 .MinimumLength(2).WithMessage("Name can not be less than 2 characters !")
                 .MaximumLength(20).WithMessage("Name can not be greater than 20 characters !");
 
-            RuleFor(appUser => appUser.Name)
+            RuleFor(appUser => appUser.Surname)
                 .NotEmpty().WithMessage("Please enter your surname !")
                 .MinimumLength(2).WithMessage("Surname can not be less than 2 characters !")
                 .MaximumLength(20).WithMessage("Surname can not be greater than 20 characters !");

@@ -25,15 +25,15 @@ namespace Multishop.IdentityServer4.Controllers
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn(AppUserSignInDto appUserSignInDto)
         {
-            if (!ModelState.IsValid) return BadRequest("Email or password must not be null !");
+            if (!ModelState.IsValid) return BadRequest("Username or password must not be null !");
 
-            var appUserByEmail = await userManager.FindByEmailAsync(appUserSignInDto.Email);
-            if (appUserByEmail is null) return BadRequest("Email or password is incorrect !");
+            var appUserByUsername = await userManager.FindByNameAsync(appUserSignInDto.Username);
+            if (appUserByUsername is null) return BadRequest("Email or password is incorrect !");
 
-            Microsoft.AspNetCore.Identity.SignInResult signInResult = await signInManager.PasswordSignInAsync(appUserByEmail, appUserSignInDto.Password, appUserSignInDto.RememberMe, false);
-            if (!signInResult.Succeeded) return BadRequest("Email or password is incorrect !");
+            Microsoft.AspNetCore.Identity.SignInResult signInResult = await signInManager.PasswordSignInAsync(appUserByUsername, appUserSignInDto.Password, appUserSignInDto.RememberMe, false);
+            if (!signInResult.Succeeded) return BadRequest("Username or password is incorrect !");
 
-            var appUserDto = new AppUserDto { Id = appUserByEmail.Id, Email = appUserByEmail.Email, Role = (await userManager.GetRolesAsync(appUserByEmail)).FirstOrDefault() };
+            var appUserDto = new AppUserDto { Id = appUserByUsername.Id, Username = appUserByUsername.UserName, Role = (await userManager.GetRolesAsync(appUserByUsername)).FirstOrDefault() };
 
             var token = identityService.TokenGenerator(appUserDto);
             return Ok(token);
