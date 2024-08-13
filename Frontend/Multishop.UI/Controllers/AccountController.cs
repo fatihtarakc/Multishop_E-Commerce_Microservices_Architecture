@@ -1,14 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Multishop.UI.Models.ViewModels.AppUserVMs;
+using Multishop.UI.Services.AppUserServices.Abstract;
 using Multishop.UI.Services.IdentityServices.Abstract;
 
 namespace Multishop.UI.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IAppUserService appUserService;
         private readonly IIdentityService identityService;
-        public AccountController(IIdentityService identityService)
+        public AccountController(IAppUserService appUserService, IIdentityService identityService)
         {
+            this.appUserService = appUserService;
             this.identityService = identityService;
         }
 
@@ -25,7 +28,8 @@ namespace Multishop.UI.Controllers
             bool response = await identityService.SignInWithTokenAsync(appUserSignInVM);
             if (!response) return View(appUserSignInVM);
 
-            return RedirectToAction("Index", "Home", new { area = "" });
+            return RedirectToAction("UserGetFirstOrDefault", "Account", new { area = "" });
+            //return RedirectToAction("Index", "Home", new { area = "" });
         }
 
         public IActionResult SignUp()
@@ -56,9 +60,9 @@ namespace Multishop.UI.Controllers
             return View("SignIn");
         }
 
-        public async Task<IActionResult> UserGetFirstOrDefaultAsync()
+        public async Task<IActionResult> UserGetFirstOrDefault()
         {
-            var user = await identityService.GetFirstOrDefaultAsync();
+            var user = await appUserService.GetFirstOrDefaultAsync();
             return View(user);
         }
     }

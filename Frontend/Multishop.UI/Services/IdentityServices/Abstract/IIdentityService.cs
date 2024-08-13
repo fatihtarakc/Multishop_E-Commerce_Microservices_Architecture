@@ -12,8 +12,6 @@ namespace Multishop.UI.Services.IdentityServices.Abstract
 
         Task<bool> SignOutAsync();
 
-        Task<AppUserVM> GetFirstOrDefaultAsync();
-
         Task<string> ClientCredentialTokenGetFirstOrDefaultAsync();
     }
 }

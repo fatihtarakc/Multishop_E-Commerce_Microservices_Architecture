@@ -5,6 +5,8 @@ using Multishop.UI.Handlers;
 using Multishop.UI.Options;
 using Multishop.UI.Services.AdvertisementServices.Abstract;
 using Multishop.UI.Services.AdvertisementServices.Concrete;
+using Multishop.UI.Services.AppUserServices.Abstract;
+using Multishop.UI.Services.AppUserServices.Concrete;
 using Multishop.UI.Services.BrandServices.Abstract;
 using Multishop.UI.Services.BrandServices.Concrete;
 using Multishop.UI.Services.CategoryServices.Abstract;
@@ -46,18 +48,6 @@ namespace Multishop.UI.Extensions
             //services.AddAccessTokenManagement();
             services.AddFluentValidationAutoValidation().AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-            services.AddTransient<IIdentityService, IdentityService>();
-            services.AddTransient<IAdvertisementService, AdvertisementService>();
-            services.AddTransient<IBrandService, BrandService>();
-            services.AddTransient<ICategoryService, CategoryService>();
-            services.AddTransient<ICommentService, CommentService>();
-            services.AddTransient<IContactService, ContactService>();
-            services.AddTransient<IDetailService, DetailService>();
-            services.AddTransient<IImageService, ImageService>();
-            services.AddTransient<IOfferService, OfferService>();
-            services.AddTransient<IProductService, ProductService>();
-            services.AddTransient<IServiceService, ServiceService>();
-
             services.Configure<ClientOptions>
                 (configuration.GetSection(ClientOptions.Client));
 
@@ -65,21 +55,21 @@ namespace Multishop.UI.Extensions
                 (configuration.GetSection(Options.RouteOptions.Route));
 
             //services.AddTransient<ClientCredentialsTokenHandler>();
-            //services.AddTransient<ResourceOwnerPasswordTokenHandler>();
+            services.AddTransient<ResourceOwnerPasswordTokenHandler>();
 
             var route = configuration.GetSection(Options.RouteOptions.Route).Get<Options.RouteOptions>();
 
-            //services.AddHttpClient<IIdentityService, IdentityService>();
-
-            services.AddHttpClient<IIdentityService, IdentityService>(options =>
-            {
-                options.BaseAddress = new Uri(route.IdentityServer);
-            })/*.AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>()*/;
+            services.AddHttpClient<IIdentityService, IdentityService>();
 
             services.AddHttpClient<IAdvertisementService, AdvertisementService>(options =>
             {
                 options.BaseAddress = new Uri(route.ApiGateway + "/" + route.Catalog);
             })/*.AddHttpMessageHandler<ClientCredentialsTokenHandler>()*/;
+
+            services.AddHttpClient<IAppUserService, AppUserService>(options =>
+            {
+                options.BaseAddress = new Uri(route.IdentityServer);
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
 
             services.AddHttpClient<IBrandService, BrandService>(options =>
             {
