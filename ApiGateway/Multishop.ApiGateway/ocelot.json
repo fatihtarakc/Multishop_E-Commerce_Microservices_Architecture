@@ -1,7 +1,4 @@
 {
-  "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:6999"
-  },
   "Routes": [
     // IdentityServer4 Microservice
     {
@@ -165,5 +162,9 @@
         "AllowedScopes": [ "ImageFullPermission" ]
       }
     }
-  ]
+  ],
+
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:6999"
+  }
 }
