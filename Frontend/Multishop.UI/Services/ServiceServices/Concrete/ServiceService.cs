@@ -14,23 +14,23 @@ namespace Multishop.UI.Services.ServiceServices.Concrete
         }
 
         public async Task<bool> AddAsync(ServiceAddVM serviceAddVM) =>
-            (await httpClient.PostAsJsonAsync("/service/add", serviceAddVM)).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.PostAsJsonAsync("service/add", serviceAddVM)).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<bool> DeleteAsync(string serviceId) =>
-            (await httpClient.DeleteAsync($"/service/delete/{serviceId}")).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.DeleteAsync($"service/delete/{serviceId}")).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<bool> UpdateAsync(ServiceUpdateVM serviceUpdateVM) =>
-            (await httpClient.PutAsJsonAsync("/service/update", serviceUpdateVM)).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.PutAsJsonAsync("service/update", serviceUpdateVM)).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<ServiceVM> GetFirstOrDefaultAsync(string serviceId)
         {
-            var httpResponseMessage = await httpClient.GetAsync($"/service/getby/{serviceId}");
+            var httpResponseMessage = await httpClient.GetAsync($"service/getby/{serviceId}");
             return httpResponseMessage.StatusCode is HttpStatusCode.OK ? await httpResponseMessage.Content.ReadFromJsonAsync<ServiceVM>() : null;
         }
 
         public async Task<IEnumerable<ServiceVM>> GetAllAsync()
         {
-            var httpResponseMessage = await httpClient.GetAsync("/service/services");
+            var httpResponseMessage = await httpClient.GetAsync("service/services");
             return httpResponseMessage.StatusCode is HttpStatusCode.OK ? await httpResponseMessage.Content.ReadFromJsonAsync<IEnumerable<ServiceVM>>() : null;
         }
     }

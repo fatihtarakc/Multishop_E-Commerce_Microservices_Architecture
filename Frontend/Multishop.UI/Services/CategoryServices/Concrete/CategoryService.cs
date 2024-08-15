@@ -14,23 +14,23 @@ namespace Multishop.UI.Services.CategoryServices.Concrete
         }
 
         public async Task<bool> AddAsync(CategoryAddVM categoryAddVM) =>
-            (await httpClient.PostAsJsonAsync("/category/add", categoryAddVM)).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.PostAsJsonAsync("category/add", categoryAddVM)).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<bool> DeleteAsync(string categoryId) =>
-            (await httpClient.DeleteAsync($"/category/delete/{categoryId}")).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.DeleteAsync($"category/delete/{categoryId}")).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<bool> UpdateAsync(CategoryUpdateVM categoryUpdateVM) =>
-            (await httpClient.PutAsJsonAsync("/category/update", categoryUpdateVM)).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.PutAsJsonAsync("category/update", categoryUpdateVM)).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<CategoryVM> GetFirstOrDefaultAsync(string categoryId)
         {
-            var httpResponseMessage = await httpClient.GetAsync($"/category/getby/{categoryId}");
+            var httpResponseMessage = await httpClient.GetAsync($"category/getby/{categoryId}");
             return httpResponseMessage.StatusCode is HttpStatusCode.OK ? await httpResponseMessage.Content.ReadFromJsonAsync<CategoryVM>() : null;
         }
 
         public async Task<IEnumerable<CategoryVM>> GetAllAsync()
         {
-            var httpResponseMessage = await httpClient.GetAsync("/category/categories");
+            var httpResponseMessage = await httpClient.GetAsync("category/categories");
             return httpResponseMessage.StatusCode is HttpStatusCode.OK ? await httpResponseMessage.Content.ReadFromJsonAsync<IEnumerable<CategoryVM>>() : null;
         }
     }

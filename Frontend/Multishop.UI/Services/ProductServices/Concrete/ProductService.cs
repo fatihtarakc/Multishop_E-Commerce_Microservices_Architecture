@@ -14,17 +14,17 @@ namespace Multishop.UI.Services.ProductServices.Concrete
         }
 
         public async Task<bool> AddAsync(ProductAddVM productAddVM) =>
-            (await httpClient.PostAsJsonAsync("/product/add", productAddVM)).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.PostAsJsonAsync("product/add", productAddVM)).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<bool> DeleteAsync(string productId) =>
-            (await httpClient.DeleteAsync($"/product/delete/{productId}")).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.DeleteAsync($"product/delete/{productId}")).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<bool> UpdateAsync(ProductUpdateVM productUpdateVM) =>
-            (await httpClient.PutAsJsonAsync("/product/update", productUpdateVM)).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.PutAsJsonAsync("product/update", productUpdateVM)).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<ProductVM> GetFirstOrDefaultAsync(string productId)
         {
-            var httpResponseMessage = await httpClient.GetAsync($"/product/getby/{productId}");
+            var httpResponseMessage = await httpClient.GetAsync($"product/getby/{productId}");
             if (httpResponseMessage.StatusCode is not HttpStatusCode.OK) return null;
 
             return await httpResponseMessage.Content.ReadFromJsonAsync<ProductVM>();
@@ -32,13 +32,13 @@ namespace Multishop.UI.Services.ProductServices.Concrete
 
         public async Task<IEnumerable<ProductVM>> GetAllAsync()
         {
-            var httpResponseMessage = await httpClient.GetAsync("/product/products");
+            var httpResponseMessage = await httpClient.GetAsync("product/products");
             return httpResponseMessage.StatusCode is HttpStatusCode.OK ? await httpResponseMessage.Content.ReadFromJsonAsync<IEnumerable<ProductVM>>() : null;
         }
 
         public async Task<IEnumerable<ProductVM>> GetAllByAsync(string categoryId)
         {
-            var httpResponseMessage = await httpClient.GetAsync($"/product/productsgetby/{categoryId}");
+            var httpResponseMessage = await httpClient.GetAsync($"product/productsgetby/{categoryId}");
             return httpResponseMessage.StatusCode is HttpStatusCode.OK ? await httpResponseMessage.Content.ReadFromJsonAsync<IEnumerable<ProductVM>>() : null;
         }
     }

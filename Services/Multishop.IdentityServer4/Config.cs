@@ -56,7 +56,7 @@ namespace Multishop.IdentityServer4
                 AllowedScopes = { "ApiGatewayFullPermission", "CatalogFullPermission", "CommentFullPermission", "ImageFullPermission" },
                 ClientId = "Multishop.VisitorId",
                 ClientName = "Multishop.VisitorName",
-                ClientSecrets = {new Secret("multishop.clientsecret".Sha256())}
+                ClientSecrets = {new Secret("multishop.visitorsecret".Sha256())}
             },
 
             // manager
@@ -66,7 +66,7 @@ namespace Multishop.IdentityServer4
                 AllowedScopes = { "ApiGatewayFullPermission", "BasketFullPermission", "CatalogFullPermission", "CommentFullPermission", "ImageFullPermission", "PaymentFullPermission", IdentityServerConstants.LocalApi.ScopeName, IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile },
                 ClientId = "Multishop.ManagerId",
                 ClientName = "Multishop.ManagerName",
-                ClientSecrets = {new Secret("multishop.clientsecret".Sha256())}
+                ClientSecrets = {new Secret("multishop.managersecret".Sha256())}
             },
 
             // admin
@@ -77,7 +77,7 @@ namespace Multishop.IdentityServer4
                 AllowedScopes = { "ApiGatewayFullPermission", "BasketFullPermission", "CatalogFullPermission", "CargoFullPermission", "CommentFullPermission", "DiscountFullPermission", "ImageFullPermission", "OrderFullPermission", "PaymentFullPermission", IdentityServerConstants.LocalApi.ScopeName, IdentityServerConstants.StandardScopes.Email, IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile },
                 ClientId = "Multishop.AdminId",
                 ClientName = "Multishop.AdminName",
-                ClientSecrets = {new Secret("multishop.clientsecret".Sha256())}
+                ClientSecrets = {new Secret("multishop.adminsecret".Sha256())}
             }
         };
     }

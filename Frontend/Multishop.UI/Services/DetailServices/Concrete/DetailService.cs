@@ -14,17 +14,17 @@ namespace Multishop.UI.Services.DetailServices.Concrete
         }
 
         public async Task<bool> AddAsync(DetailAddVM detailAddVM) =>
-            (await httpClient.PostAsJsonAsync("/detail/add", detailAddVM)).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.PostAsJsonAsync("detail/add", detailAddVM)).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<bool> DeleteAsync(string detailId) =>
-            (await httpClient.DeleteAsync($"/detail/delete/{detailId}")).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.DeleteAsync($"detail/delete/{detailId}")).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<bool> UpdateAsync(DetailUpdateVM detailUpdateVM) =>
-            (await httpClient.PutAsJsonAsync("/detail/update", detailUpdateVM)).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.PutAsJsonAsync("detail/update", detailUpdateVM)).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<DetailVM> GetFirstOrDefaultAsync(string productId)
         {
-            var httpResponseMessage = await httpClient.GetAsync($"/detail/getby/{productId}");
+            var httpResponseMessage = await httpClient.GetAsync($"detail/getby/{productId}");
             return httpResponseMessage.StatusCode is HttpStatusCode.OK or HttpStatusCode.NotFound ? await httpResponseMessage.Content.ReadFromJsonAsync<DetailVM>() : null;
         }
     }

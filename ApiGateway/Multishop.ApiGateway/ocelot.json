@@ -14,7 +14,7 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
         "AllowedScopes": [ "IdentityFullPermission" ]
       }
     },
@@ -32,7 +32,7 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
         "AllowedScopes": [ "CatalogFullPermission" ]
       }
     },
@@ -50,7 +50,7 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
         "AllowedScopes": [ "DiscountFullPermission" ]
       }
     },
@@ -68,7 +68,7 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
         "AllowedScopes": [ "OrderFullPermission" ]
       }
     },
@@ -86,7 +86,7 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
         "AllowedScopes": [ "CargoFullPermission" ]
       }
     },
@@ -104,7 +104,7 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
         "AllowedScopes": [ "BasketFullPermission" ]
       }
     },
@@ -122,7 +122,7 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
         "AllowedScopes": [ "CommentFullPermission" ]
       }
     },
@@ -140,7 +140,7 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
         "AllowedScopes": [ "PaymentFullPermission" ]
       }
     },
@@ -158,7 +158,7 @@
       "UpstreamHttpMethod": [ "Get", "Post", "Delete", "Put" ],
       "UpstreamScheme": "https",
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
+        //"AuthenticationProviderKey": "MyOcelotAuthenticationScheme",
         "AllowedScopes": [ "ImageFullPermission" ]
       }
     }

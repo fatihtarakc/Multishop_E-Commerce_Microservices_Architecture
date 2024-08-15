@@ -14,20 +14,20 @@ namespace Multishop.UI.Services.ContactServices.Concrete
         }
 
         public async Task<bool> AddAsync(ContactAddVM contactAddVM) =>
-            (await httpClient.PostAsJsonAsync("/contact/add", contactAddVM)).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.PostAsJsonAsync("contact/add", contactAddVM)).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<bool> DeleteAsync(string contactId) =>
-            (await httpClient.DeleteAsync($"/contact/delete/{contactId}")).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.DeleteAsync($"contact/delete/{contactId}")).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<bool> UpdateAsync(string contactId, bool isRead)
         {
-            var httpResponseMessage = await httpClient.PutAsync($"/contact/update/{contactId},{isRead}", null);
+            var httpResponseMessage = await httpClient.PutAsync($"contact/update/{contactId},{isRead}", null);
             return httpResponseMessage.StatusCode is HttpStatusCode.OK ? true : false;
         }
 
         public async Task<IEnumerable<ContactVM>> GetAllAsync()
         {
-            var httpResponseMessage = await httpClient.GetAsync("/contact/contacts");
+            var httpResponseMessage = await httpClient.GetAsync("contact/contacts");
             return httpResponseMessage.StatusCode is HttpStatusCode.OK ? await httpResponseMessage.Content.ReadFromJsonAsync<IEnumerable<ContactVM>>() : null;
         }
     }

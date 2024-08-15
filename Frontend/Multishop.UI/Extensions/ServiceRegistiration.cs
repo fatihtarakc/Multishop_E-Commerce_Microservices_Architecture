@@ -2,7 +2,6 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Multishop.UI.Handlers;
-using Multishop.UI.Options;
 using Multishop.UI.Services.AdvertisementServices.Abstract;
 using Multishop.UI.Services.AdvertisementServices.Concrete;
 using Multishop.UI.Services.AppUserServices.Abstract;
@@ -45,16 +44,16 @@ namespace Multishop.UI.Extensions
 
             services.AddHttpClient();
             services.AddHttpContextAccessor();
-            //services.AddAccessTokenManagement();
+            services.AddAccessTokenManagement();
             services.AddFluentValidationAutoValidation().AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-            services.Configure<ClientOptions>
-                (configuration.GetSection(ClientOptions.Client));
+            services.Configure<Options.ClientOptions>
+                (configuration.GetSection(Options.ClientOptions.Client));
 
             services.Configure<Options.RouteOptions>
                 (configuration.GetSection(Options.RouteOptions.Route));
 
-            //services.AddTransient<ClientCredentialsTokenHandler>();
+            services.AddTransient<ClientCredentialsTokenHandler>();
             services.AddTransient<ResourceOwnerPasswordTokenHandler>();
 
             var route = configuration.GetSection(Options.RouteOptions.Route).Get<Options.RouteOptions>();
@@ -64,7 +63,7 @@ namespace Multishop.UI.Extensions
             services.AddHttpClient<IAdvertisementService, AdvertisementService>(options =>
             {
                 options.BaseAddress = new Uri(route.ApiGateway + "/" + route.Catalog);
-            })/*.AddHttpMessageHandler<ClientCredentialsTokenHandler>()*/;
+            }).AddHttpMessageHandler<ClientCredentialsTokenHandler>();
 
             services.AddHttpClient<IAppUserService, AppUserService>(options =>
             {
@@ -74,47 +73,47 @@ namespace Multishop.UI.Extensions
             services.AddHttpClient<IBrandService, BrandService>(options =>
             {
                 options.BaseAddress = new Uri(route.ApiGateway + "/" + route.Catalog);
-            })/*.AddHttpMessageHandler<ClientCredentialsTokenHandler>()*/;
+            }).AddHttpMessageHandler<ClientCredentialsTokenHandler>();
 
             services.AddHttpClient<ICategoryService, CategoryService>(options =>
             {
                 options.BaseAddress = new Uri(route.ApiGateway + "/" + route.Catalog);
-            })/*.AddHttpMessageHandler<ClientCredentialsTokenHandler>()*/;
+            }).AddHttpMessageHandler<ClientCredentialsTokenHandler>();
 
             services.AddHttpClient<ICommentService, CommentService>(options =>
             {
                 options.BaseAddress = new Uri(route.ApiGateway + "/" + route.Comment);
-            })/*.AddHttpMessageHandler<ClientCredentialsTokenHandler>()*/;
+            }).AddHttpMessageHandler<ClientCredentialsTokenHandler>();
 
             services.AddHttpClient<IContactService, ContactService>(options =>
             {
                 options.BaseAddress = new Uri(route.ApiGateway + "/" + route.Catalog);
-            })/*.AddHttpMessageHandler<ClientCredentialsTokenHandler>()*/;
+            }).AddHttpMessageHandler<ClientCredentialsTokenHandler>();
 
             services.AddHttpClient<IDetailService, DetailService>(options =>
             {
                 options.BaseAddress = new Uri(route.ApiGateway + "/" + route.Catalog);
-            })/*.AddHttpMessageHandler<ClientCredentialsTokenHandler>()*/;
+            }).AddHttpMessageHandler<ClientCredentialsTokenHandler>();
 
             services.AddHttpClient<IImageService, ImageService>(options =>
             {
                 options.BaseAddress = new Uri(route.ApiGateway + "/" + route.Catalog);
-            })/*.AddHttpMessageHandler<ClientCredentialsTokenHandler>()*/;
+            }).AddHttpMessageHandler<ClientCredentialsTokenHandler>();
 
             services.AddHttpClient<IOfferService, OfferService>(options =>
             {
                 options.BaseAddress = new Uri(route.ApiGateway + "/" + route.Catalog);
-            })/*.AddHttpMessageHandler<ClientCredentialsTokenHandler>()*/;
+            }).AddHttpMessageHandler<ClientCredentialsTokenHandler>();
 
             services.AddHttpClient<IProductService, ProductService>(options =>
             {
                 options.BaseAddress = new Uri(route.ApiGateway + "/" + route.Catalog);
-            })/*.AddHttpMessageHandler<ClientCredentialsTokenHandler>()*/;
+            }).AddHttpMessageHandler<ClientCredentialsTokenHandler>();
 
             services.AddHttpClient<IServiceService, ServiceService>(options =>
             {
                 options.BaseAddress = new Uri(route.ApiGateway + "/" + route.Catalog);
-            })/*.AddHttpMessageHandler<ClientCredentialsTokenHandler>()*/;
+            }).AddHttpMessageHandler<ClientCredentialsTokenHandler>();
 
             return services;
         }

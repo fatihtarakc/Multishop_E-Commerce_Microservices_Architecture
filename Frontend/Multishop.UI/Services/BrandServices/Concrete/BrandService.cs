@@ -14,23 +14,23 @@ namespace Multishop.UI.Services.BrandServices.Concrete
         }
 
         public async Task<bool> AddAsync(BrandAddVM brandAddVM) =>
-            (await httpClient.PostAsJsonAsync("/brand/add", brandAddVM)).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.PostAsJsonAsync("brand/add", brandAddVM)).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<bool> DeleteAsync(string brandId) =>
-            (await httpClient.DeleteAsync($"/brand/delete/{brandId}")).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.DeleteAsync($"brand/delete/{brandId}")).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<bool> UpdateAsync(BrandUpdateVM brandUpdateVM) =>
-            (await httpClient.PutAsJsonAsync("/brand/update", brandUpdateVM)).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.PutAsJsonAsync("brand/update", brandUpdateVM)).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<BrandVM> GetFirstOrDefaultAsync(string brandId) 
         {
-            var httpResponseMessage = await httpClient.GetAsync($"/brand/getby/{brandId}");
+            var httpResponseMessage = await httpClient.GetAsync($"brand/getby/{brandId}");
             return httpResponseMessage.StatusCode is HttpStatusCode.OK ? await httpResponseMessage.Content.ReadFromJsonAsync<BrandVM>() : null;
         }
 
         public async Task<IEnumerable<BrandVM>> GetAllAsync()
         {
-            var httpResponseMessage = await httpClient.GetAsync("/brand/brands");
+            var httpResponseMessage = await httpClient.GetAsync("brand/brands");
             return httpResponseMessage.StatusCode is HttpStatusCode.OK ? await httpResponseMessage.Content.ReadFromJsonAsync<IEnumerable<BrandVM>>() : null;
         }
     }

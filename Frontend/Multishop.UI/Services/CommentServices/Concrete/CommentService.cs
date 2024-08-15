@@ -12,11 +12,11 @@ namespace Multishop.UI.Services.CommentServices.Concrete
             this.httpClient = httpClient;
         }
         public async Task<bool> AddAsync(CommentAddVM commentAddVM) =>
-            (await httpClient.PostAsJsonAsync("/comment/add", commentAddVM)).StatusCode is HttpStatusCode.OK ? true : false;
+            (await httpClient.PostAsJsonAsync("comment/add", commentAddVM)).StatusCode is HttpStatusCode.OK ? true : false;
 
         public async Task<IEnumerable<CommentVM>> GetAllByAsync(string productId)
         {
-            var httpResponseMessage = await httpClient.GetAsync($"/comment/commentsgetby/{productId}");
+            var httpResponseMessage = await httpClient.GetAsync($"comment/commentsgetby/{productId}");
             return httpResponseMessage.StatusCode is HttpStatusCode.OK ? await httpResponseMessage.Content.ReadFromJsonAsync<IEnumerable<CommentVM>>() : null;
         }
     }
