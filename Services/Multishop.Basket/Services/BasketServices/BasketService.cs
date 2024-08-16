@@ -1,13 +1,13 @@
 ﻿using Multishop.Basket.Dtos.BasketDtos;
-using Multishop.Basket.Settings;
+using Multishop.Basket.Services.RedisServices;
 using System.Text.Json;
 
 namespace Multishop.Basket.Services.BasketServices
 {
     public class BasketService : IBasketService
     {
-        private readonly RedisService redisService;
-        public BasketService(RedisService redisService)
+        private readonly IRedisService redisService;
+        public BasketService(IRedisService redisService)
         {
             this.redisService = redisService;
         }

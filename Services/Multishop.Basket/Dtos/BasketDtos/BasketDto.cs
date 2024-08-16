@@ -1,19 +1,21 @@
-﻿namespace Multishop.Basket.Dtos.BasketDtos
+﻿using Multishop.Basket.Dtos.ProductDtos;
+
+namespace Multishop.Basket.Dtos.BasketDtos
 {
     public class BasketDto
     {
         public BasketDto() 
         {
-            BasketItemDtos = new List<BasketItemDto>();
+            ProductDtos = new List<ProductDto>();
         }
 
         public string UserId { get; set; }
         public string? DiscountCouponCode { get; set; }
         public int? DiscountCouponRate { get; set; }
-        public decimal TotalPrice => BasketItemDtos.Sum(basket => basket.ProductAmount * basket.ProductPrice);
+        public decimal TotalPrice => ProductDtos.Sum(product => product.Amount * product.Price);
         public DateTime CreationDate { get; set; } = DateTime.Now;
 
         // Relations
-        public IEnumerable<BasketItemDto> BasketItemDtos { get; set; }
+        public IEnumerable<ProductDto> ProductDtos { get; set; }
     }
 }

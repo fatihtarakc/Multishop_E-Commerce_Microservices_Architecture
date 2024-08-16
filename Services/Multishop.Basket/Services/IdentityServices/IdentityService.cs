@@ -1,9 +1,9 @@
-﻿namespace Multishop.Basket.Services.LoginServices
+﻿namespace Multishop.Basket.Services.IdentityServices
 {
-    public class LoginService :ILoginService
+    public class IdentityService : IIdentityService
     {
         private readonly IHttpContextAccessor httpContextAccessor;
-        public LoginService(IHttpContextAccessor httpContextAccessor)
+        public IdentityService(IHttpContextAccessor httpContextAccessor)
         {
             this.httpContextAccessor = httpContextAccessor;
         }

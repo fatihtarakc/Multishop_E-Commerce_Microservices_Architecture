@@ -1,10 +1,12 @@
-﻿using FluentValidation.AspNetCore;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Multishop.Basket.Services.BasketServices;
-using Multishop.Basket.Services.LoginServices;
-using Multishop.Basket.Settings;
+using Multishop.Basket.Services.IdentityServices;
+using Multishop.Basket.Services.RedisServices;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 
 namespace Multishop.Basket.Extensions
 {
@@ -12,11 +14,6 @@ namespace Multishop.Basket.Extensions
     {
         public static IServiceCollection AddApiService(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddFluentValidation
-                (services => services.RegisterValidatorsFromAssemblyContaining<Program>().DisableDataAnnotationsValidation = false);
-
-            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
-
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 options.Authority = configuration["Token:IdentityServer4Url"];
@@ -35,21 +32,26 @@ namespace Multishop.Basket.Extensions
                     //ValidateLifetime = true
                 };
             });
+            
+            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
             services.AddHttpContextAccessor();
+            services.AddFluentValidationAutoValidation().AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-            services.AddScoped<IBasketService, BasketService>();
-            services.AddScoped<ILoginService, LoginService>();
 
-            services.Configure<RedisDbSettings>(configuration.GetSection("Redis"));
+            services.Configure<Options.RedisOptions>
+                (configuration.GetSection(Options.RedisOptions.Redis));
 
-            services.AddSingleton<RedisService>(serviceProvider => 
+            services.AddTransient<IBasketService, BasketService>();
+            services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IRedisService, RedisService>(serviceProvider => 
             {
-                var redisSettings = serviceProvider.GetRequiredService<IOptions<RedisDbSettings>>().Value;
-                var redis = new RedisService(redisSettings.Host, redisSettings.Port);
+                var redisOptions = serviceProvider.GetRequiredService<IOptions<Options.RedisOptions>>().Value;
+                var redis = new RedisService(redisOptions.Host, redisOptions.Port);
                 redis.Connect();
                 return redis;
             });
+
             return services;
         }
     }
