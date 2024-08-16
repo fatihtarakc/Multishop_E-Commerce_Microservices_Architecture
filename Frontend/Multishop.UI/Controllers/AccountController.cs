@@ -28,8 +28,8 @@ namespace Multishop.UI.Controllers
             bool response = await identityService.SignInWithTokenAsync(appUserSignInVM);
             if (!response) return View(appUserSignInVM);
 
-            return RedirectToAction("UserGetFirstOrDefault", "Account", new { area = "" });
-            //return RedirectToAction("Index", "Home", new { area = "" });
+            //return RedirectToAction("UserGetFirstOrDefault", "Account", new { area = "" });
+            return RedirectToAction("Index", "Home", new { area = "" });
         }
 
         public IActionResult SignUp()

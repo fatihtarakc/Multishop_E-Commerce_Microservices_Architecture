@@ -52,8 +52,9 @@ namespace Multishop.IdentityServer4
             // visitor
             new Client
             {
+                AllowAccessTokensViaBrowser = true,
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
-                AllowedScopes = { "ApiGatewayFullPermission", "CatalogFullPermission", "CommentFullPermission", "ImageFullPermission" },
+                AllowedScopes = { "ApiGatewayFullPermission", "CatalogFullPermission", "CommentFullPermission", "ImageFullPermission", IdentityServerConstants.LocalApi.ScopeName },
                 ClientId = "Multishop.VisitorId",
                 ClientName = "Multishop.VisitorName",
                 ClientSecrets = {new Secret("multishop.visitorsecret".Sha256())}
