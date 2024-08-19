@@ -1,12 +1,10 @@
-﻿using Multishop.Basket.Dtos.ProductDtos;
-
-namespace Multishop.Basket.Dtos.BasketDtos
+﻿namespace Multishop.UI.Models.ViewModels.BasketVMs
 {
-    public class BasketDto
+    public class BasketVM
     {
-        public BasketDto()
+        public BasketVM() 
         {
-            Products = new List<ProductDto>();
+            Products = new List<BasketProductVM>();
         }
 
         public string UserId { get; set; }
@@ -16,6 +14,6 @@ namespace Multishop.Basket.Dtos.BasketDtos
         public DateTime CreationDate { get; set; } = DateTime.Now;
 
         // Relations
-        public IEnumerable<ProductDto> Products { get; set; }
+        public IEnumerable<BasketProductVM> Products { get; set; }
     }
 }

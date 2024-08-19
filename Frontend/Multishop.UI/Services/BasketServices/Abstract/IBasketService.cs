@@ -4,8 +4,8 @@ namespace Multishop.UI.Services.BasketServices.Abstract
 {
     public interface IBasketService
     {
-        Task<bool> SaveAsync(BasketAddVM basketAddVM);
-        Task<bool> DeleteAsync(string userId);
-        Task<bool> GetFirstOrDefaultAsync(string userId);
+        Task<bool> SaveAsync(BasketVM basketVM);
+        Task<bool> DeleteAsync();
+        Task<BasketVM> GetFirstOrDefaultAsync();
     }
 }

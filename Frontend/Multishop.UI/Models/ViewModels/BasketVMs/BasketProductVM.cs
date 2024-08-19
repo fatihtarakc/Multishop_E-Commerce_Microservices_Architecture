@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Multishop.Basket.Dtos.ProductDtos
+namespace Multishop.UI.Models.ViewModels.BasketVMs
 {
-    public class ProductDto
+    public class BasketProductVM
     {
         public string Id { get; set; }
         public string Name { get; set; }

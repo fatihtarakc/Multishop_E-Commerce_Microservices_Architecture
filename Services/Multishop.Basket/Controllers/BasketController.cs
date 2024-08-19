@@ -22,7 +22,7 @@ namespace Multishop.Basket.Controllers
         public async Task<IActionResult> Get()
         {
             var user = User.Claims;
-            var basket = await basketService.GetByAsync(identityService.GetUserId);
+            var basket = await basketService.GetByIdAsync(identityService.GetUserId);
             if (basket is null) return NotFound("Basket is not found !");
 
             return Ok(basket);
@@ -32,7 +32,7 @@ namespace Multishop.Basket.Controllers
         public async Task<IActionResult> Save(BasketDto basketDto)
         {
             basketDto.UserId = identityService.GetUserId;
-            bool wasSaved = await basketService.SaveChangesAsync(basketDto);
+            bool wasSaved = await basketService.SaveAsync(basketDto);
             if (!wasSaved) return BadRequest("Basket saving process is unsuccess !");
 
             return Ok("Basket was saved successfully !");

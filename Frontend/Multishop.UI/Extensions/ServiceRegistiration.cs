@@ -6,6 +6,8 @@ using Multishop.UI.Services.AdvertisementServices.Abstract;
 using Multishop.UI.Services.AdvertisementServices.Concrete;
 using Multishop.UI.Services.AppUserServices.Abstract;
 using Multishop.UI.Services.AppUserServices.Concrete;
+using Multishop.UI.Services.BasketServices.Abstract;
+using Multishop.UI.Services.BasketServices.Concrete;
 using Multishop.UI.Services.BrandServices.Abstract;
 using Multishop.UI.Services.BrandServices.Concrete;
 using Multishop.UI.Services.CategoryServices.Abstract;
@@ -69,6 +71,11 @@ namespace Multishop.UI.Extensions
             {
                 options.BaseAddress = new Uri(route.IdentityServer);
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+            services.AddHttpClient<IBasketService, BasketService>(options =>
+            {
+                options.BaseAddress = new Uri(route.ApiGateway + "/" + route.Basket);
+            })/*.AddHttpMessageHandler<ClientCredentialsTokenHandler>()*/;
 
             services.AddHttpClient<IBrandService, BrandService>(options =>
             {
