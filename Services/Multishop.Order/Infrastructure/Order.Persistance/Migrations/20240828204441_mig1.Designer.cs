@@ -12,7 +12,7 @@ using Order.Persistance.Context;
 namespace Order.Persistance.Migrations
 {
     [DbContext(typeof(OrderMicroserviceContext))]
-    [Migration("20240605185305_mig1")]
+    [Migration("20240828204441_mig1")]
     partial class mig1
     {
         /// <inheritdoc />
@@ -30,7 +30,7 @@ namespace Order.Persistance.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("2e6e1467-a811-4a02-81c1-72d583a0fab2"));
+                        .HasDefaultValue(new Guid("697f4118-7791-466d-939c-453d25fa2f2b"));
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -43,7 +43,7 @@ namespace Order.Persistance.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 6, 5, 21, 53, 4, 255, DateTimeKind.Local).AddTicks(8508));
+                        .HasDefaultValue(new DateTime(2024, 8, 28, 23, 44, 36, 380, DateTimeKind.Local).AddTicks(4439));
 
                     b.Property<string>("Info")
                         .IsRequired()
@@ -62,12 +62,12 @@ namespace Order.Persistance.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("48d304b9-aace-46fc-be5b-b0b13d9b43bc"));
+                        .HasDefaultValue(new Guid("0ea3200a-1d44-4a2c-8279-2bdb396bee1a"));
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 6, 5, 21, 53, 4, 256, DateTimeKind.Local).AddTicks(1952));
+                        .HasDefaultValue(new DateTime(2024, 8, 28, 23, 44, 36, 381, DateTimeKind.Local).AddTicks(4706));
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
@@ -101,12 +101,12 @@ namespace Order.Persistance.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
-                        .HasDefaultValue(new Guid("8fa882c0-fb9c-47bd-979c-757619d27661"));
+                        .HasDefaultValue(new Guid("18d2f288-2b38-4d7d-b7db-6f83a34fcfa9"));
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 6, 5, 21, 53, 4, 256, DateTimeKind.Local).AddTicks(5017));
+                        .HasDefaultValue(new DateTime(2024, 8, 28, 23, 44, 36, 382, DateTimeKind.Local).AddTicks(1740));
 
                     b.Property<decimal>("TotalPrice")
                         .ValueGeneratedOnAdd()
