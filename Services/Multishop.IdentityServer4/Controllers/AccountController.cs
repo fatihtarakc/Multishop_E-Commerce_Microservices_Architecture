@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Multishop.IdentityServer4.Data.Entities;
 using Multishop.IdentityServer4.Dtos.AppUserDtos;
-using Multishop.IdentityServer4.Services.Abstract;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Multishop.IdentityServer4.Controllers
@@ -14,29 +12,10 @@ namespace Multishop.IdentityServer4.Controllers
     {
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
-        private readonly IIdentityService identityService;
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IIdentityService identityService)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
-            this.identityService = identityService;
-        }
-
-        [HttpPost("SignIn")]
-        public async Task<IActionResult> SignIn(AppUserSignInDto appUserSignInDto)
-        {
-            if (!ModelState.IsValid) return BadRequest("Username or password must not be null !");
-
-            var appUserByUsername = await userManager.FindByNameAsync(appUserSignInDto.Username);
-            if (appUserByUsername is null) return BadRequest("Email or password is incorrect !");
-
-            Microsoft.AspNetCore.Identity.SignInResult signInResult = await signInManager.PasswordSignInAsync(appUserByUsername, appUserSignInDto.Password, appUserSignInDto.RememberMe, false);
-            if (!signInResult.Succeeded) return BadRequest("Username or password is incorrect !");
-
-            var appUserDto = new AppUserDto { Id = appUserByUsername.Id, Username = appUserByUsername.UserName, Role = (await userManager.GetRolesAsync(appUserByUsername)).FirstOrDefault() };
-
-            var token = identityService.TokenGenerator(appUserDto);
-            return Ok(token);
         }
 
         [HttpPost("SignUp")]
@@ -45,9 +24,9 @@ namespace Multishop.IdentityServer4.Controllers
             if (!ModelState.IsValid) return BadRequest();
 
             var appUserByEmail = await userManager.FindByEmailAsync(appUserSignUpDto.Email);
-            var appUserByUsername = await userManager.FindByNameAsync(appUserSignUpDto.Username);
             if (!(appUserByEmail is null)) return BadRequest("This email address cannot be used !");
-            if (!(appUserByUsername is null)) return BadRequest("This email address cannot be used !");
+            var appUserByUsername = await userManager.FindByNameAsync(appUserSignUpDto.Username);
+            if (!(appUserByUsername is null)) return BadRequest("This username cannot be used !");
 
             var appUser = new AppUser()
             {
@@ -58,9 +37,9 @@ namespace Multishop.IdentityServer4.Controllers
             };
             appUser.PasswordHash = userManager.PasswordHasher.HashPassword(appUser, appUserSignUpDto.Password);
             var identityResult = await userManager.CreateAsync(appUser);
-            if (!identityResult.Succeeded) return BadRequest("Sign up process is unsuccess !");
+            if (!identityResult.Succeeded) return BadRequest("Sign up is failed !");
 
-            return Ok("Sign up process is success !");
+            return Ok("Sign up is successful !");
         }
 
         [HttpGet]

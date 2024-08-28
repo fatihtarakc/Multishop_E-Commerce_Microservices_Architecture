@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Multishop.UI.Models.ViewModels.CommentVMs;
 using Multishop.UI.Models.ViewModels.ProductVMs;
+using Multishop.UI.Services.BasketServices.Abstract;
 using Multishop.UI.Services.CommentServices.Abstract;
 using Multishop.UI.Services.DetailServices.Abstract;
+using Multishop.UI.Services.IdentityServices.Abstract;
 using Multishop.UI.Services.ImageServices.Abstract;
 using Multishop.UI.Services.ProductServices.Abstract;
 
@@ -10,12 +12,16 @@ namespace Multishop.UI.Controllers
 {
     public class ShopController : Controller
     {
+        private readonly IIdentityService identityService;
+        private readonly IBasketService basketService;
         private readonly ICommentService commentService;
         private readonly IDetailService detailService;
         private readonly IImageService imageService;
         private readonly IProductService productService;
-        public ShopController(ICommentService commentService, IDetailService detailService, IImageService imageService, IProductService productService)
+        public ShopController(IIdentityService identityService, IBasketService basketService, ICommentService commentService, IDetailService detailService, IImageService imageService, IProductService productService)
         {
+            this.identityService = identityService;
+            this.basketService = basketService;
             this.commentService = commentService;
             this.detailService = detailService;
             this.imageService = imageService;
@@ -98,6 +104,30 @@ namespace Multishop.UI.Controllers
             if (!response) return RedirectToAction("Index", "Home", new { area = "" });
 
             return RedirectToAction("Index", "Home", new { area = "" });
+        }
+
+        public async Task<IActionResult> Cart()
+        {
+            if (identityService.GetUserId() is null) return RedirectToAction("SignIn", "Account", new { area = "" });
+
+            var basketVM = await basketService.GetFirstOrDefaultAsync();
+            return View(basketVM);
+        }
+
+        public async Task<IActionResult> IncreaseProductAmountInCart()
+        {
+            if (identityService.GetUserId() is null) return RedirectToAction("SignIn", "Account", new { area = "" });
+
+            var basketVM = await basketService.GetFirstOrDefaultAsync();
+            return View();
+        }
+
+        public async Task<IActionResult> DecreaseProductAmountInCart()
+        {
+            if (identityService.GetUserId() is null) return RedirectToAction("SignIn", "Account", new { area = "" });
+
+            var basketVM = await basketService.GetFirstOrDefaultAsync();
+            return View();
         }
     }
 }

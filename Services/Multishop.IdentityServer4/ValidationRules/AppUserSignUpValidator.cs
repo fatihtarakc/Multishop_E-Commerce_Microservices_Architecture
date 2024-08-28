@@ -9,26 +9,26 @@ namespace Multishop.IdentityServer4.ValidationRules
         {
             RuleFor(appUser => appUser.Name)
                 .NotEmpty().WithMessage("Please enter your name !")
-                .MinimumLength(2).WithMessage("Name can not be less than 2 characters !")
-                .MaximumLength(20).WithMessage("Name can not be greater than 20 characters !");
+                .MinimumLength(2).WithMessage("Name cannot be less than 2 characters !")
+                .MaximumLength(20).WithMessage("Name cannot be greater than 20 characters !");
 
             RuleFor(appUser => appUser.Surname)
                 .NotEmpty().WithMessage("Please enter your surname !")
-                .MinimumLength(2).WithMessage("Surname can not be less than 2 characters !")
-                .MaximumLength(20).WithMessage("Surname can not be greater than 20 characters !");
+                .MinimumLength(2).WithMessage("Surname cannot be less than 2 characters !")
+                .MaximumLength(20).WithMessage("Surname cannot be greater than 20 characters !");
 
             RuleFor(appUser => appUser.Username)
                 .NotEmpty().WithMessage("Please enter your username !")
-                .Must(TRCharacterControl).WithMessage("Turkish charachters cannot use for username !")
-                .MinimumLength(5).WithMessage("Username can not be less than 5 characters !")
-                .MaximumLength(20).WithMessage("Username can not be greater than 20 characters !");
+                .Must(TRCharacterControl).WithMessage("Turkish charachters cannot be used for username !")
+                .MinimumLength(5).WithMessage("Username cannot be less than 5 characters !")
+                .MaximumLength(20).WithMessage("Username cannot be greater than 20 characters !");
 
             RuleFor(appUser => appUser.Email)
                 .NotEmpty().WithMessage("Please enter your email !")
                 .EmailAddress().WithMessage("Email address is invalid !")
-                .Must(TRCharacterControl).WithMessage("Turkish charachters cannot use for email !")
-                .MinimumLength(5).WithMessage("Email can not be less than 5 characters !")
-                .MaximumLength(50).WithMessage("Email can not be greater than 50 characters !");
+                .Must(TRCharacterControl).WithMessage("Turkish charachters cannot be used for email !")
+                .MinimumLength(5).WithMessage("Email cannot be less than 5 characters !")
+                .MaximumLength(50).WithMessage("Email cannot be greater than 50 characters !");
 
             RuleFor(appUser => appUser.Password)
                 .NotEmpty().WithMessage("Please enter your password !")
@@ -37,13 +37,13 @@ namespace Multishop.IdentityServer4.ValidationRules
                 .Must(PasswordLowerLetterControl).WithMessage("Password must include min one lower letter !")
                 .Must(PasswordNumberControl).WithMessage("Password must include min one number !")
                 .Must(PasswordNonAlphaNumericControl).WithMessage("Password must include min one non alpha numeric character !")
-                .MinimumLength(8).WithMessage("Password can not be less than 8 characters !")
-                .MaximumLength(16).WithMessage("Password can not be greater than 16 characters !");
+                .MinimumLength(8).WithMessage("Password cannot be less than 8 characters !")
+                .MaximumLength(16).WithMessage("Password cannot be greater than 16 characters !");
 
             RuleFor(appUser => appUser.ConfirmPassword)
                 .NotEmpty().WithMessage("Please enter your re-password !")
-                .MinimumLength(8).WithMessage("Re-password can not be less than 8 characters !")
-                .MaximumLength(16).WithMessage("Re-password can not be greater than 16 characters !");
+                .MinimumLength(8).WithMessage("Re-password cannot be less than 8 characters !")
+                .MaximumLength(16).WithMessage("Re-password cannot be greater than 16 characters !");
         }
 
         public static bool TRCharacterControl(string info)

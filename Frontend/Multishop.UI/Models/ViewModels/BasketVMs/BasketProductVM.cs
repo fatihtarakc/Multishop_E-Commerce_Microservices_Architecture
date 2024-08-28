@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Multishop.UI.Models.ViewModels.BasketVMs
+﻿namespace Multishop.UI.Models.ViewModels.BasketVMs
 {
     public class BasketProductVM
     {

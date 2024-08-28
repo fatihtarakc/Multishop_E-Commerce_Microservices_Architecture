@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Multishop.Basket.Dtos.ProductDtos
+﻿namespace Multishop.Basket.Dtos.ProductDtos
 {
     public class ProductDto
     {

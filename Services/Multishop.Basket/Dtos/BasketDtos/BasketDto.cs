@@ -13,7 +13,7 @@ namespace Multishop.Basket.Dtos.BasketDtos
         public string? DiscountCouponCode { get; set; }
         public int? DiscountCouponRate { get; set; }
         public decimal TotalPrice => Products.Sum(product => product.TotalPrice);
-        public DateTime CreationDate { get; set; } = DateTime.Now;
+        public DateTime CreationDate => DateTime.Now;
 
         // Relations
         public IEnumerable<ProductDto> Products { get; set; }

@@ -26,7 +26,11 @@ namespace Multishop.UI.Controllers
             if (!ModelState.IsValid) return View(appUserSignInVM);
 
             bool response = await identityService.SignInWithTokenAsync(appUserSignInVM);
-            if (!response) return View(appUserSignInVM);
+            if (!response)
+            {
+                ModelState.AddModelError("", "Username or password is incorrect !");
+                return View(appUserSignInVM);
+            }
 
             //return RedirectToAction("UserGetFirstOrDefault", "Account", new { area = "" });
             return RedirectToAction("Index", "Home", new { area = "" });
@@ -45,11 +49,9 @@ namespace Multishop.UI.Controllers
             var responseMessage = await identityService.SignUpAsync(appUserSignUpVM);
             if (responseMessage.StatusCode == System.Net.HttpStatusCode.OK) return RedirectToAction("SignIn");
 
-            else if (responseMessage.StatusCode == System.Net.HttpStatusCode.BadRequest) ModelState.AddModelError("", "This email or username cannot be used !");
+            else ModelState.AddModelError("", await responseMessage.Content.ReadAsStringAsync());
 
-            else ModelState.AddModelError("", "Something went wrong !");
-
-            return RedirectToAction("SignUp");
+            return View(appUserSignUpVM);
         }
 
         public async Task<IActionResult> SignOut()

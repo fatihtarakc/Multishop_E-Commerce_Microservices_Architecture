@@ -10,7 +10,7 @@ namespace Multishop.Catalog.ValidationRules.AdvertisementValidationRules
             RuleFor(advertisement => advertisement.Title)
                 .NotEmpty().WithMessage("Please enter a title !")
                 .MinimumLength(3).WithMessage("Title can not be less than 3 characters !")
-                .MaximumLength(30).WithMessage("Title can not be greater than 30 characters !");
+                .MaximumLength(50).WithMessage("Title can not be greater than 50 characters !");
 
             RuleFor(advertisement => advertisement.Description)
                 .NotEmpty().WithMessage("Please enter a description !")

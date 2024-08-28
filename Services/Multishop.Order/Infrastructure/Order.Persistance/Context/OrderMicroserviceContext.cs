@@ -16,7 +16,7 @@ namespace Order.Persistance.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=localhost, 1453; Database=Multishop.OrderDb; User=sa; Password=Dockermssqldb2024+-!?; TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer("Server=localhost, 1437; Database=2024MultishopOrderDb; User=sa; Password=Dockermssqldb2024+-!?; Integrated Security=True; TrustServerCertificate=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

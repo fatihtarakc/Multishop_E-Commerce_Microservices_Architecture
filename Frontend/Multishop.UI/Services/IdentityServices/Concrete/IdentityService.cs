@@ -27,6 +27,9 @@ namespace Multishop.UI.Services.IdentityServices.Concrete
             this.clientAccessTokenCache = clientAccessTokenCache;
         }
 
+        public string GetUserId() => httpContextAccessor.HttpContext.User.FindFirst("sub") is not null
+            ? httpContextAccessor.HttpContext.User.FindFirst("sub").Value : null;
+
         public async Task<bool> SignInWithTokenAsync(AppUserSignInVM appUserSignInVM)
         {
             var discoveryDocumentResponse = await httpClient.GetDiscoveryDocumentAsync
@@ -80,6 +83,7 @@ namespace Multishop.UI.Services.IdentityServices.Concrete
             if (httpContext is null) return false;
 
             var refreshToken = await httpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken);
+            if (refreshToken is null) return false;
 
             var refreshTokenRequest = new RefreshTokenRequest
             {
@@ -111,10 +115,17 @@ namespace Multishop.UI.Services.IdentityServices.Concrete
         }
 
         public async Task<HttpResponseMessage> SignUpAsync(AppUserSignUpVM appUserSignUpVM) =>
-            await httpClient.PostAsJsonAsync("/account/signup", appUserSignUpVM);
+            await httpClient.PostAsJsonAsync("account/signup", appUserSignUpVM);
 
-        public async Task<bool> SignOutAsync() =>
-            (await httpClient.GetAsync("/account/signout")).StatusCode is HttpStatusCode.OK ? true : false;
+        public async Task<bool> SignOutAsync()
+        {
+            var httpContext = httpContextAccessor.HttpContext;
+            if (httpContext is null) return false;
+
+            await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return true;
+            //(await httpClient.GetAsync("account/signout")).StatusCode is HttpStatusCode.OK ? true : false;
+        }
 
         public async Task<string> ClientCredentialTokenGetFirstOrDefaultAsync()
         {

@@ -60,7 +60,11 @@ namespace Multishop.UI.Extensions
 
             var route = configuration.GetSection(Options.RouteOptions.Route).Get<Options.RouteOptions>();
 
-            services.AddHttpClient<IIdentityService, IdentityService>();
+            //services.AddHttpClient<IIdentityService, IdentityService>();
+            services.AddHttpClient<IIdentityService, IdentityService>(options =>
+            {
+                options.BaseAddress = new Uri(route.ApiGateway + "/identity/");
+            });
 
             services.AddHttpClient<IAdvertisementService, AdvertisementService>(options =>
             {
@@ -69,13 +73,13 @@ namespace Multishop.UI.Extensions
 
             services.AddHttpClient<IAppUserService, AppUserService>(options =>
             {
-                options.BaseAddress = new Uri(route.IdentityServer);
+                options.BaseAddress = new Uri(route.ApiGateway + "/identity/");
             }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
 
             services.AddHttpClient<IBasketService, BasketService>(options =>
             {
                 options.BaseAddress = new Uri(route.ApiGateway + "/" + route.Basket);
-            })/*.AddHttpMessageHandler<ClientCredentialsTokenHandler>()*/;
+            }).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
 
             services.AddHttpClient<IBrandService, BrandService>(options =>
             {

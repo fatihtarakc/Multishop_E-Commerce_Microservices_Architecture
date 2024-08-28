@@ -4,6 +4,8 @@ namespace Multishop.UI.Services.IdentityServices.Abstract
 {
     public interface IIdentityService
     {
+        string GetUserId();
+
         Task<bool> SignInWithTokenAsync(AppUserSignInVM appUserSignInVM);
 
         Task<bool> SignInWithRefreshTokenAsync();

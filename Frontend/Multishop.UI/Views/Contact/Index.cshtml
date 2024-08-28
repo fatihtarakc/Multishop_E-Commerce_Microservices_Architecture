@@ -11,7 +11,7 @@
             <div class="contact-form bg-white p-30">
                 <h2 class="form-group position-relative text-center bg-danger text-danger"><span class="bg-warning pr-3">&nbsp;Contact Us</span></h2><span class="text-danger" style="text-transform:lowercase; font-family:'Comic Sans MS'">(* required field)</span>
                 <form asp-action="Add" asp-controller="Contact" asp-area="" method="post" class="container-fluid" style="font-family:'Comic Sans MS'; text-align:center">
-                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div asp-validation-summary="All" class="text-danger" style="list-style-type:none"></div>
                     <div class="form-group">
                         <label asp-for="NameSurname" class="control-label" style="text-align:start; font-size:16px; font-weight:bold; color:indigo;">Your Name Surname <span class="text-danger">*</span></label>
                         <input asp-for="NameSurname" class="lable-tag btn btn-warning btn-rounded btn-block text-white" minLength="5" maxLength="50" style="cursor:text" required placeholder="Please enter your name surname" />

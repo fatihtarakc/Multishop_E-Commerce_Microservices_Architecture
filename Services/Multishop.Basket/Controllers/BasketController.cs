@@ -21,7 +21,6 @@ namespace Multishop.Basket.Controllers
         [HttpGet("Get")]
         public async Task<IActionResult> Get()
         {
-            var user = User.Claims;
             var basket = await basketService.GetByIdAsync(identityService.GetUserId);
             if (basket is null) return NotFound("Basket is not found !");
 

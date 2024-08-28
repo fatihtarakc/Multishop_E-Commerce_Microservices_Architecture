@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CategoryVM>
+﻿@inject IIdentityService identityService;
+@model IEnumerable<CategoryVM>
 
 <div class="container-fluid bg-warning mb-30" style="font-family:'Comic Sans MS'">
     <div class="row px-xl-5">
@@ -28,15 +29,37 @@
                         <a asp-action="Index" asp-controller="Contact" asp-area="" class="nav-item nav-link text-danger">Contact</a>
                     </div>
                     <div class="col-3 navbar-nav ml-auto py-0 d-none d-lg-block">
-                        <a asp-action="Index" asp-controller="ShoppingCart" asp-area="" class="btn px-0 ml-3" title="Shopping Cart">
+                        <a asp-action="Cart" asp-controller="Shop" asp-area="" class="btn px-0 ml-3" title="Shopping Cart">
                             <svg height="14px" width="14px" class="text-danger" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" /></svg>
-                            <span class="badge text-secondary border border-secondary rounded-circle text-danger">0</span>
+                            @{
+                                if (ViewBag.ProductAmount is null)
+                                {
+                                    <span class="badge text-secondary border border-secondary rounded-circle text-danger">0</span>
+                                }
+                                else
+                                {
+                                    <span class="badge text-secondary border border-secondary rounded-circle text-danger">@ViewBag.ProductAmount</span>
+                                }
+                            }
                         </a>
                         &nbsp;&nbsp;&nbsp;
-                        <a asp-action="SignIn" asp-controller="Account" asp-area="" class="btn px-0 text-danger" title="Account">
-                            <svg height="14px" width="14px" class="text-danger" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" /></svg>
-                            <span class="badge text-secondary border border-secondary rounded-circle text-danger">0</span>
-                        </a>
+                        @{
+
+                            if (identityService.GetUserId() is not null)
+                            {
+                                <a asp-action="SignOut" asp-controller="Account" asp-area="" class="btn px-0 text-danger" title="Sign Out">
+                                    <svg height="14px" width="14px" class="text-danger" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" /></svg>
+                                    <span>Sign Out</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-action="SignIn" asp-controller="Account" asp-area="" class="btn px-0 text-danger" title="Sign In">
+                                    <svg height="14px" width="14px" class="text-danger" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" /></svg>
+                                    <span>Sign In</span>
+                                </a>
+                            }
+                        }
                     </div>
                 </div>
             </nav>
@@ -52,7 +75,7 @@
                         <h6 class="text-warning m-0 text-center"><i class="fa fa-bars mr-2"></i>Categories</h6>
                         <i class="fa fa-angle-down text-warning"></i>
                     </a>
-                    <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-warning" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
+                    <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-danger" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
                         <div class="navbar-nav w-100">
 
                             @{
@@ -67,16 +90,38 @@
                     <div class="navbar-nav mr-auto py-3">
                         <a asp-action="Index" asp-controller="Contact" asp-area="" class="nav-item nav-link text-danger">Contact</a>
                         <div class="row d-flex py-2">
-                            <div class="col-4"></div>
-                            <a asp-action="Index" asp-controller="ShoppingCart" asp-area="" class="btn px-0 ml-3 col-2" title="Shopping Cart">
+                            <a asp-action="Cart" asp-controller="Shop" asp-area="" class="btn px-0" title="Shopping Cart">
                                 <svg height="14px" width="14px" class="text-danger" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" /></svg>
-                                <span class="badge text-secondary border border-secondary rounded-circle text-danger">0</span>
+                                @{
+                                    if (ViewBag.ProductAmount is null)
+                                    {
+                                        <span class="badge text-secondary border border-secondary rounded-circle text-danger">0</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge text-secondary border border-secondary rounded-circle text-danger">@ViewBag.ProductAmount</span>
+                                    }
+                                }
                             </a>
-                            <a href="" class="btn px-0 col-2" title="Account">
-                                <svg height="14px" width="14px" class="text-danger" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" /></svg>
-                                @* <span class="badge text-secondary border border-secondary rounded-circle text-danger">0</span> *@
-                            </a>
-                            <div class="col-4"></div>
+                        </div>
+                        <div class="row d-flex py-2">
+                            @{
+
+                                if (identityService.GetUserId() is not null)
+                                {
+                                    <a asp-action="SignOut" asp-controller="Account" asp-area="" class="btn px-0 text-danger" title="Sign Out">
+                                        <svg height="14px" width="14px" class="text-danger" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" /></svg>
+                                        <span>Sign Out</span>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-action="SignIn" asp-controller="Account" asp-area="" class="btn px-0 text-danger" title="Sign In">
+                                        <svg height="14px" width="14px" class="text-danger" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" /></svg>
+                                        <span>Sign In</span>
+                                    </a>
+                                }
+                            }
                         </div>
                     </div>
                 </div>

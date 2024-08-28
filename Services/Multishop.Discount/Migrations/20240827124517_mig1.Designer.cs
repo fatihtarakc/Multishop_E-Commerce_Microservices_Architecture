@@ -12,7 +12,7 @@ using Multishop.Discount.Data.Context;
 namespace Multishop.Discount.Migrations
 {
     [DbContext(typeof(DiscountContext))]
-    [Migration("20240601215219_mig1")]
+    [Migration("20240827124517_mig1")]
     partial class mig1
     {
         /// <inheritdoc />
@@ -39,7 +39,7 @@ namespace Multishop.Discount.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 6, 2, 0, 52, 18, 384, DateTimeKind.Local).AddTicks(4742));
+                        .HasDefaultValue(new DateTime(2024, 8, 27, 15, 45, 16, 646, DateTimeKind.Local).AddTicks(7046));
 
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");

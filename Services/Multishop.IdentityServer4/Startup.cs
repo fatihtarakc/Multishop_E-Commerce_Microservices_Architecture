@@ -14,8 +14,6 @@ using System;
 using Multishop.IdentityServer4.ValidationRules;
 using Multishop.IdentityServer4.Data.Context;
 using Multishop.IdentityServer4.Data.Entities;
-using Multishop.IdentityServer4.Services.Abstract;
-using Multishop.IdentityServer4.Services.Concrete;
 
 namespace Multishop.IdentityServer4
 {
@@ -51,8 +49,6 @@ namespace Multishop.IdentityServer4
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddErrorDescriber<CustomIdentityValidator>()
                 .AddDefaultTokenProviders();
-
-            services.AddTransient<IIdentityService, IdentityService>();
 
             var builder = services.AddIdentityServer(options =>
             {
